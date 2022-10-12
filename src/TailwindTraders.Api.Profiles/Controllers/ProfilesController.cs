@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-namespace Tailwind.Traders.Profiles.Controllers;
+namespace TailwindTraders.Api.Profiles.Controllers;
 
 public class ProfilesController : TailwindTradersControllerBase
 {
