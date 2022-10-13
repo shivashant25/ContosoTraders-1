@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Core", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Products", "TailwindTraders.Api.Products\TailwindTraders.Api.Products.csproj", "{F867B7B7-2B68-401A-A072-ADFEB61F75D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Stocks", "TailwindTraders.Api.Stocks\TailwindTraders.Api.Stocks.csproj", "{557535AC-A89E-4AA5-A291-FCAC3EEF8621}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Profiles", "TailwindTraders.Api.Profiles\TailwindTraders.Api.Profiles.csproj", "{470EC658-DAAD-47FC-9041-342F744C2D2F}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{F867B7B7-2B68-401A-A072-ADFEB61F75D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F867B7B7-2B68-401A-A072-ADFEB61F75D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F867B7B7-2B68-401A-A072-ADFEB61F75D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{557535AC-A89E-4AA5-A291-FCAC3EEF8621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{557535AC-A89E-4AA5-A291-FCAC3EEF8621}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{557535AC-A89E-4AA5-A291-FCAC3EEF8621}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{557535AC-A89E-4AA5-A291-FCAC3EEF8621}.Release|Any CPU.Build.0 = Release|Any CPU
 		{470EC658-DAAD-47FC-9041-342F744C2D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{470EC658-DAAD-47FC-9041-342F744C2D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{470EC658-DAAD-47FC-9041-342F744C2D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU

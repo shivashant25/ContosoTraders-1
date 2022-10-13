@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-namespace TailwindTraders.Api.Stocks.Controllers;
+﻿namespace TailwindTraders.Api.Products.Controllers;
 
 [Route("v1/[controller]")]
 public class StocksController : TailwindTradersControllerBase
