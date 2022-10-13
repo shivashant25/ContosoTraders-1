@@ -1,8 +1,9 @@
-﻿global using MediatR;
+﻿global using AutoMapper;
+global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
-global using System.Linq;
 global using TailwindTraders.Api.Core;
 global using TailwindTraders.Api.Core.Constants;
+global using TailwindTraders.Api.Core.Exceptions;
 global using TailwindTraders.Api.Core.Models;
 global using TailwindTraders.Api.Core.Models.Implementations.Dao;
 global using TailwindTraders.Api.Core.Models.Implementations.Dto;
@@ -13,4 +14,4 @@ global using TailwindTraders.Api.Core.Repositories.Interfaces;
 global using TailwindTraders.Api.Core.Requests.Definitions;
 global using TailwindTraders.Api.Core.Services.Implementations;
 global using TailwindTraders.Api.Core.Services.Interfaces;
-global using TailwindTraders.Api.Core.Exceptions;
+global using TailwindTraders.Api.Core.Utilities.ExtensionMethods;

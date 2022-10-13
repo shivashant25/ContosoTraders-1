@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace TailwindTraders.Api.Core.Services;
+﻿namespace TailwindTraders.Api.Core.Services;
 
 internal abstract class TailwindTradersServiceBase
 {

@@ -5,14 +5,14 @@ namespace TailwindTraders.Api.Core.Repositories.Implementations;
 
 public abstract class CosmosGenericRepositoryBase<TEntity> : ICosmosGenericRepository<TEntity> where TEntity : class
 {
-    protected readonly string _containerName;
+    protected readonly string ContainerName;
 
-    protected readonly Database _cosmosDatabase;
+    protected readonly Database CosmosDatabase;
 
     protected CosmosGenericRepositoryBase(Database cosmosDatabase, string containerName)
     {
-        _containerName = containerName;
-        _cosmosDatabase = cosmosDatabase;
+        ContainerName = containerName;
+        CosmosDatabase = cosmosDatabase;
     }
 
     public async Task<IEnumerable<TEntity>> QueryAsync(string querySpec, CancellationToken cancellationToken = default)
@@ -33,8 +33,8 @@ public abstract class CosmosGenericRepositoryBase<TEntity> : ICosmosGenericRepos
     {
         try
         {
-            var response = await _cosmosDatabase
-                .GetContainer(_containerName)
+            var response = await CosmosDatabase
+                .GetContainer(ContainerName)
                 .ReadItemAsync<TEntity>(id, new PartitionKey(partitionKey), cancellationToken: cancellationToken);
 
             return response.Resource;
@@ -47,29 +47,29 @@ public abstract class CosmosGenericRepositoryBase<TEntity> : ICosmosGenericRepos
 
     public async Task AddAsync(string partitionKey, TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _cosmosDatabase
-            .GetContainer(_containerName)
+        await CosmosDatabase
+            .GetContainer(ContainerName)
             .CreateItemAsync(entity, new PartitionKey(partitionKey), cancellationToken: cancellationToken);
     }
 
     public async Task UpsertAsync(string partitionKey, TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _cosmosDatabase
-            .GetContainer(_containerName)
+        await CosmosDatabase
+            .GetContainer(ContainerName)
             .UpsertItemAsync(entity, new PartitionKey(partitionKey), cancellationToken: cancellationToken);
     }
 
     public async Task DeleteAsync(string partitionKey, string id, CancellationToken cancellationToken = default)
     {
-        await _cosmosDatabase
-            .GetContainer(_containerName)
+        await CosmosDatabase
+            .GetContainer(ContainerName)
             .DeleteItemAsync<TEntity>(id, new PartitionKey(partitionKey), cancellationToken: cancellationToken);
     }
 
     private async Task<IEnumerable<TEntity>> ExecuteQueryAsync(string querySpec, CancellationToken cancellationToken = default)
     {
-        using var queryIterator = _cosmosDatabase
-            .GetContainer(_containerName)
+        using var queryIterator = CosmosDatabase
+            .GetContainer(ContainerName)
             .GetItemQueryIterator<TEntity>(new QueryDefinition(querySpec));
 
         var results = new List<TEntity>();

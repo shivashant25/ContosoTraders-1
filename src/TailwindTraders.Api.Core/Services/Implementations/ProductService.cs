@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using TailwindTraders.Api.Core.Utilities.ExtensionMethods;
+﻿using Microsoft.EntityFrameworkCore;
 using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
 
 namespace TailwindTraders.Api.Core.Services.Implementations;
@@ -28,8 +26,8 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     public async Task<IEnumerable<Product>> GetProductsAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default)
     {
         var matchingProducts = brands.Any() || typeIds.Any()
-            ? await GetProductsByFilterAsync(brands, typeIds)
-            : await GetAllProductsAsync();
+            ? await GetProductsByFilterAsync(brands, typeIds, cancellationToken)
+            : await GetAllProductsAsync(cancellationToken);
 
         matchingProducts.Join(_productRepository.Brands, _productRepository.Types);
 

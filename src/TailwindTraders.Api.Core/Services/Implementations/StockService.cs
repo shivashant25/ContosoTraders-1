@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace TailwindTraders.Api.Core.Services.Implementations;
+﻿namespace TailwindTraders.Api.Core.Services.Implementations;
 
 internal class StockService : TailwindTradersServiceBase, IStockService
 {
