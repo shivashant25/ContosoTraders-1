@@ -56,7 +56,9 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     private async Task<IEnumerable<Product>> GetProductsByFilterAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default)
     {
         return await _productRepository.Products
-            .Where(p => brands.Contains(p.BrandId.GetValueOrDefault()) || typeIds.Contains(p.TypeId.GetValueOrDefault()))
+            .Where(p =>
+                (brands.Any() ? brands.Contains(p.BrandId.GetValueOrDefault()) : true) &&
+                (typeIds.Any() ? typeIds.Contains(p.TypeId.GetValueOrDefault()) : true))
             .ToListAsync(cancellationToken);
     }
 
