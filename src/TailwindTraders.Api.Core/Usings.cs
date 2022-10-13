@@ -1,4 +1,5 @@
 ﻿global using AutoMapper;
+global using FluentValidation;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using TailwindTraders.Api.Core;
@@ -12,6 +13,7 @@ global using TailwindTraders.Api.Core.Repositories;
 global using TailwindTraders.Api.Core.Repositories.Implementations;
 global using TailwindTraders.Api.Core.Repositories.Interfaces;
 global using TailwindTraders.Api.Core.Requests.Definitions;
+global using TailwindTraders.Api.Core.Requests.Validators;
 global using TailwindTraders.Api.Core.Services.Implementations;
 global using TailwindTraders.Api.Core.Services.Interfaces;
 global using TailwindTraders.Api.Core.Utilities.ExtensionMethods;

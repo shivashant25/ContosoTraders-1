@@ -1,6 +1,8 @@
-﻿namespace TailwindTraders.Api.Core.Requests.Handlers;
+﻿using MediatR.Pipeline;
 
-internal class GetProductRequestHandler : IRequestHandler<GetProductRequest, IActionResult>
+namespace TailwindTraders.Api.Core.Requests.Handlers;
+
+internal class GetProductRequestHandler : IRequestPreProcessor<GetProductRequest>, IRequestHandler<GetProductRequest, IActionResult>
 {
     private readonly IProductService _productService;
 
@@ -17,5 +19,12 @@ internal class GetProductRequestHandler : IRequestHandler<GetProductRequest, IAc
         var product = await _productService.GetProductAsync(request.ProductId, cancellationToken);
 
         return new OkObjectResult(product);
+    }
+
+    public async Task Process(GetProductRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new GetProductRequestValidator();
+
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
     }
 }

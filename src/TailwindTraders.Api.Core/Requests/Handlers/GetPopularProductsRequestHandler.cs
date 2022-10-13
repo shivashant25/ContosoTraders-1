@@ -1,6 +1,8 @@
-﻿namespace TailwindTraders.Api.Core.Requests.Handlers;
+﻿using MediatR.Pipeline;
 
-internal class GetPopularProductsRequestHandler : IRequestHandler<GetPopularProductsRequest, IActionResult>
+namespace TailwindTraders.Api.Core.Requests.Handlers;
+
+internal class GetPopularProductsRequestHandler : IRequestPreProcessor<GetPopularProductsRequest>, IRequestHandler<GetPopularProductsRequest, IActionResult>
 {
     /// <remarks>
     ///     @TODO: To be implemented later.
@@ -10,5 +12,12 @@ internal class GetPopularProductsRequestHandler : IRequestHandler<GetPopularProd
         var result = new OkResult();
 
         return await Task.FromResult(result);
+    }
+
+    public async Task Process(GetPopularProductsRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new GetPopularProductsRequestValidator();
+
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
     }
 }

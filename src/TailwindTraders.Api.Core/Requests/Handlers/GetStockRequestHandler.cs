@@ -1,6 +1,8 @@
-﻿namespace TailwindTraders.Api.Core.Requests.Handlers;
+﻿using MediatR.Pipeline;
 
-internal class GetStockRequestHandler : IRequestHandler<GetStockRequest, IActionResult>
+namespace TailwindTraders.Api.Core.Requests.Handlers;
+
+internal class GetStockRequestHandler : IRequestPreProcessor<GetStockRequest>, IRequestHandler<GetStockRequest, IActionResult>
 {
     private readonly IStockService _stockService;
 
@@ -14,5 +16,12 @@ internal class GetStockRequestHandler : IRequestHandler<GetStockRequest, IAction
         var stockDto = await _stockService.GetStockAsync(request.ProductId, cancellationToken);
 
         return new OkObjectResult(stockDto);
+    }
+
+    public async Task Process(GetStockRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new GetStockRequestValidator();
+
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
     }
 }

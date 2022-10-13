@@ -21,5 +21,9 @@ public class TailwindTradersControllerBase : ControllerBase
         {
             return tailwindTradersBaseException.ToActionResult();
         }
+        catch (ValidationException validationException)
+        {
+            return new BadRequestObjectResult(validationException.Message);
+        }
     }
 }
