@@ -1,5 +1,5 @@
 ﻿namespace TailwindTraders.Api.Core.Repositories.Interfaces;
 
-public interface IStockRepository : ICosmosGenericRepository<Stock>
+public interface IStockRepository : ICosmosGenericRepository<StockDao>
 {
 }

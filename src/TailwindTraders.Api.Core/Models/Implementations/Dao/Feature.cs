@@ -1,4 +1,4 @@
-﻿namespace TailwindTraders.Api.Core.Models.Dao;
+﻿namespace TailwindTraders.Api.Core.Models.Implementations.Dao;
 
 public class Feature
 {

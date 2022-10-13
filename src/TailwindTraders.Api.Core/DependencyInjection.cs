@@ -55,6 +55,9 @@ public class DependencyInjection : FunctionsStartup
     /// </remarks>
     private static void ConfigureServicesInternal(IServiceCollection services, IConfiguration configuration)
     {
+        // injecting auto-mapper
+        services.AddAutoMapper(typeof(AutoMapperProfile));
+
         // inject mediatr
         services.AddMediatR(Assembly.GetExecutingAssembly());
 

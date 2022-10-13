@@ -13,6 +13,13 @@ public class TailwindTradersControllerBase : ControllerBase
 
     protected async Task<IActionResult> ProcessHttRequestAsync(IRequest<IActionResult> request)
     {
-        return await _mediator.Send(request);
+        try
+        {
+            return await _mediator.Send(request);
+        }
+        catch (TailwindTradersBaseException tailwindTradersBaseException)
+        {
+            return tailwindTradersBaseException.ToActionResult();
+        }
     }
 }

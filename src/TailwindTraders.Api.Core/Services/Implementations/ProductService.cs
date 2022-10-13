@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TailwindTraders.Api.Core.Utilities.ExtensionMethods;
-using Type = TailwindTraders.Api.Core.Models.Dao.Type;
+using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
 
 namespace TailwindTraders.Api.Core.Services.Implementations;
 
-internal class ProductService : IProductService
+internal class ProductService : TailwindTradersServiceBase, IProductService
 {
     private readonly ProductsDbContext _productRepository;
 
-    public ProductService(ProductsDbContext productDbContext)
+    public ProductService(ProductsDbContext productDbContext, IMapper mapper) : base(mapper)
     {
         _productRepository = productDbContext;
     }

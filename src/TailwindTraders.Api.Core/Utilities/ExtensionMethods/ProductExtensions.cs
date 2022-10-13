@@ -1,4 +1,4 @@
-﻿using Type = TailwindTraders.Api.Core.Models.Dao.Type;
+﻿using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
 
 namespace TailwindTraders.Api.Core.Utilities.ExtensionMethods;
 

@@ -2,5 +2,5 @@
 
 internal interface IStockService
 {
-    Task<Stock> GetStockAsync(int productId);
+    Task<StockDto> GetStockAsync(int productId);
 }

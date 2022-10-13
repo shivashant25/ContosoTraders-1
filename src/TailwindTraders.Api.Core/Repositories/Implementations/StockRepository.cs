@@ -2,7 +2,7 @@
 
 namespace TailwindTraders.Api.Core.Repositories.Implementations;
 
-public class StockRepository : CosmosGenericRepositoryBase<Stock>, IStockRepository
+public class StockRepository : CosmosGenericRepositoryBase<StockDao>, IStockRepository
 {
     public StockRepository(Database cosmosDatabase) : base(cosmosDatabase, CosmosConstants.StocksContainerName)
     {
