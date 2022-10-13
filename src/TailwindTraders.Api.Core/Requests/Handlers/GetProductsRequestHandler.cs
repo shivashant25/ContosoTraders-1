@@ -11,16 +11,16 @@ internal class GetProductsRequestHandler : IRequestHandler<GetProductsRequest, I
 
     public async Task<IActionResult> Handle(GetProductsRequest request, CancellationToken cancellationToken)
     {
-        var brands = await _productService.GetBrands();
+        var brands = await _productService.GetBrandsAsync(cancellationToken);
 
-        var types = await _productService.GetTypes();
+        var types = await _productService.GetTypesAsync(cancellationToken);
 
         var typeIds = types
             .Where(t => request.Types.Contains(t.Code))
             .Select(t => t.Id)
             .ToArray();
 
-        var products = await _productService.GetProducts(request.Brands, typeIds);
+        var products = await _productService.GetProductsAsync(request.Brands, typeIds, cancellationToken);
 
         if (!products.Any()) return new NoContentResult();
 

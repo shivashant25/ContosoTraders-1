@@ -4,11 +4,11 @@ namespace TailwindTraders.Api.Core.Services.Interfaces;
 
 internal interface IProductService
 {
-    Task<Product> GetProduct(int id);
+    Task<Product> GetProductAsync(int id, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<Product>> GetProducts(int[] brands, int[] typeIds);
+    Task<IEnumerable<Product>> GetProductsAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<Brand>> GetBrands();
+    Task<IEnumerable<Brand>> GetBrandsAsync(CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<Type>> GetTypes();
+    Task<IEnumerable<Type>> GetTypesAsync(CancellationToken cancellationToken = default);
 }

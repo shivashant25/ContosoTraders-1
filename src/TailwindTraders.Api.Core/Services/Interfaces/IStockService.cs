@@ -2,5 +2,5 @@
 
 internal interface IStockService
 {
-    Task<StockDto> GetStockAsync(int productId);
+    Task<StockDto> GetStockAsync(int productId, CancellationToken cancellationToken = default);
 }

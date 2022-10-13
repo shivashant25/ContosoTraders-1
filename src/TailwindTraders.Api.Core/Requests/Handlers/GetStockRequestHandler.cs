@@ -11,7 +11,7 @@ internal class GetStockRequestHandler : IRequestHandler<GetStockRequest, IAction
 
     public async Task<IActionResult> Handle(GetStockRequest request, CancellationToken cancellationToken)
     {
-        var stockDto = await _stockService.GetStockAsync(request.ProductId);
+        var stockDto = await _stockService.GetStockAsync(request.ProductId, cancellationToken);
 
         return new OkObjectResult(stockDto);
     }

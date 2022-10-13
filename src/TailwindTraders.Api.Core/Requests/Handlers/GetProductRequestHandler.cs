@@ -14,7 +14,7 @@ internal class GetProductRequestHandler : IRequestHandler<GetProductRequest, IAc
 
     public async Task<IActionResult> Handle(GetProductRequest request, CancellationToken cancellationToken)
     {
-        var product = await _productService.GetProduct(request.ProductId);
+        var product = await _productService.GetProductAsync(request.ProductId, cancellationToken);
 
         return new OkObjectResult(product);
     }
