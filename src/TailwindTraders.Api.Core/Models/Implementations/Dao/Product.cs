@@ -9,12 +9,4 @@ public class Product
     public int? BrandId { get; set; }
     public int? TypeId { get; set; }
     public int? TagId { get; set; }
-
-    #region Hand-Modified Properties
-
-    public Brand Brand { get; set; }
-
-    public Type Type { get; set; }
-
-    #endregion
 }

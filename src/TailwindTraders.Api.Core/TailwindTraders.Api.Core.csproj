@@ -24,6 +24,7 @@
 		<Folder Include="Requests\Validators\" />
 		<Folder Include="Services\Implementations\" />
 		<Folder Include="Utilities\ExtensionMethods\" />
+		<Folder Include="Utilities\MiscHelpers\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -18,6 +18,14 @@ internal class GetProductRequestHandler : IRequestPreProcessor<GetProductRequest
     {
         var product = await _productService.GetProductAsync(request.ProductId, cancellationToken);
 
+        try
+        {
+            var stock = await _stockService.GetStockAsync(request.ProductId, cancellationToken);
+        }
+        catch (StockNotFoundException stockNotFoundException)
+        {
+        }
+
         return new OkObjectResult(product);
     }
 

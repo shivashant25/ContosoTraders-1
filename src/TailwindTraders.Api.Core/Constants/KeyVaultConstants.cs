@@ -4,6 +4,8 @@ internal class KeyVaultConstants
 {
     #region secrets
 
+    public static readonly string SecretNameImagesEndpoint = "imagesEndpoint";
+
     public static readonly string SecretNameProductsDbConnectionString = "productsDbConnectionString";
 
     public static readonly string SecretNameStocksDbConnectionString = "stocksDbConnectionString";
