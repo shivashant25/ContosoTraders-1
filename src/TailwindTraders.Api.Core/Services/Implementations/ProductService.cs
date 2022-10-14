@@ -15,9 +15,18 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     /// <remarks>
     ///     @TODO: Just a placeholder implementation for now. Fix this later.
     /// </remarks>
-    public async Task<Product> GetProductAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<ProductDto> GetProductAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await Task.FromResult(_productRepository.Products.FirstOrDefault(p => p.Id == id));
+        var productDao = await _productRepository.Products.SingleOrDefaultAsync(product => product.Id == id, cancellationToken);
+
+        if (productDao is null) throw new ProductNotFoundException(id);
+
+        var productDto = CustomMapping(productDao,
+            _productRepository.Brands.ToArray(),
+            _productRepository.Types.ToArray(),
+            _productRepository.Features.ToArray());
+
+        return productDto;
     }
 
     /// <remarks>
@@ -25,13 +34,23 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     /// </remarks>
     public async Task<IEnumerable<ProductDto>> GetProductsAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default)
     {
-        var responseDao = brands.Any() || typeIds.Any()
+        var responseDaos = brands.Any() || typeIds.Any()
             ? await GetProductsByFilterAsync(brands, typeIds, cancellationToken)
             : await GetAllProductsAsync(cancellationToken);
 
-        var responseDto = CustomMapping(responseDao, _productRepository.Brands, _productRepository.Types);
+        var responseDtos = new List<ProductDto>();
 
-        return responseDto;
+        foreach (var responseDao in responseDaos.ToArray())
+        {
+            var responseDto = CustomMapping(responseDao,
+                _productRepository.Brands.ToArray(),
+                _productRepository.Types.ToArray(),
+                _productRepository.Features.ToArray());
+
+            responseDtos.Add(responseDto);
+        }
+
+        return responseDtos;
     }
 
     public async Task<IEnumerable<Brand>> GetBrandsAsync(CancellationToken cancellationToken = default)
@@ -60,28 +79,23 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
             .ToListAsync(cancellationToken);
     }
 
-    private IEnumerable<ProductDto> CustomMapping(IEnumerable<Product> productDaos, IEnumerable<Brand> brands, IEnumerable<Type> types)
-    {
-        var productDtos = new List<ProductDto>();
 
+    private ProductDto CustomMapping(Product productDao, IEnumerable<Brand> brands, IEnumerable<Type> types, IEnumerable<Feature> features)
+    {
         var imagesEndpoint = Configuration[KeyVaultConstants.SecretNameImagesEndpoint];
 
-        foreach (var dao in productDaos)
+        var productDto = new ProductDto
         {
-            var dto = new ProductDto
-            {
-                Id = dao.Id,
-                Name = dao.Name,
-                Price = dao.Price,
-                ImageUrl = $"{imagesEndpoint}/product-list/{dao.ImageName}",
-                Brand = brands.FirstOrDefault(brand => brand.Id == dao.BrandId),
-                Type = types.FirstOrDefault(type => type.Id == dao.TypeId)
-            };
+            Id = productDao.Id,
+            Name = productDao.Name,
+            Price = productDao.Price,
+            ImageUrl = $"{imagesEndpoint}/product-list/{productDao.ImageName}",
+            Brand = brands.FirstOrDefault(brand => brand.Id == productDao.BrandId),
+            Type = types.FirstOrDefault(type => type.Id == productDao.TypeId),
+            Features = features.Where(feature => feature.ProductItemId == productDao.Id)
+        };
 
-            productDtos.Add(dto);
-        }
-
-        return productDtos;
+        return productDto;
     }
 
     #endregion

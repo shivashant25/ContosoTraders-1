@@ -22,13 +22,13 @@ internal class GetProductsRequestHandler : IRequestPreProcessor<GetProductsReque
             .Select(t => t.Id)
             .ToArray();
 
-        var products = await _productService.GetProductsAsync(request.Brands, typeIds, cancellationToken);
+        var productDtos = await _productService.GetProductsAsync(request.Brands, typeIds, cancellationToken);
 
-        if (!products.Any()) return new NoContentResult();
+        if (!productDtos.Any()) return new NoContentResult();
 
         var aggrResponse = new
         {
-            Products = products,
+            Products = productDtos,
             Brands = brands,
             Types = types
         };

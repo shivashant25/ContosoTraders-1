@@ -16,17 +16,19 @@ internal class GetProductRequestHandler : IRequestPreProcessor<GetProductRequest
 
     public async Task<IActionResult> Handle(GetProductRequest request, CancellationToken cancellationToken)
     {
-        var product = await _productService.GetProductAsync(request.ProductId, cancellationToken);
+        var productDto = await _productService.GetProductAsync(request.ProductId, cancellationToken);
 
         try
         {
-            var stock = await _stockService.GetStockAsync(request.ProductId, cancellationToken);
+            var stockDto = await _stockService.GetStockAsync(request.ProductId, cancellationToken);
+            productDto.StockUnits = stockDto.StockCount;
         }
-        catch (StockNotFoundException stockNotFoundException)
+        catch (StockNotFoundException)
         {
+            productDto.StockUnits = 0;
         }
 
-        return new OkObjectResult(product);
+        return new OkObjectResult(productDto);
     }
 
     public async Task Process(GetProductRequest request, CancellationToken cancellationToken)

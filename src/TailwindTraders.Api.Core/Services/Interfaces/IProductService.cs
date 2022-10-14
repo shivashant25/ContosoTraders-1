@@ -9,7 +9,8 @@ internal interface IProductService
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Product> GetProductAsync(int id, CancellationToken cancellationToken = default);
+    /// <exception cref="ProductNotFoundException"></exception>
+    Task<ProductDto> GetProductAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// </summary>

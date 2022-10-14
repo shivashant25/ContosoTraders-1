@@ -16,5 +16,7 @@ public class ProductDto
 
     public Type Type { get; set; }
 
+    public IEnumerable<Feature> Features { get; set; }
+
     public int StockUnits { get; set; }
 }
