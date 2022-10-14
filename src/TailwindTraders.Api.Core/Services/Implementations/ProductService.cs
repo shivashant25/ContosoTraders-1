@@ -24,7 +24,8 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
         var productDto = CustomMapping(productDao,
             _productRepository.Brands.ToArray(),
             _productRepository.Types.ToArray(),
-            _productRepository.Features.ToArray());
+            _productRepository.Features.ToArray(),
+            false);
 
         return productDto;
     }
@@ -80,16 +81,18 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     }
 
 
-    private ProductDto CustomMapping(Product productDao, IEnumerable<Brand> brands, IEnumerable<Type> types, IEnumerable<Feature> features)
+    private ProductDto CustomMapping(Product productDao, IEnumerable<Brand> brands, IEnumerable<Type> types, IEnumerable<Feature> features, bool thumbnailImages = true)
     {
         var imagesEndpoint = Configuration[KeyVaultConstants.SecretNameImagesEndpoint];
+
+        var imagesType = thumbnailImages ? "product-list" : "product-details";
 
         var productDto = new ProductDto
         {
             Id = productDao.Id,
             Name = productDao.Name,
             Price = productDao.Price,
-            ImageUrl = $"{imagesEndpoint}/product-list/{productDao.ImageName}",
+            ImageUrl = $"{imagesEndpoint}/{imagesType}/{productDao.ImageName}",
             Brand = brands.FirstOrDefault(brand => brand.Id == productDao.BrandId),
             Type = types.FirstOrDefault(type => type.Id == productDao.TypeId),
             Features = features.Where(feature => feature.ProductItemId == productDao.Id)
