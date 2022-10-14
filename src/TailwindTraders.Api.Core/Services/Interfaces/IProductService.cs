@@ -7,28 +7,24 @@ internal interface IProductService
     /// <summary>
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     /// <exception cref="ProductNotFoundException"></exception>
-    Task<ProductDto> GetProductAsync(int id, CancellationToken cancellationToken = default);
+    ProductDto GetProduct(int id);
 
     /// <summary>
     /// </summary>
     /// <param name="brands"></param>
     /// <param name="typeIds"></param>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<ProductDto>> GetProductsAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default);
+    IEnumerable<ProductDto> GetProducts(int[] brands, int[] typeIds);
 
     /// <summary>
     /// </summary>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<Brand>> GetBrandsAsync(CancellationToken cancellationToken = default);
+    IEnumerable<Brand> GetBrands();
 
     /// <summary>
     /// </summary>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<Type>> GetTypesAsync(CancellationToken cancellationToken = default);
+    IEnumerable<Type> GetTypes();
 }

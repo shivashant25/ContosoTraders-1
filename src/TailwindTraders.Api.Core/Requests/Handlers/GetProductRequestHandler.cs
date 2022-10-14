@@ -16,7 +16,7 @@ internal class GetProductRequestHandler : IRequestPreProcessor<GetProductRequest
 
     public async Task<IActionResult> Handle(GetProductRequest request, CancellationToken cancellationToken)
     {
-        var productDto = await _productService.GetProductAsync(request.ProductId, cancellationToken);
+        var productDto = _productService.GetProduct(request.ProductId);
 
         try
         {

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
+﻿using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
 
 namespace TailwindTraders.Api.Core.Services.Implementations;
 
@@ -15,9 +14,9 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     /// <remarks>
     ///     @TODO: Just a placeholder implementation for now. Fix this later.
     /// </remarks>
-    public async Task<ProductDto> GetProductAsync(int id, CancellationToken cancellationToken = default)
+    public ProductDto GetProduct(int id)
     {
-        var productDao = await _productRepository.Products.SingleOrDefaultAsync(product => product.Id == id, cancellationToken);
+        var productDao = _productRepository.Products.SingleOrDefault(product => product.Id == id);
 
         if (productDao is null) throw new ProductNotFoundException(id);
 
@@ -33,51 +32,48 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
     /// <remarks>
     ///     @TODO: Just a placeholder implementation for now. Fix this later.
     /// </remarks>
-    public async Task<IEnumerable<ProductDto>> GetProductsAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default)
+    public IEnumerable<ProductDto> GetProducts(int[] brands, int[] typeIds)
     {
         var responseDaos = brands.Any() || typeIds.Any()
-            ? await GetProductsByFilterAsync(brands, typeIds, cancellationToken)
-            : await GetAllProductsAsync(cancellationToken);
+            ? GetProductsByFilter(brands, typeIds)
+            : GetAllProducts();
 
-        var responseDtos = new List<ProductDto>();
+        var allBrands = _productRepository.Brands.ToArray();
+        var allTypes = _productRepository.Types.ToArray();
+        var allFeatures = _productRepository.Features.ToArray();
 
-        foreach (var responseDao in responseDaos.ToArray())
-        {
-            var responseDto = CustomMapping(responseDao,
-                _productRepository.Brands.ToArray(),
-                _productRepository.Types.ToArray(),
-                _productRepository.Features.ToArray());
-
-            responseDtos.Add(responseDto);
-        }
+        var responseDtos = responseDaos.ToArray()
+            .Select(dao => CustomMapping(dao, allBrands, allTypes, allFeatures));
 
         return responseDtos;
     }
 
-    public async Task<IEnumerable<Brand>> GetBrandsAsync(CancellationToken cancellationToken = default)
+    public IEnumerable<Brand> GetBrands()
     {
-        return await _productRepository.Brands.ToListAsync(cancellationToken);
+        return _productRepository.Brands.ToList();
     }
 
-    public async Task<IEnumerable<Type>> GetTypesAsync(CancellationToken cancellationToken = default)
+    public IEnumerable<Type> GetTypes()
     {
-        return await _productRepository.Types.ToListAsync(cancellationToken);
+        return _productRepository.Types.ToList();
     }
 
     #region Private Helper Methods
 
-    private async Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken cancellationToken = default)
+    private IEnumerable<Product> GetAllProducts()
     {
-        return await _productRepository.Products.ToListAsync(cancellationToken);
+        return _productRepository.Products.ToList();
     }
 
-    private async Task<IEnumerable<Product>> GetProductsByFilterAsync(int[] brands, int[] typeIds, CancellationToken cancellationToken = default)
+    private IEnumerable<Product> GetProductsByFilter(int[] brands, int[] typeIds)
     {
-        return await _productRepository.Products
+        var filteredProducts = _productRepository.Products
+            .ToList()
             .Where(p =>
                 (brands.Any() ? brands.Contains(p.BrandId.GetValueOrDefault()) : true) &&
-                (typeIds.Any() ? typeIds.Contains(p.TypeId.GetValueOrDefault()) : true))
-            .ToListAsync(cancellationToken);
+                (typeIds.Any() ? typeIds.Contains(p.TypeId.GetValueOrDefault()) : true));
+
+        return filteredProducts;
     }
 
 
@@ -95,7 +91,7 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
             ImageUrl = $"{imagesEndpoint}/{imagesType}/{productDao.ImageName}",
             Brand = brands.FirstOrDefault(brand => brand.Id == productDao.BrandId),
             Type = types.FirstOrDefault(type => type.Id == productDao.TypeId),
-            Features = features.Where(feature => feature.ProductItemId == productDao.Id)
+            Features = features.Where(feature => feature.ProductItemId == productDao.Id).ToList()
         };
 
         return productDto;

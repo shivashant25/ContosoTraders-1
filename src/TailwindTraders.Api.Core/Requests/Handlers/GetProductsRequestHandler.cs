@@ -2,7 +2,7 @@
 
 namespace TailwindTraders.Api.Core.Requests.Handlers;
 
-internal class GetProductsRequestHandler : IRequestPreProcessor<GetProductsRequest>, IRequestHandler<GetProductsRequest, IActionResult>
+internal class GetProductsRequestHandler : RequestHandler<GetProductsRequest, IActionResult>, IRequestPreProcessor<GetProductsRequest>
 {
     private readonly IProductService _productService;
 
@@ -11,35 +11,35 @@ internal class GetProductsRequestHandler : IRequestPreProcessor<GetProductsReque
         _productService = productService;
     }
 
-    public async Task<IActionResult> Handle(GetProductsRequest request, CancellationToken cancellationToken)
+    public async Task Process(GetProductsRequest request, CancellationToken cancellationToken)
     {
-        var brands = await _productService.GetBrandsAsync(cancellationToken);
+        var validator = new GetProductsRequestValidator();
 
-        var types = await _productService.GetTypesAsync(cancellationToken);
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+    }
+
+    protected override IActionResult Handle(GetProductsRequest request)
+    {
+        var brands = _productService.GetBrands();
+
+        var types = _productService.GetTypes();
 
         var typeIds = types
             .Where(t => request.Types.Contains(t.Code))
             .Select(t => t.Id)
             .ToArray();
 
-        var productDtos = await _productService.GetProductsAsync(request.Brands, typeIds, cancellationToken);
+        var productDtos = _productService.GetProducts(request.Brands, typeIds);
 
         if (!productDtos.Any()) return new NoContentResult();
 
-        var aggrResponse = new
+        var aggregateResponse = new
         {
             Products = productDtos,
             Brands = brands,
             Types = types
         };
 
-        return new OkObjectResult(aggrResponse);
-    }
-
-    public async Task Process(GetProductsRequest request, CancellationToken cancellationToken)
-    {
-        var validator = new GetProductsRequestValidator();
-
-        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        return new OkObjectResult(aggregateResponse);
     }
 }
