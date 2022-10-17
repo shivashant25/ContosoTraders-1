@@ -23,4 +23,23 @@ internal class StockService : TailwindTradersServiceBase, IStockService
 
         return responseDto;
     }
+
+    public async Task<StockDto> DecrementStockCountAsync(int productId, CancellationToken cancellationToken)
+    {
+        var requestDto = new StockDto { ProductId = productId, StockCount = 0 };
+
+        var requestDao = Mapper.Map<StockDao>(requestDto);
+
+        var responseDao = await _stockRepository.GetAsync(requestDao.id, requestDao.id, cancellationToken);
+
+        if (responseDao is null) throw new StockNotFoundException(productId);
+
+        responseDao.StockCount -= 1;
+
+        await _stockRepository.UpsertAsync(responseDao.id, responseDao, cancellationToken);
+
+        var responseDto = Mapper.Map<StockDto>(responseDao);
+
+        return responseDto;
+    }
 }

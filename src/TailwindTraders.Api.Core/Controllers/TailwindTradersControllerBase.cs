@@ -11,7 +11,7 @@ public class TailwindTradersControllerBase : ControllerBase
         _mediator = mediator;
     }
 
-    protected async Task<IActionResult> ProcessHttRequestAsync(IRequest<IActionResult> request)
+    protected async Task<IActionResult> ProcessHttpRequestAsync(IRequest<IActionResult> request)
     {
         try
         {

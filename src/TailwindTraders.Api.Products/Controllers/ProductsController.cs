@@ -20,7 +20,7 @@ public class ProductsController : TailwindTradersControllerBase
             Types = types
         };
 
-        return await ProcessHttRequestAsync(request);
+        return await ProcessHttpRequestAsync(request);
     }
 
 
@@ -33,7 +33,7 @@ public class ProductsController : TailwindTradersControllerBase
             ProductId = id
         };
 
-        return await ProcessHttRequestAsync(request);
+        return await ProcessHttpRequestAsync(request);
     }
 
 
@@ -43,6 +43,6 @@ public class ProductsController : TailwindTradersControllerBase
     {
         var request = new GetPopularProductsRequest();
 
-        return await ProcessHttRequestAsync(request);
+        return await ProcessHttpRequestAsync(request);
     }
 }
