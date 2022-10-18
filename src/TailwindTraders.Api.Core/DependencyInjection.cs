@@ -60,21 +60,29 @@ public class DependencyInjection : FunctionsStartup
         // inject mediatr
         services.AddMediatR(Assembly.GetExecutingAssembly());
 
-        // inject ef-core dbcontext (after fetching connection string from azure keyvault).
+        // inject ef-core dbcontexts (after fetching connection string from azure keyvault).
         var productsDbConnectionString = configuration[KeyVaultConstants.SecretNameProductsDbConnectionString];
         services.AddDbContext<ProductsDbContext>(options => options.UseSqlServer(productsDbConnectionString), ServiceLifetime.Singleton);
 
-        // injecting the cosmosdb client
+        var profilesDbConnectionString = configuration[KeyVaultConstants.SecretNameProfilesDbConnectionString];
+        services.AddDbContext<ProfilesDbContext>(options => options.UseSqlServer(profilesDbConnectionString), ServiceLifetime.Singleton);
+
+        // injecting the cosmosdb clients
         var stocksDbConnectionString = configuration[KeyVaultConstants.SecretNameStocksDbConnectionString];
-        services.AddSingleton(_ => new CosmosClient(stocksDbConnectionString).GetDatabase(CosmosConstants.DatabaseName));
+        services.AddSingleton(_ => new CosmosClient(stocksDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameStocks));
+
+        var cartsDbConnectionString = configuration[KeyVaultConstants.SecretNameCartsDbConnectionString];
+        services.AddSingleton(_ => new CosmosClient(cartsDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameCarts));
 
         // inject services
         services
+            .AddSingleton<ICartService, CartService>()
             .AddSingleton<IProductService, ProductService>()
             .AddSingleton<IStockService, StockService>();
 
         // inject repositories
         services
+            .AddSingleton<ICartRepository, CartRepository>()
             .AddSingleton<IStockRepository, StockRepository>();
 
         // @TODO: figure these out later. They are specific to aspnetcore

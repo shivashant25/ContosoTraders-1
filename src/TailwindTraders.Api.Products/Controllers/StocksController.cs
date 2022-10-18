@@ -19,7 +19,7 @@ public class StocksController : TailwindTradersControllerBase
         return await ProcessHttpRequestAsync(request);
     }
 
-    [HttpPost("{id:int}/Consume")]
+    [HttpPost("{id:int}/consume")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> DecrementStockCount(int id)
     {

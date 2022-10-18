@@ -19,10 +19,7 @@
 		<Folder Include="EventStreams\Implementations\" />
 		<Folder Include="Exceptions\" />
 		<Folder Include="Models\Misc\" />
-		<Folder Include="Repositories\Interfaces\" />
-		<Folder Include="Repositories\Implementations\" />
 		<Folder Include="Requests\Validators\" />
-		<Folder Include="Services\Implementations\" />
 		<Folder Include="Utilities\ExtensionMethods\" />
 		<Folder Include="Utilities\MiscHelpers\" />
 	</ItemGroup>

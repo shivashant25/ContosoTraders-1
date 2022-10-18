@@ -1,4 +1,6 @@
-﻿namespace TailwindTraders.Api.Core.Models;
+﻿using Profile = AutoMapper.Profile;
+
+namespace TailwindTraders.Api.Core.Models;
 
 public class AutoMapperProfile : Profile
 {

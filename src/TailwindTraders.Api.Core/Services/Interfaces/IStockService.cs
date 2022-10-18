@@ -17,5 +17,4 @@ internal interface IStockService
     /// <returns></returns>
     /// <exception cref="StockNotFoundException"></exception>
     Task<StockDto> DecrementStockCountAsync(int productId, CancellationToken cancellationToken = default);
-
 }

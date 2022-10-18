@@ -26,7 +26,7 @@ internal class StockService : TailwindTradersServiceBase, IStockService
 
     public async Task<StockDto> DecrementStockCountAsync(int productId, CancellationToken cancellationToken)
     {
-        var requestDto = new StockDto { ProductId = productId, StockCount = 0 };
+        var requestDto = new StockDto {ProductId = productId, StockCount = 0};
 
         var requestDao = Mapper.Map<StockDao>(requestDto);
 
