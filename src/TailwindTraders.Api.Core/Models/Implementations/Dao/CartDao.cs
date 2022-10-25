@@ -2,7 +2,17 @@
 
 public class CartDao : ICosmosDao<string>
 {
-    public int Email { get; set; } // partition key
+    public string Email { get; set; } // partition key    
+
+    public int ProductId { get; set; }
+
+    public string Name { get; set; }
+
+    public int Price { get; set; }
+
+    public string ImageUrl { get; set; }
+
+    public int Quantity { get; set; }
 
     public string id { get; set; }
 }
