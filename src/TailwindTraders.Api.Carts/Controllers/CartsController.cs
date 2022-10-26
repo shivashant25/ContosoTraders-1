@@ -12,7 +12,7 @@ public class CartsController : TailwindTradersControllerBase
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCart([FromHeader(Name = "x-tt-email")] string userEmail)
+    public async Task<IActionResult> GetCart([FromHeader(Name = RequestHeaderConstants.HeaderNameUserEmail)] string userEmail)
     {
         var request = new GetCartRequest
         {
