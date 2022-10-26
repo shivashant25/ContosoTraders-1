@@ -4,9 +4,14 @@ public class AddItemToCartRequestValidator : AbstractValidator<AddItemToCartRequ
 {
     public AddItemToCartRequestValidator()
     {
-        RuleFor(x => x.CartItem.CartItemId)
+        RuleFor(request => request)
+            .NotNull();
+
+        RuleFor(request => request.CartItem)
+            .NotNull();
+
+        RuleFor(request => request.CartItem.CartItemId)
             .NotEmpty()
-            .NotNull()
             .WithMessage("CartItemId cannot be empty/null");
     }
 }

@@ -25,7 +25,8 @@ public class ProductsController : TailwindTradersControllerBase
 
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct(int id)
     {
         var request = new GetProductRequest

@@ -4,12 +4,17 @@ public class RemoveItemFromCartRequestValidator : AbstractValidator<RemoveItemFr
 {
     public RemoveItemFromCartRequestValidator()
     {
-        RuleFor(x => x.CartItem.CartItemId)
-            .NotNull()
+        RuleFor(request => request)
+            .NotNull();
+
+        RuleFor(request => request.CartItem)
+            .NotNull();
+
+        RuleFor(request => request.CartItem.CartItemId)
             .NotEmpty()
             .WithMessage("CartItemId cannot be null/empty.");
-        RuleFor(x => x.CartItem.Email)
-            .NotNull()
+
+        RuleFor(request => request.CartItem.Email)
             .NotEmpty()
             .WithMessage("Email cannot be null/empty.");
     }

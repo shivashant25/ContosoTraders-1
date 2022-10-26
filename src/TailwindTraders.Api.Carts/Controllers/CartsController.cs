@@ -1,6 +1,4 @@
-﻿using TailwindTraders.Api.Core.Models.Implementations.Dto;
-
-namespace TailwindTraders.Api.Products.Controllers;
+﻿namespace TailwindTraders.Api.Carts.Controllers;
 
 [Route("v1/[controller]")]
 public class CartsController : TailwindTradersControllerBase
@@ -14,13 +12,11 @@ public class CartsController : TailwindTradersControllerBase
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCart()
+    public async Task<IActionResult> GetCart([FromHeader(Name = "x-tt-email")] string userEmail)
     {
-        var email = Request.Headers["x-tt-name"].ToString();
-
         var request = new GetCartRequest
         {
-            Email = email
+            Email = userEmail?.ToLowerInvariant()
         };
 
         return await ProcessHttpRequestAsync(request);
@@ -39,7 +35,7 @@ public class CartsController : TailwindTradersControllerBase
     }
 
     [HttpPut("product")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)] // 201 to preserve compatibility with the original API.
     public async Task<IActionResult> UpdateCartItemQuantity([FromBody] CartDto cartDto)
     {
         var request = new UpdateCartItemQuantityRequest

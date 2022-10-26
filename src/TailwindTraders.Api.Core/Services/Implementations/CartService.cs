@@ -24,21 +24,21 @@ internal class CartService : TailwindTradersServiceBase, ICartService
         return cartItemsDto;
     }
 
-    public async Task AddItemToCartAsync(CartDto cartItemDto, CancellationToken cancellationToken)
+    public async Task AddItemToCartAsync(CartDto cartItemDto, CancellationToken cancellationToken = default)
     {
         var cartItemDao = Mapper.Map<CartDao>(cartItemDto);
 
         await _cartRepository.AddAsync(cartItemDao.Email, cartItemDao, cancellationToken);
     }
 
-    public async Task UpdateCartItemQuantityAsync(CartDto cartItemDto, CancellationToken cancellationToken)
+    public async Task UpdateCartItemQuantityAsync(CartDto cartItemDto, CancellationToken cancellationToken = default)
     {
         var cartItemDao = Mapper.Map<CartDao>(cartItemDto);
 
         await _cartRepository.UpsertAsync(cartItemDao.Email, cartItemDao, cancellationToken);
     }
 
-    public async Task RemoveItemFromCartAsync(CartDto cartItemDto, CancellationToken cancellationToken)
+    public async Task RemoveItemFromCartAsync(CartDto cartItemDto, CancellationToken cancellationToken = default)
     {
         var cartItemDao = Mapper.Map<CartDao>(cartItemDto);
 

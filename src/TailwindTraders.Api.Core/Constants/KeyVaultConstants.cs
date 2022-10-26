@@ -4,6 +4,10 @@ internal class KeyVaultConstants
 {
     #region secrets
 
+    public static readonly string SecretNameJwtAudience = "jwtAudience";
+
+    public static readonly string SecretNameJwtAuthority = "jwtAuthority";
+
     public static readonly string SecretNameImagesEndpoint = "imagesEndpoint";
 
     public static readonly string SecretNameCartsDbConnectionString = "cartsDbConnectionString";

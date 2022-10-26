@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Product
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Profiles", "TailwindTraders.Api.Profiles\TailwindTraders.Api.Profiles.csproj", "{470EC658-DAAD-47FC-9041-342F744C2D2F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailwindTraders.Api.Carts", "TailwindTraders.Api.Carts\TailwindTraders.Api.Carts.csproj", "{8B124EFF-94AA-4A17-B15B-EBD601452D68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{470EC658-DAAD-47FC-9041-342F744C2D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{470EC658-DAAD-47FC-9041-342F744C2D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{470EC658-DAAD-47FC-9041-342F744C2D2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B124EFF-94AA-4A17-B15B-EBD601452D68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B124EFF-94AA-4A17-B15B-EBD601452D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B124EFF-94AA-4A17-B15B-EBD601452D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B124EFF-94AA-4A17-B15B-EBD601452D68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

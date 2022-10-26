@@ -4,7 +4,10 @@ public class DecrementStockCountRequestValidator : AbstractValidator<DecrementSt
 {
     public DecrementStockCountRequestValidator()
     {
-        RuleFor(x => x.ProductId)
+        RuleFor(request => request)
+            .NotNull();
+
+        RuleFor(request => request.ProductId)
             .GreaterThan(0);
     }
 }

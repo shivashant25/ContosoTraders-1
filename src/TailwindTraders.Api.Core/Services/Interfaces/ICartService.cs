@@ -8,26 +8,26 @@ internal interface ICartService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     /// <exception cref="CartNotFoundException"></exception>
-    Task<IEnumerable<CartDto>> GetCartAsync(string email, CancellationToken cancellationToken);
+    Task<IEnumerable<CartDto>> GetCartAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// </summary>
     /// <param name="cartItemDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task AddItemToCartAsync(CartDto cartItemDto, CancellationToken cancellationToken);
+    Task AddItemToCartAsync(CartDto cartItemDto, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// </summary>
     /// <param name="cartItemDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task UpdateCartItemQuantityAsync(CartDto cartItemDto, CancellationToken cancellationToken);
+    Task UpdateCartItemQuantityAsync(CartDto cartItemDto, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// </summary>
     /// <param name="cartItemDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task RemoveItemFromCartAsync(CartDto cartItemDto, CancellationToken cancellationToken);
+    Task RemoveItemFromCartAsync(CartDto cartItemDto, CancellationToken cancellationToken = default);
 }

@@ -4,11 +4,14 @@ public class GetCartRequestValidator : AbstractValidator<GetCartRequest>
 {
     public GetCartRequestValidator()
     {
-        RuleFor(x => x.Email)
+        RuleFor(request => request)
+            .NotNull();
+
+        RuleFor(request => request.Email)
             .NotEmpty()
-            .NotNull()
             .WithMessage("Email cannot be null/empty.");
-        RuleFor(x => x.Email)
+
+        RuleFor(request => request.Email)
             .EmailAddress()
             .WithMessage("Incorrect format for Email.");
     }

@@ -6,6 +6,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 [assembly: FunctionsStartup(typeof(DependencyInjection))]
 
@@ -40,6 +41,8 @@ public class DependencyInjection : FunctionsStartup
             new DefaultAzureCredential());
 
         ConfigureServicesInternal(builder.Services, builder.Configuration);
+
+        ConfigureAspNetCoreServices(builder.Services, builder.Configuration);
 
         var app = builder.Build();
 
@@ -84,11 +87,16 @@ public class DependencyInjection : FunctionsStartup
         services
             .AddSingleton<ICartRepository, CartRepository>()
             .AddSingleton<IStockRepository, StockRepository>();
+    }
 
-        // @TODO: figure these out later. They are specific to aspnetcore
+
+    private static void ConfigureAspNetCoreServices(IServiceCollection services, IConfiguration configuration)
+    {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+
+        IdentityModelEventSource.ShowPII = true;
     }
 
 
@@ -103,7 +111,12 @@ public class DependencyInjection : FunctionsStartup
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
+#if TODO_INVESTIGATE_LATER
+        app.UseCors();
+        app.UseAuthorization(); // very important, else [Authorize] will not work in controllers.
+        app.UseAuthentication();
+
+#endif
 
         app.MapControllers();
     }
