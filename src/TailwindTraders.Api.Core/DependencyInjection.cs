@@ -81,7 +81,8 @@ public class DependencyInjection : FunctionsStartup
         services
             .AddSingleton<ICartService, CartService>()
             .AddSingleton<IProductService, ProductService>()
-            .AddSingleton<IStockService, StockService>();
+            .AddSingleton<IStockService, StockService>()
+            .AddSingleton<IProfileService, ProfileService>();
 
         // inject repositories
         services

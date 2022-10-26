@@ -1,4 +1,5 @@
 ﻿using Profile = AutoMapper.Profile;
+using ProfileDao = TailwindTraders.Api.Core.Models.Implementations.Dao.Profile;
 
 namespace TailwindTraders.Api.Core.Models;
 
