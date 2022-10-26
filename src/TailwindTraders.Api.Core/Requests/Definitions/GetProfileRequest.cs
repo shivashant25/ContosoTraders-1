@@ -1,4 +1,4 @@
-﻿namespace TailwindTraders.Api.Core.Requests.Definitions;
+namespace TailwindTraders.Api.Core.Requests.Definitions;
 
 public class GetProfileRequest : IRequest<IActionResult>
 {

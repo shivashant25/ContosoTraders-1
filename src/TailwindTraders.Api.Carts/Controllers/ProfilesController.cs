@@ -23,8 +23,8 @@ public class ProfilesController : TailwindTradersControllerBase
         var request = new GetProfileRequest
         {
             Email = userEmail
-        }; 
-        
+        };
+
         return await ProcessHttpRequestAsync(request);
     }
 }

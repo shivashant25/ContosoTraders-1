@@ -1,4 +1,4 @@
-﻿namespace TailwindTraders.Api.Core.Exceptions;
+namespace TailwindTraders.Api.Core.Exceptions;
 
 public class ProfileNotFoundException : TailwindTradersBaseException
 {
