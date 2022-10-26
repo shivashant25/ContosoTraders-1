@@ -2,5 +2,5 @@
 
 public class RequestHeaderConstants
 {
-    public static readonly string HeaderNameUserEmail = "x-tt-email";
+    public const string HeaderNameUserEmail = "x-tt-email";
 }
