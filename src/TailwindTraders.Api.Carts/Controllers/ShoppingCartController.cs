@@ -1,9 +1,9 @@
 ﻿namespace TailwindTraders.Api.Carts.Controllers;
 
 [Route("v1/[controller]")]
-public class CartsController : TailwindTradersControllerBase
+public class ShoppingCartController : TailwindTradersControllerBase
 {
-    public CartsController(IMediator mediator) : base(mediator)
+    public ShoppingCartController(IMediator mediator) : base(mediator)
     {
     }
 
