@@ -6,7 +6,7 @@ name: .NET
 on:
   push:
     branches: [ "master" ]
-    paths-ignore: [ 'docs/**', '.vscode/**', 'misc/**', 'iac/**', 'readme.md' ]
+    paths: [ 'src/TailwindTraders.Api.Products/**', 'src/TailwindTraders.Api.Core/**' ]
 
 jobs:
   build:
@@ -14,11 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
+    - name: checkout code
+      uses: actions/checkout@v3
+    - name: install dotnet
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: dotnet publish - 
+    - name: dotnet publish
       run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
       working-directory: src/TailwindTraders.Api.Products
+    - name: azure login
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
