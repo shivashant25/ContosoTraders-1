@@ -1,0 +1,30 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: tailwind-traders-images
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+    paths: [ 'src/TailwindTraders.Api.Images/**', 'src/TailwindTraders.Api.Core/**' ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+    - name: install dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: dotnet publish
+      run: dotnet publish -o ../Publish/TailwindTraders.Api.Images -c release
+      working-directory: src/TailwindTraders.Api.Images
+    - name: azure login
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
