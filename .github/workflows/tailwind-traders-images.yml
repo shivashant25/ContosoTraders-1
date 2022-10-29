@@ -9,6 +9,14 @@ on:
     branches: [ "master" ]
     paths: [ 'src/TailwindTraders.Api.Images/**', 'src/TailwindTraders.Api.Core/**' ]
 
+env:
+  STORAGE_ACCOUNT_NAME: tailwindtradersimgs8644
+  PRODUCT_DETAILS_CONTAINER_NAME: product-details
+  PRODUCT_LIST_CONTAINER_NAME: product-list
+  CDN_PROFILE_NAME: tailwind-traders-cdn8644
+  CDN_ENDPOINT_NAME: tailwind-traders-images8644
+  CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
+
 jobs:
   build:
 
@@ -17,14 +25,19 @@ jobs:
     steps:
     - name: checkout code
       uses: actions/checkout@v3
-    - name: install dotnet
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    - name: dotnet publish
-      run: dotnet publish -o ../Publish/TailwindTraders.Api.Images -c release
-      working-directory: src/TailwindTraders.Api.Images
     - name: azure login
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
+    - name: deploy to storage - product details
+      uses: azure/CLI@v1
+      with:
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
+    - name: deploy to storage - product list
+      uses: azure/CLI@v1
+      with:
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
+    - name: purge CDN endpoint
+      uses: azure/CLI@v1
+      with:
+        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}'

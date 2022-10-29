@@ -17,12 +17,19 @@ param tenantId string = subscription().tenantId
 // key vault
 var kvName = 'tailwind-traders-kv${suffix}'
 var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
+var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
 var kvSecretNameStocksDbConnStr = 'stocksDbConnectionString'
+var kvSecretNameCartsDbConnStr = 'cartsDbConnectionString'
 
 // cosmos db (stocks db)
 var stocksDbAcctName = 'tailwind-traders-stocks${suffix}'
 var stocksDbName = 'stocksdb'
 var stocksDbStocksContainerName = 'stocks'
+
+// cosmos db (carts db)
+var cartsDbAcctName = 'tailwind-traders-carts${suffix}'
+var cartsDbName = 'cartsdb'
+var cartsDbStocksContainerName = 'carts'
 
 // sql azure (products db)
 var productsDbServerName = 'tailwind-traders-products${suffix}'
@@ -30,9 +37,19 @@ var productsDbName = 'productsdb'
 var productsDbServerAdminLogin = 'localadmin'
 var productsDbServerAdminPassword = 'Password123!'
 
+// sql azure (profiles db)
+var profilesDbServerName = 'tailwind-traders-profiles${suffix}'
+var profilesDbName = 'profilesdb'
+var profilesDbServerAdminLogin = 'localadmin'
+var profilesDbServerAdminPassword = 'Password123!'
+
 // app service plan (products api)
 var productsApiAppSvcPlanName = 'tailwind-traders-products${suffix}'
 var productsApiAppSvcName = 'tailwind-traders-products${suffix}'
+
+// app service plan (carts api)
+var cartsApiAppSvcPlanName = 'tailwind-traders-carts${suffix}'
+var cartsApiAppSvcName = 'tailwind-traders-carts${suffix}'
 
 // storage account (product images)
 var productImagesStgAccName = 'tailwindtradersimgs${suffix}'
@@ -69,6 +86,13 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
           secrets: [ 'get', 'list' ]
         }
       }
+      {
+        tenantId: tenantId
+        objectId: cartsapiappsvc.identity.principalId
+        permissions: {
+          secrets: [ 'get', 'list' ]
+        }
+      }
     ]
     sku: {
       family: 'A'
@@ -89,12 +113,32 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   // secret 
+  resource kv_secretProfilesDbConnStr 'secrets' = {
+    name: kvSecretNameProfilesDbConnStr
+    tags: resourceTags
+    properties: {
+      contentType: 'connection string to the profiles db'
+      value: 'Server=tcp:${profilesDbServerName}.database.windows.net,1433;Initial Catalog=${profilesDbName};Persist Security Info=False;User ID=${profilesDbServerAdminLogin};Password=${profilesDbServerAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+    }
+  }
+
+  // secret 
   resource kv_secretStocksDbConnStr 'secrets' = {
     name: kvSecretNameStocksDbConnStr
     tags: resourceTags
     properties: {
       contentType: 'connection string to the stocks db'
       value: stocksdba.listConnectionStrings().connectionStrings[0].connectionString
+    }
+  }
+
+  // secret
+  resource kv_secretCartsDbConnStr 'secrets' = {
+    name: kvSecretNameCartsDbConnStr
+    tags: resourceTags
+    properties: {
+      contentType: 'connection string to the carts db'
+      value: cartsdba.listConnectionStrings().connectionStrings[0].connectionString
     }
   }
 }
@@ -154,6 +198,60 @@ resource stocksdba 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = 
 }
 
 //
+// carts db
+//
+
+// cosmos db account
+resource cartsdba 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
+  name: cartsDbAcctName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    databaseAccountOfferType: 'Standard'
+    enableFreeTier: false
+    capabilities: [
+      {
+        name: 'EnableServerless'
+      }
+    ]
+    locations: [
+      {
+        locationName: resourceLocation
+      }
+    ]
+  }
+
+  // cosmos db database
+  resource cartsdba_db 'sqlDatabases' = {
+    name: cartsDbName
+    location: resourceLocation
+    tags: resourceTags
+    properties: {
+      resource: {
+        id: cartsDbName
+      }
+    }
+
+    // cosmos db collection
+    resource cartsdba_db_c1 'containers' = {
+      name: cartsDbStocksContainerName
+      location: resourceLocation
+      tags: resourceTags
+      properties: {
+        resource: {
+          id: cartsDbStocksContainerName
+          partitionKey: {
+            paths: [
+              '/Email'
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+//
 // products db
 //
 
@@ -182,6 +280,43 @@ resource productsdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
 
   // sql azure firewall rule (allow access from all azure resources/services)
   resource productsdbsrv_db_fwl 'firewallRules' = {
+    name: 'AllowAllWindowsAzureIps'
+    properties: {
+      endIpAddress: '0.0.0.0'
+      startIpAddress: '0.0.0.0'
+    }
+  }
+}
+
+//
+// profiles db
+//
+
+// sql azure server
+resource profilesdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
+  name: profilesDbServerName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    administratorLogin: profilesDbServerAdminLogin
+    administratorLoginPassword: profilesDbServerAdminPassword
+    publicNetworkAccess: 'Enabled'
+  }
+
+  // sql azure database
+  resource profilesdbsrv_db 'databases' = {
+    name: profilesDbName
+    location: resourceLocation
+    tags: resourceTags
+    sku: {
+      capacity: 5
+      tier: 'Basic'
+      name: 'Basic'
+    }
+  }
+
+  // sql azure firewall rule (allow access from all azure resources/services)
+  resource profilesdbsrv_db_fwl 'firewallRules' = {
     name: 'AllowAllWindowsAzureIps'
     properties: {
       endIpAddress: '0.0.0.0'
@@ -226,6 +361,47 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
     }
   }
 }
+
+//
+// carts api
+//
+
+// app service plan (linux)
+resource cartsapiappsvcplan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: cartsApiAppSvcPlanName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'B1'
+  }
+  properties: {
+    reserved: true
+  }
+  kind: 'linux'
+}
+
+// app service
+resource cartsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
+  name: cartsApiAppSvcName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    clientAffinityEnabled: false
+    httpsOnly: true
+    serverFarmId: cartsapiappsvcplan.id
+    siteConfig: {
+      linuxFxVersion: 'DOTNETCORE|6.0'
+      alwaysOn: true
+    }
+  }
+}
+
+//
+// product images
+//
 
 // storage account (product images)
 resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {

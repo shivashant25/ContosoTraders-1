@@ -9,6 +9,9 @@ on:
     branches: [ "master" ]
     paths: [ 'src/TailwindTraders.Api.Carts/**', 'src/TailwindTraders.Api.Core/**' ]
 
+env:
+  WEBAPP_NAME: tailwind-traders-carts8644
+
 jobs:
   build:
 
@@ -28,3 +31,10 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
+    - name: diagnostic output
+      run: ls -la ./src/Publish/TailwindTraders.Api.Carts
+    - name: deploy to app service
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WEBAPP_NAME }}
+        package: ./src/Publish/TailwindTraders.Api.Carts
