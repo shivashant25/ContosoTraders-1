@@ -2,12 +2,12 @@
 
 ## Status
 
-| Component                    | Pipeline                                                                                                                                                                                                                                   |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| TailwindTraders.Api.Carts    | [![tailwind-traders-carts](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-carts.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-carts.yml)          |
-| TailwindTraders.Api.Images   | [![tailwind-traders-images](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-images.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-images.yml)       |
-| TailwindTraders.Api.Products | [![tailwind-traders-products](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-products.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-products.yml) |
-| TailwindTraders.Ui.Website   | Coming Soon!                                                                                                                                                                                                                               |
+| Component                    | Pipeline                                                                                                                                                                                                                                   | Swagger Docs                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| TailwindTraders.Api.Carts    | [![tailwind-traders-carts](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-carts.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-carts.yml)          | [LINK](https://tailwind-traders-carts8644.azurewebsites.net/swagger/)    |
+| TailwindTraders.Api.Images   | [![tailwind-traders-images](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-images.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-images.yml)       | N/A                                                                      |
+| TailwindTraders.Api.Products | [![tailwind-traders-products](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-products.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-products.yml) | [LINK](https://tailwind-traders-products8644.azurewebsites.net/swagger/) |
+| TailwindTraders.Ui.Website   | Coming Soon!                                                                                                                                                                                                                               | N/A                                                                      |
 
 ## Proposed Architecture
 
