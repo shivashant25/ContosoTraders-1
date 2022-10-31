@@ -6,7 +6,7 @@ targetScope = 'resourceGroup'
 
 // common
 param resourceLocation string = resourceGroup().location
-param suffix string = '654321'
+param suffix string = '987654'
 
 // tenant
 param tenantId string = subscription().tenantId
@@ -46,10 +46,12 @@ var profilesDbServerAdminPassword = 'Password123!'
 // app service plan (products api)
 var productsApiAppSvcPlanName = 'tailwind-traders-products${suffix}'
 var productsApiAppSvcName = 'tailwind-traders-products${suffix}'
+var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 
 // app service plan (carts api)
 var cartsApiAppSvcPlanName = 'tailwind-traders-carts${suffix}'
 var cartsApiAppSvcName = 'tailwind-traders-carts${suffix}'
+var cartsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 
 // storage account (product images)
 var productImagesStgAccName = 'tailwindtradersimg${suffix}'
@@ -78,22 +80,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   location: resourceLocation
   tags: resourceTags
   properties: {
-    accessPolicies: [
-      {
-        tenantId: tenantId
-        objectId: productsapiappsvc.identity.principalId
-        permissions: {
-          secrets: [ 'get', 'list' ]
-        }
-      }
-      {
-        tenantId: tenantId
-        objectId: cartsapiappsvc.identity.principalId
-        permissions: {
-          secrets: [ 'get', 'list' ]
-        }
-      }
-    ]
+    accessPolicies: []
     sku: {
       family: 'A'
       name: 'standard'
@@ -139,6 +126,28 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'connection string to the carts db'
       value: cartsdba.listConnectionStrings().connectionStrings[0].connectionString
+    }
+  }
+
+  resource kv_accesspolicies 'accessPolicies' = {
+    name: 'replace'
+    properties: {
+      accessPolicies: [
+        {
+          tenantId: tenantId
+          objectId: productsapiappsvc.identity.principalId
+          permissions: {
+            secrets: [ 'get', 'list' ]
+          }
+        }
+        {
+          tenantId: tenantId
+          objectId: cartsapiappsvc.identity.principalId
+          permissions: {
+            secrets: [ 'get', 'list' ]
+          }
+        }
+      ]
     }
   }
 }
@@ -358,6 +367,12 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       linuxFxVersion: 'DOTNETCORE|6.0'
       alwaysOn: true
+      appSettings: [
+        {
+          name: productsApiSettingNameKeyVaultEndpoint
+          value: kv.properties.vaultUri
+        }
+      ]
     }
   }
 }
@@ -395,6 +410,12 @@ resource cartsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       linuxFxVersion: 'DOTNETCORE|6.0'
       alwaysOn: true
+      appSettings: [
+        {
+          name: cartsApiSettingNameKeyVaultEndpoint
+          value: kv.properties.vaultUri
+        }
+      ]
     }
   }
 }
