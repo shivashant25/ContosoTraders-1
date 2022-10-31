@@ -10,7 +10,7 @@ on:
     paths: [ 'src/TailwindTraders.Api.Products/**', 'src/TailwindTraders.Api.Core/**' ]
 
 env:
-  WEBAPP_NAME: tailwind-traders-products8644
+  WEBAPP_NAME: tailwind-traders-products654321
 
 jobs:
   build:

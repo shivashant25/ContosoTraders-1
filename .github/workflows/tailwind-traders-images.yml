@@ -10,11 +10,11 @@ on:
     paths: [ 'src/TailwindTraders.Api.Images/**', 'src/TailwindTraders.Api.Core/**' ]
 
 env:
-  STORAGE_ACCOUNT_NAME: tailwindtradersimgs8644
+  STORAGE_ACCOUNT_NAME: tailwindtradersimg654321
   PRODUCT_DETAILS_CONTAINER_NAME: product-details
   PRODUCT_LIST_CONTAINER_NAME: product-list
-  CDN_PROFILE_NAME: tailwind-traders-cdn8644
-  CDN_ENDPOINT_NAME: tailwind-traders-images8644
+  CDN_PROFILE_NAME: tailwind-traders-cdn654321
+  CDN_ENDPOINT_NAME: tailwind-traders-images654321
   CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
 
 jobs:

@@ -6,7 +6,7 @@ targetScope = 'resourceGroup'
 
 // common
 param resourceLocation string = resourceGroup().location
-param suffix string = '8644'
+param suffix string = '654321'
 
 // tenant
 param tenantId string = subscription().tenantId
@@ -15,7 +15,7 @@ param tenantId string = subscription().tenantId
 ////////////////////////////////////////////////////////////////////////////////
 
 // key vault
-var kvName = 'tailwind-traders-kv${suffix}'
+var kvName = 'tailwindtraderskv${suffix}'
 var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
 var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
 var kvSecretNameStocksDbConnStr = 'stocksDbConnectionString'
@@ -52,7 +52,7 @@ var cartsApiAppSvcPlanName = 'tailwind-traders-carts${suffix}'
 var cartsApiAppSvcName = 'tailwind-traders-carts${suffix}'
 
 // storage account (product images)
-var productImagesStgAccName = 'tailwindtradersimgs${suffix}'
+var productImagesStgAccName = 'tailwindtradersimg${suffix}'
 var productImagesProductDetailsContainerName = 'product-details'
 var productImagesProductListContainerName = 'product-list'
 
