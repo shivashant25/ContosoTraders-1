@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
   push:
     branches: [ "master" ]
-    paths: [ 'src/TailwindTraders.Api.Images/**', 'src/TailwindTraders.Api.Core/**' ]
+    paths: [ 'src/TailwindTraders.Api.Images/**' ]
 
 env:
-  STORAGE_ACCOUNT_NAME: tailwindtradersimg654321
+  STORAGE_ACCOUNT_NAME: tailwindtradersimg
   PRODUCT_DETAILS_CONTAINER_NAME: product-details
   PRODUCT_LIST_CONTAINER_NAME: product-list
-  CDN_PROFILE_NAME: tailwind-traders-cdn654321
-  CDN_ENDPOINT_NAME: tailwind-traders-images654321
+  CDN_PROFILE_NAME: tailwind-traders-cdn
+  CDN_ENDPOINT_NAME: tailwind-traders-images
   CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
 
 jobs:
@@ -32,12 +32,12 @@ jobs:
     - name: deploy to storage - product details
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
     - name: deploy to storage - product list
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
     - name: purge CDN endpoint
       uses: azure/CLI@v1
       with:
-        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}'
+        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}'

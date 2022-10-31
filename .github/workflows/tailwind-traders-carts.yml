@@ -10,7 +10,7 @@ on:
     paths: [ 'src/TailwindTraders.Api.Carts/**', 'src/TailwindTraders.Api.Core/**' ]
 
 env:
-  WEBAPP_NAME: 'tailwind-traders-carts${{ secrets.TAILWINDTRADERS_SUFFIX }}'
+  WEBAPP_NAME: tailwind-traders-carts
 
 jobs:
   build:
@@ -36,5 +36,5 @@ jobs:
     - name: deploy to app service
       uses: Azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.WEBAPP_NAME }}
+        app-name: ${{ env.WEBAPP_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}
         package: ./src/Publish/TailwindTraders.Api.Carts
