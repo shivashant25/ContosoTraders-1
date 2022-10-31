@@ -10,7 +10,7 @@ on:
     paths: [ 'src/TailwindTraders.Api.Carts/**', 'src/TailwindTraders.Api.Core/**' ]
 
 env:
-  WEBAPP_NAME: tailwind-traders-carts${{ secrets.TAILWINDTRADERS_SUFFIX }}
+  WEBAPP_NAME: 'tailwind-traders-carts${{ secrets.TAILWINDTRADERS_SUFFIX }}'
 
 jobs:
   build:
