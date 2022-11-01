@@ -6,7 +6,7 @@ targetScope = 'resourceGroup'
 
 // common
 param resourceLocation string = resourceGroup().location
-param suffix string = '123456'
+param suffix string = '987654'
 
 // tenant
 param tenantId string = subscription().tenantId
