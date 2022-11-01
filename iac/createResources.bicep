@@ -58,6 +58,13 @@ var productImagesStgAccName = 'tailwindtradersimg${suffix}'
 var productImagesProductDetailsContainerName = 'product-details'
 var productImagesProductListContainerName = 'product-list'
 
+// storage account (main website)
+var uiStgAccName = 'tailwindtradersui${suffix}'
+
+// storage account (image classifier)
+var imageClassifierStgAccName = 'tailwindtradersic${suffix}'
+var imageClassifierWebsiteUploadsContainerName = 'website-uploads'
+
 // cdn
 var cdnProfileName = 'tailwind-traders-cdn${suffix}'
 var cdnEndpointName = 'tailwind-traders-images${suffix}'
@@ -453,6 +460,54 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
         publicAccess: 'Container'
       }
     }
+  }
+}
+
+//
+// main website / ui
+//
+
+// storage account (main website)
+resource uistgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: uiStgAccName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+
+  // blob service
+  resource uistgacc_blobsvc 'blobServices' = {
+    name: 'default'
+
+    // container
+    resource uistgacc_blobsvc_websiteuploadscontainer 'containers' = {
+      name: imageClassifierWebsiteUploadsContainerName
+      properties: {
+        publicAccess: 'Container'
+      }
+    }
+  }
+}
+
+//
+// image classifier
+//
+
+// storage account (main website)
+resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: imageClassifierStgAccName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+
+  // blob service
+  resource imageclassifierstgacc_blobsvc 'blobServices' = {
+    name: 'default'
   }
 }
 
