@@ -7,8 +7,7 @@ on:
     paths: [ 'src/TailwindTraders.Ui.Website/**' ]
 
 env:
-  STORAGE_ACCOUNT_NAME: tailwindtradersimg
-  WEB_CONTAINER_NAME: '$web'
+  STORAGE_ACCOUNT_NAME: tailwindtradersui
   CDN_PROFILE_NAME: tailwind-traders-cdn
   CDN_ENDPOINT_NAME: tailwind-traders-ui
   CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
@@ -16,7 +15,7 @@ env:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: checkout code
@@ -34,7 +33,7 @@ jobs:
     - name: deploy to storage
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -c '${{ env.WEB_CONTAINER_NAME }}' -s 'src/TailwindTraders.Ui.Website/build'
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
     # - name: purge CDN endpoint
     #   uses: azure/CLI@v1
     #   with:
