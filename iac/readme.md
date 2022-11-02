@@ -17,5 +17,7 @@ az deployment sub create --location {LOCATION} --template-file .\createResourceG
 Then, we'll deploy the Azure resources to the resource group `tailwind-traders-rg` created above. The deployed resources include storage accounts, function apps, app services cosmos db, and service bus etc.
 
 ```bash
- az deployment group create -g tailwind-traders-rg --template-file .\createResources.bicep
+ az deployment group create -g tailwind-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
 ```
+
+> The `createResources.parameters.json` file contains the parameters for the deployment; specifically the per-lab suffix. You can modify the parameters to customize the deployment.

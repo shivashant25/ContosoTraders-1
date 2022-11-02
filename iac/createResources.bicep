@@ -5,8 +5,12 @@ targetScope = 'resourceGroup'
 ////////////////////////////////////////////////////////////////////////////////
 
 // common
+@minLength(4)
+@maxLength(6)
+@description('A per-lab suffix, required for grouping the resources by lab.')
+param suffix string // value supplied via parameters file
+
 param resourceLocation string = resourceGroup().location
-param suffix string = '987654'
 
 // tenant
 param tenantId string = subscription().tenantId
