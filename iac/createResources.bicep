@@ -75,6 +75,9 @@ var cdnProfileName = 'tailwind-traders-cdn${suffix}'
 var cdnImagesEndpointName = 'tailwind-traders-images${suffix}'
 var cdnUiEndpointName = 'tailwind-traders-ui${suffix}'
 
+// redis cache
+var redisCacheName = 'tailwind-traders-cache${suffix}'
+
 // tags
 var resourceTags = {
   Product: 'tailwind-traders'
@@ -108,7 +111,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tags: resourceTags
     properties: {
       contentType: 'connection string to the products db'
-      value: 'Server=tcp:${productsDbServerName}.database.windows.net,1433;Initial Catalog=${productsDbName};Persist Security Info=False;User ID=${productsDbServerAdminLogin};Password=${productsDbServerAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      value: 'Server=tcp:${productsDbServerName}.database.windows.net,1433;Initial Catalog=${productsDbName};Persist Security Info=False;User ID=${productsDbServerAdminLogin};Password=${productsDbServerAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;' // @TODO: hack, fix later
     }
   }
 
@@ -118,7 +121,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tags: resourceTags
     properties: {
       contentType: 'connection string to the profiles db'
-      value: 'Server=tcp:${profilesDbServerName}.database.windows.net,1433;Initial Catalog=${profilesDbName};Persist Security Info=False;User ID=${profilesDbServerAdminLogin};Password=${profilesDbServerAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      value: 'Server=tcp:${profilesDbServerName}.database.windows.net,1433;Initial Catalog=${profilesDbName};Persist Security Info=False;User ID=${profilesDbServerAdminLogin};Password=${profilesDbServerAdminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;' // @TODO: hack, fix later
     }
   }
 
@@ -683,6 +686,23 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
         }
       }
     ]
+  }
+}
+
+//
+// redis cache
+//
+
+resource rediscache 'Microsoft.Cache/redis@2022-06-01' = {
+  name: redisCacheName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    sku: {
+      capacity: 0
+      family: 'C'
+      name: 'Basic'
+    }
   }
 }
 
