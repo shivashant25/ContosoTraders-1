@@ -24,6 +24,7 @@ var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
 var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
 var kvSecretNameStocksDbConnStr = 'stocksDbConnectionString'
 var kvSecretNameCartsDbConnStr = 'cartsDbConnectionString'
+var kvSecretNameImagesEndpoint = 'imagesEndpoint'
 
 // cosmos db (stocks db)
 var stocksDbAcctName = 'tailwind-traders-stocks${suffix}'
@@ -138,6 +139,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'connection string to the carts db'
       value: cartsdba.listConnectionStrings().connectionStrings[0].connectionString
+    }
+  }
+
+  // secret
+  resource kv_secretImagesEndpoint 'secrets' = {
+    name: kvSecretNameImagesEndpoint
+    tags: resourceTags
+    properties: {
+      contentType: 'endpoint url of the images cdn'
+      value: 'https://${cdnprofile_imagesendpoint.properties.hostName}'
     }
   }
 
@@ -585,91 +596,93 @@ resource cdnprofile 'Microsoft.Cdn/profiles@2022-05-01-preview' = {
   sku: {
     name: 'Standard_Microsoft'
   }
+}
 
-  // endpoint (product images)
-  resource cdnprofile_imagesendpoint 'endpoints' = {
-    name: cdnImagesEndpointName
-    location: 'global'
-    tags: resourceTags
-    properties: {
-      isCompressionEnabled: true
-      contentTypesToCompress: [
-        'image/svg+xml'
-      ]
-      originHostHeader: '${productImagesStgAccName}.blob.core.windows.net'
-      origins: [
-        {
-          name: '${productImagesStgAccName}-blob-core-windows-net'
-          properties: {
-            hostName: '${productImagesStgAccName}.blob.core.windows.net'
-            originHostHeader: '${productImagesStgAccName}.blob.core.windows.net'
-          }
+// endpoint (product images)
+resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
+  name: cdnImagesEndpointName
+  location: 'global'
+  tags: resourceTags
+  parent: cdnprofile
+  properties: {
+    isCompressionEnabled: true
+    contentTypesToCompress: [
+      'image/svg+xml'
+    ]
+    originHostHeader: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
+    origins: [
+      {
+        name: '${productImagesStgAccName}-blob-core-windows-net' // @TODO: Hack, fix later
+        properties: {
+          hostName: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
+          originHostHeader: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
         }
-      ]
-    }
+      }
+    ]
   }
+}
 
-  // endpoint (ui / main website)
-  resource cdnprofile_uiendpoint 'endpoints' = {
-    name: cdnUiEndpointName
-    location: 'global'
-    tags: resourceTags
-    properties: {
-      isCompressionEnabled: true
-      contentTypesToCompress: [
-        'application/eot'
-        'application/font'
-        'application/font-sfnt'
-        'application/javascript'
-        'application/json'
-        'application/opentype'
-        'application/otf'
-        'application/pkcs7-mime'
-        'application/truetype'
-        'application/ttf'
-        'application/vnd.ms-fontobject'
-        'application/xhtml+xml'
-        'application/xml'
-        'application/xml+rss'
-        'application/x-font-opentype'
-        'application/x-font-truetype'
-        'application/x-font-ttf'
-        'application/x-httpd-cgi'
-        'application/x-javascript'
-        'application/x-mpegurl'
-        'application/x-opentype'
-        'application/x-otf'
-        'application/x-perl'
-        'application/x-ttf'
-        'font/eot'
-        'font/ttf'
-        'font/otf'
-        'font/opentype'
-        'image/svg+xml'
-        'text/css'
-        'text/csv'
-        'text/html'
-        'text/javascript'
-        'text/js'
-        'text/plain'
-        'text/richtext'
-        'text/tab-separated-values'
-        'text/xml'
-        'text/x-script'
-        'text/x-component'
-        'text/x-java-source'
-      ]
-      originHostHeader: '${productImagesStgAccName}.z13.web.core.windows.net'
-      origins: [
-        {
-          name: '${productImagesStgAccName}-z13-web-core-windows-net'
-          properties: {
-            hostName: '${productImagesStgAccName}.z13.web.core.windows.net'
-            originHostHeader: '${productImagesStgAccName}.z13.web.core.windows.net'
-          }
+// endpoint (ui / main website)
+resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
+  name: cdnUiEndpointName
+  location: 'global'
+  tags: resourceTags
+  parent: cdnprofile
+  properties: {
+    isCompressionEnabled: true
+    contentTypesToCompress: [
+      'application/eot'
+      'application/font'
+      'application/font-sfnt'
+      'application/javascript'
+      'application/json'
+      'application/opentype'
+      'application/otf'
+      'application/pkcs7-mime'
+      'application/truetype'
+      'application/ttf'
+      'application/vnd.ms-fontobject'
+      'application/xhtml+xml'
+      'application/xml'
+      'application/xml+rss'
+      'application/x-font-opentype'
+      'application/x-font-truetype'
+      'application/x-font-ttf'
+      'application/x-httpd-cgi'
+      'application/x-javascript'
+      'application/x-mpegurl'
+      'application/x-opentype'
+      'application/x-otf'
+      'application/x-perl'
+      'application/x-ttf'
+      'font/eot'
+      'font/ttf'
+      'font/otf'
+      'font/opentype'
+      'image/svg+xml'
+      'text/css'
+      'text/csv'
+      'text/html'
+      'text/javascript'
+      'text/js'
+      'text/plain'
+      'text/richtext'
+      'text/tab-separated-values'
+      'text/xml'
+      'text/x-script'
+      'text/x-component'
+      'text/x-java-source'
+    ]
+    originHostHeader: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+    origins: [
+      {
+        name: '${uiStgAccName}-z13-web-core-windows-net' // @TODO: Hack, fix later
+        properties: {
+          hostName: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+          originHostHeader: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
         }
-      ]
-    }
+      }
+    ]
   }
 }
 
