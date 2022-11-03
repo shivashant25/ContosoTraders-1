@@ -706,5 +706,25 @@ resource rediscache 'Microsoft.Cache/redis@2022-06-01' = {
   }
 }
 
+//
+// EXPERIMENTAL: CONTAINERIZATRION
+//
+
+// azure container registry
+var acrName = 'tailwindtradersacr${suffix}'
+
+resource acr 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
+  name: acrName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Basic'
+  }
+  properties: {
+    adminUserEnabled: true
+    publicNetworkAccess: 'Enabled'
+  }
+}
+
 // outputs
 ////////////////////////////////////////////////////////////////////////////////
