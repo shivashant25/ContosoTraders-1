@@ -2,7 +2,7 @@
 
 ## Status
 
-| Component                    | Pipeline                                                                                                                                                                                                                                   | Swagger Docs                                                               |
+| Component                    | Pipeline                                                                                                                                                                                                                                   | Endpoint                                                                   |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
 | TailwindTraders.Api.Carts    | [![tailwind-traders-carts](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-carts.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-carts.yml)          | [LINK](https://tailwind-traders-carts987654.azurewebsites.net/swagger/)    |
 | TailwindTraders.Api.Images   | [![tailwind-traders-images](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-images.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/tailwind-traders-images.yml)       | N/A                                                                        |
