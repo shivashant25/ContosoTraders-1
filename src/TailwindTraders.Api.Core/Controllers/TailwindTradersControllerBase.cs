@@ -1,7 +1,6 @@
 ﻿namespace TailwindTraders.Api.Core.Controllers;
 
 [ApiController]
-[Produces("application/json")]
 public class TailwindTradersControllerBase : ControllerBase
 {
     private readonly IMediator _mediator;

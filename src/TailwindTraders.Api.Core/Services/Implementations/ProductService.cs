@@ -48,6 +48,23 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
         return responseDtos;
     }
 
+    public IEnumerable<ProductDto> GetProducts(string searchTerm)
+    {
+        var responseDtos = new List<ProductDto>();
+
+        var matchingTypes = _productRepository.Types.Where(type => type.Code == searchTerm);
+
+        if (!matchingTypes.Any()) return responseDtos;
+
+        var typeId = matchingTypes.FirstOrDefault().Id;
+
+        var products = GetProducts(Array.Empty<int>(), new[] {typeId});
+
+        responseDtos.AddRange(products);
+
+        return responseDtos;
+    }
+
     public IEnumerable<Brand> GetBrands()
     {
         return _productRepository.Brands.ToList();

@@ -2,7 +2,7 @@
 
 namespace TailwindTraders.Api.Core.Services.Interfaces;
 
-internal interface IProductService
+public interface IProductService
 {
     /// <summary>
     /// </summary>
@@ -17,6 +17,12 @@ internal interface IProductService
     /// <param name="typeIds"></param>
     /// <returns></returns>
     IEnumerable<ProductDto> GetProducts(int[] brands, int[] typeIds);
+
+    /// <summary>
+    /// </summary>
+    /// <param name="searchTerm"></param>
+    /// <returns></returns>
+    IEnumerable<ProductDto> GetProducts(string searchTerm);
 
     /// <summary>
     /// </summary>

@@ -1,6 +1,7 @@
 ﻿namespace TailwindTraders.Api.Products.Controllers;
 
 [Route("v1/[controller]")]
+[Produces("application/json")]
 public class StocksController : TailwindTradersControllerBase
 {
     public StocksController(IMediator mediator) : base(mediator)
