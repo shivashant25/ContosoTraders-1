@@ -1,3 +1,4 @@
+using System.Reflection;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.Primitives;
 
@@ -11,9 +12,13 @@ public class OnnxImageSearchTermPredictor : IImageSearchTermPredictor
 
     public OnnxImageSearchTermPredictor(IWebHostEnvironment environment, ILogger<OnnxImageSearchTermPredictor> logger)
     {
+        var assemblyFilePath = Assembly.GetExecutingAssembly().Location;
+        var assemblyFolder = Path.GetDirectoryName(assemblyFilePath);
+        var onnxFilePath = Path.Combine(assemblyFolder, "products.onnx");
+        var onnxFileFullPath = Path.GetFullPath(onnxFilePath);
+
+        _session = new InferenceSession(onnxFileFullPath);
         _logger = logger;
-        var filePath = Path.Combine(environment.ContentRootPath, "Models/OnnxModels/products.onnx");
-        _session = new InferenceSession(filePath);
     }
 
     public Task<string> PredictSearchTermAsync(Stream imageStream, CancellationToken cancellationToken = default)
