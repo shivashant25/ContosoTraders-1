@@ -1,4 +1,5 @@
-﻿using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
+﻿using Microsoft.EntityFrameworkCore;
+using Type = TailwindTraders.Api.Core.Models.Implementations.Dao.Type;
 
 namespace TailwindTraders.Api.Core.Services.Implementations;
 
@@ -50,17 +51,11 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
 
     public IEnumerable<ProductDto> GetProducts(string searchTerm)
     {
-        var responseDtos = new List<ProductDto>();
+        var responseDaos = _productRepository.Products
+            .Where(product => EF.Functions.Like(product.Name, $"%{searchTerm}%"));
 
-        var matchingTypes = _productRepository.Types.Where(type => type.Code == searchTerm);
-
-        if (!matchingTypes.Any()) return responseDtos;
-
-        var typeId = matchingTypes.FirstOrDefault().Id;
-
-        var products = GetProducts(Array.Empty<int>(), new[] {typeId});
-
-        responseDtos.AddRange(products);
+        var responseDtos = responseDaos.ToArray()
+            .Select(dao => CustomMapping(dao));
 
         return responseDtos;
     }
@@ -93,7 +88,6 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
         return filteredProducts;
     }
 
-
     private ProductDto CustomMapping(Product productDao, IEnumerable<Brand> brands, IEnumerable<Type> types, IEnumerable<Feature> features, bool thumbnailImages = true)
     {
         var imagesEndpoint = Configuration[KeyVaultConstants.SecretNameImagesEndpoint];
@@ -109,6 +103,23 @@ internal class ProductService : TailwindTradersServiceBase, IProductService
             Brand = brands.FirstOrDefault(brand => brand.Id == productDao.BrandId),
             Type = types.FirstOrDefault(type => type.Id == productDao.TypeId),
             Features = features.Where(feature => feature.ProductItemId == productDao.Id).ToList()
+        };
+
+        return productDto;
+    }
+
+    private ProductDto CustomMapping(Product productDao, bool thumbnailImages = true)
+    {
+        var imagesEndpoint = Configuration[KeyVaultConstants.SecretNameImagesEndpoint];
+
+        var imagesType = thumbnailImages ? "product-list" : "product-details";
+
+        var productDto = new ProductDto
+        {
+            Id = productDao.Id,
+            Name = productDao.Name,
+            Price = productDao.Price,
+            ImageUrl = $"{imagesEndpoint}/{imagesType}/{productDao.ImageName}"
         };
 
         return productDto;

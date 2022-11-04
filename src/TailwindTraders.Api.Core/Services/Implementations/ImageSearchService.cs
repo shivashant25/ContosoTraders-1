@@ -18,19 +18,9 @@ internal class ImageSearchService : IImageSearchService
 
         var result = new ImageSearchResult
         {
-            PredictedSearchTerm = searchTerm
+            PredictedSearchTerm = searchTerm,
+            SearchResults = _productService.GetProducts(searchTerm)
         };
-
-        var products = _productService.GetProducts(searchTerm);
-
-        var searchResults = products.Select(p => new ProductDto
-        {
-            Id = p.Id,
-            ImageUrl = p.ImageUrl,
-            Name = p.Name,
-            Price = p.Price
-        });
-        result.SearchResults = searchResults;
 
         return result;
     }
