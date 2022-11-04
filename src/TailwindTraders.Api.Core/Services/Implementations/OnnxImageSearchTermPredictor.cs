@@ -12,7 +12,7 @@ public class OnnxImageSearchTermPredictor : IImageSearchTermPredictor
     public OnnxImageSearchTermPredictor(IWebHostEnvironment environment, ILogger<OnnxImageSearchTermPredictor> logger)
     {
         _logger = logger;
-        var filePath = Path.Combine(environment.ContentRootPath, "Models\\OnnxModels\\products.onnx");
+        var filePath = Path.Combine(environment.ContentRootPath, "Models/OnnxModels/products.onnx");
         _session = new InferenceSession(filePath);
     }
 
