@@ -12,3 +12,7 @@
 ## Proposed Architecture
 
 ![Proposed Architecture](./docs/architecture/tailwind-traders-enhancements.drawio.png)
+
+## Documentation
+
+- [Setup Instructions](./docs/setup.md)
