@@ -9,4 +9,4 @@
 
 ## Setting up TailwindTraders in a lab
 
-Same steps as above. But you have to create a fork of the [TailwindTraders github repository](https://github.com/CloudLabs-AI/TailwindTraders); one fork per lab.
+Same steps as above. But you have to create and use a fork of this github repository (instead of using this original repository); one fork per lab.
