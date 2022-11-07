@@ -46,6 +46,11 @@
         "shared.header.emailPlaceholder": "admin@tailwindtraders.com",
         "shared.header.password": "Password",
         "shared.header.passwordPlaceholder": "••••••••",
+        "shared.header.newArrivals": "New Arrivals",
+        "shared.header.consoles": "Consoles",
+        "shared.header.laptops": "Laptops",
+        "shared.header.accessories": "Accessories",
+        "shared.header.deals": "Deals",
 
         "shared.login.claim": "Log in to add your products to the cart and enjoy the purchase!",
         "shared.login.B2CButton": "Tailwind Traders Login",

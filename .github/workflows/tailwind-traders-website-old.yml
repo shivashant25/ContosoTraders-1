@@ -1,15 +1,15 @@
-name: tailwind-traders-website
+name: tailwind-traders-website-old
 
 on:
   workflow_dispatch:
   push:
-    branches: [ 'master' ]
+    branches: [ 'old-ui' ]
     paths: [ 'src/TailwindTraders.Ui.Website/**' ]
 
 env:
-  STORAGE_ACCOUNT_NAME: tailwindtradersui2
+  STORAGE_ACCOUNT_NAME: tailwindtradersui
   CDN_PROFILE_NAME: tailwind-traders-cdn
-  CDN_ENDPOINT_NAME: tailwind-traders-ui2
+  CDN_ENDPOINT_NAME: tailwind-traders-ui
   CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
 
 jobs:

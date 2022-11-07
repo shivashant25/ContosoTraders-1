@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Hero, Recommended, Getapp, Popular } from "./components";
+import { Hero, Popular } from "./components";
 import ChatBubble from './components/chatBubble/chatBubble';
 import { ConfigService } from './../../services'
-
+import Slider from "./components/slider/slider";
+import Banner from "./components/Banner/banner";
+import Gridsection from "./components/Banner/gridsection";
+import Finalsection from "./components/Banner/finalsection";
 const Home = ({ recommendedProducts, popularProducts, loggedIn }) => {
     const [customerSupportEnabled, setCustomerSupportEnabled] = useState(false);
     useEffect(() => {
@@ -16,8 +19,12 @@ const Home = ({ recommendedProducts, popularProducts, loggedIn }) => {
     return (
         <div className="home">
             <Hero />
-            <Recommended recommendedProductsData={recommendedProducts} loggedIn={loggedIn} />
-            <Getapp />
+            <Slider />
+            <Banner />
+            <Gridsection />
+            <Finalsection />
+            {/* <Recommended recommendedProductsData={recommendedProducts} loggedIn={loggedIn} /> */}
+            {/* <Getapp /> */}
             {loggedIn && <Popular popularProductsData={popularProducts} />} 
             { customerSupportEnabled && <ChatBubble />}
         </div>

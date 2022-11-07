@@ -12,12 +12,12 @@ import LoginContainer from './components/loginContainer';
 import LoginComponent from './components/loginComponent';
 import UserPortrait from './components/userPortrait';
 
-import { ReactComponent as Logo } from '../../assets/images/logo-horizontal.svg';
 import { ReactComponent as Close } from '../../assets/images/icon-close.svg';
 import { ReactComponent as Hamburger } from '../../assets/images/icon-menu.svg';
 import { ReactComponent as Cart } from '../../assets/images/icon-cart.svg';
 
 import { clickAction } from "../../actions/actions";
+import { Categories } from '..';
 
 const Login = LoginContainer(LoginComponent);
 
@@ -101,30 +101,25 @@ class Header extends Component {
             <NamespacesConsumer>
                 {t => (
                     <header className="header">
-                        <Link to="/">
-                            <Logo />
-                        </Link>
+                        <Categories />
                         <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
-                            <Link className="main-nav__item" to="/list/homeappliances">
-                                {t('shared.header.homeAppliances')}
-                            </Link>
-                            <Link className="main-nav__item" to="/list/sink">
-                                {t('shared.header.sink')}
-                            </Link>
-                            <Link className="main-nav__item" to="/list/home">
+                            <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/list/homeappliances">
                                 {t('shared.header.home')}
                             </Link>
+                            <Link className="main-nav__item" to="/list/sink">
+                                {t('shared.header.newArrivals')}
+                            </Link>
+                            <Link className="main-nav__item" to="/list/home">
+                                {t('shared.header.consoles')}
+                            </Link>
                             <Link className="main-nav__item" to="/list/gardening">
-                                {t('shared.header.gardening')}
+                                {t('shared.header.laptops')}
                             </Link>
                             <Link className="main-nav__item" to="/list/decor">
-                                {t('shared.header.decor')}
+                                {t('shared.header.accessories')}
                             </Link>
                             <Link className="main-nav__item" to="/list/kitchen">
-                                {t('shared.header.kitchen')}
-                            </Link>
-                            <Link className="main-nav__item" to="/list/diytools">
-                                {t('shared.header.diytools')}
+                                {t('shared.header.deals')}
                             </Link>
                             <div className="main-nav__actions">
                                 <Link className="main-nav__item" to="/profile">
@@ -141,8 +136,8 @@ class Header extends Component {
                         <nav className="secondary-nav">
                             {/* <Search /> */}
                             {loggedIn && <Link to="/profile"><UserPortrait {...profile} /></Link>}
-                            {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>{t('shared.header.logout')}</div>
-                                : <div className="secondary-nav__login" onClick={this.toggleModalClass}>{t('shared.header.login')}</div>}
+                            {/* {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>{t('shared.header.logout')}</div>
+                                : <div className="secondary-nav__login" onClick={this.toggleModalClass}>{t('shared.header.login')}</div>} */}
                             {loggedIn && <Link className="secondary-nav__cart" to="/shopping-cart">
                                 <Cart />
                                 <div className="secondary-nav__cart-number">

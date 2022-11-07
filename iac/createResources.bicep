@@ -63,8 +63,11 @@ var productImagesStgAccName = 'tailwindtradersimg${suffix}'
 var productImagesProductDetailsContainerName = 'product-details'
 var productImagesProductListContainerName = 'product-list'
 
-// storage account (main website)
+// storage account (old website)
 var uiStgAccName = 'tailwindtradersui${suffix}'
+
+// storage account (new website)
+var ui2StgAccName = 'tailwindtradersui2${suffix}'
 
 // storage account (image classifier)
 var imageClassifierStgAccName = 'tailwindtradersic${suffix}'
@@ -74,6 +77,7 @@ var imageClassifierWebsiteUploadsContainerName = 'website-uploads'
 var cdnProfileName = 'tailwind-traders-cdn${suffix}'
 var cdnImagesEndpointName = 'tailwind-traders-images${suffix}'
 var cdnUiEndpointName = 'tailwind-traders-ui${suffix}'
+var cdnUi2EndpointName = 'tailwind-traders-ui2${suffix}'
 
 // redis cache
 var redisCacheName = 'tailwind-traders-cache${suffix}'
@@ -520,6 +524,7 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
 
 //
 // main website / ui
+// new website / ui
 //
 
 // storage account (main website)
@@ -596,6 +601,80 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
+// storage account (new website)
+resource ui2stgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: ui2StgAccName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+
+  // blob service
+  resource ui2stgacc_blobsvc 'blobServices' = {
+    name: 'default'
+  }
+}
+
+resource ui2stgacc_mi 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: 'DeploymentScript2'
+  location: resourceLocation
+  tags: resourceTags
+}
+
+resource ui2stgacc_roledefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  scope: subscription()
+  // This is the Storage Account Contributor role, which is the minimum role permission we can give. 
+  // See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
+  name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
+}
+
+// @TODO: Unfortunately, this requires the service principal to be in the owner role for the subscription.
+// This is just a temporary mitigation, and needs to be fixed using a custom role.
+// Details: https://learn.microsoft.com/en-us/answers/questions/287573/authorization-failed-when-when-writing-a-roleassig.html
+resource roleAssignment2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: ui2stgacc
+  name: guid(resourceGroup().id, ui2stgacc_mi.id, ui2stgacc_roledefinition.id)
+  properties: {
+    roleDefinitionId: ui2stgacc_roledefinition.id
+    principalId: ui2stgacc_mi.properties.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource deploymentScript2 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: 'DeploymentScript2'
+  location: resourceLocation
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${ui2stgacc_mi.id}': {
+      }
+    }
+  }
+  dependsOn: [
+    // we need to ensure we wait for the role assignment to be deployed before trying to access the storage account
+    roleAssignment
+  ]
+  properties: {
+    azPowerShellVersion: '3.0'
+    scriptContent: loadTextContent('./scripts/enable-static-website.ps1')
+    retentionInterval: 'PT4H'
+    environmentVariables: [
+      {
+        name: 'ResourceGroupName'
+        value: resourceGroup().name
+      }
+      {
+        name: 'StorageAccountName'
+        value: ui2stgacc.name
+      }
+    ]
+  }
+}
+
 //
 // image classifier
 //
@@ -661,7 +740,7 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
   }
 }
 
-// endpoint (ui / main website)
+// endpoint (ui / old website)
 resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
   name: cdnUiEndpointName
   location: 'global'
@@ -719,6 +798,70 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
         properties: {
           hostName: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
           originHostHeader: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+        }
+      }
+    ]
+  }
+}
+
+// endpoint (ui / new website)
+resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
+  name: cdnUi2EndpointName
+  location: 'global'
+  tags: resourceTags
+  parent: cdnprofile
+  properties: {
+    isCompressionEnabled: true
+    contentTypesToCompress: [
+      'application/eot'
+      'application/font'
+      'application/font-sfnt'
+      'application/javascript'
+      'application/json'
+      'application/opentype'
+      'application/otf'
+      'application/pkcs7-mime'
+      'application/truetype'
+      'application/ttf'
+      'application/vnd.ms-fontobject'
+      'application/xhtml+xml'
+      'application/xml'
+      'application/xml+rss'
+      'application/x-font-opentype'
+      'application/x-font-truetype'
+      'application/x-font-ttf'
+      'application/x-httpd-cgi'
+      'application/x-javascript'
+      'application/x-mpegurl'
+      'application/x-opentype'
+      'application/x-otf'
+      'application/x-perl'
+      'application/x-ttf'
+      'font/eot'
+      'font/ttf'
+      'font/otf'
+      'font/opentype'
+      'image/svg+xml'
+      'text/css'
+      'text/csv'
+      'text/html'
+      'text/javascript'
+      'text/js'
+      'text/plain'
+      'text/richtext'
+      'text/tab-separated-values'
+      'text/xml'
+      'text/x-script'
+      'text/x-component'
+      'text/x-java-source'
+    ]
+    originHostHeader: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+    origins: [
+      {
+        name: '${ui2StgAccName}-z13-web-core-windows-net' // @TODO: Hack, fix later
+        properties: {
+          hostName: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+          originHostHeader: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
         }
       }
     ]

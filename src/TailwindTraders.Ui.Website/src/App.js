@@ -5,7 +5,7 @@ import { CartService } from "./services";
 import { ConfigService } from "./services";
 import Meeting from './pages/home/components/videoCall/Meeting';
 
-import { Header, Footer, DebugHeader } from "./shared";
+import { Header, Footer ,Appbar } from "./shared";
 import {
   Home,
   List,
@@ -90,8 +90,10 @@ class App extends Component {
       <div className="App">
         <Router history={history}>
           <Fragment>
-            <DebugHeader />
-            <Header quantity={quantity} />
+            <div className="mainHeader">
+              <Appbar />
+              <Header quantity={quantity} />
+            </div>
             <Route exact path="/" component={Home} />
 
             <Route exact path="/meeting" component={Meeting} />
