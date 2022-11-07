@@ -16,6 +16,6 @@ The value of the `TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL` secret above needs t
   "clientId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
   "clientSecret": "your-client-secret",
   "tenantId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
-  "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+  "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
 }
 ```
