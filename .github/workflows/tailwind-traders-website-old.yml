@@ -2,9 +2,6 @@ name: tailwind-traders-website-old
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ 'master' ]
-    paths: [ 'src/TailwindTraders.Ui.Website/**' ]
 
 env:
   STORAGE_ACCOUNT_NAME: tailwindtradersui
