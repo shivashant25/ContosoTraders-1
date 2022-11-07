@@ -1,0 +1,49 @@
+name: tailwind-traders-infra-provisioning
+
+on:
+  workflow_dispatch:
+
+env:
+  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment 
+  # metadata will be stored, and not where the resource groups will be deployed.
+  SUB_DEPLOYMENT_REGION: eastus2
+  RG_DEPLOYMENT_RGNAME: tailwind-traders-rg
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+    - name: azure login
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
+    # The first step is to create the resource group: `tailwind-traders-rg`.
+    # The below step can also be manually executed as follows:
+    # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
+    # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not 
+    # where the resource groups will be deployed.
+    - name: create resource group
+      uses: Azure/arm-deploy@v1.0.8
+      with:
+        scope: subscription
+        region: ${{ env.SUB_DEPLOYMENT_REGION }}
+        template: ./iac/createResourceGroup.bicep
+    # Next step is to deploy the Azure resources to the resource group `tailwind-traders-rg` created above. The deployed resources 
+    # include storage accounts, function apps, app services cosmos db, and service bus etc.
+    # The below step can also be manually executed as follows:
+    # az deployment group create -g tailwind-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
+    # Note: The `createResources.parameters.json` file contains the parameters for the deployment; specifically the per-lab 
+    # suffix. You can modify the parameters to customize the deployment.
+    - name: create resources
+      uses: Azure/arm-deploy@v1.0.8
+      with:
+        scope: resourcegroup
+        region: ${{ env.SUB_DEPLOYMENT_REGION }}
+        resourceGroupName: ${{ env.RG_DEPLOYMENT_RGNAME }}
+        template: ./iac/createResources.bicep
+        parameters: ./iac/createResources.parameters.json
+        failOnStdErr: false # @TODO: Remove this later. Temporarily added to suppress warnings-as-errors during execution.
