@@ -67,31 +67,31 @@ public class DependencyInjection : FunctionsStartup
 
         // inject ef-core dbcontexts (after fetching connection string from azure keyvault).
         var productsDbConnectionString = configuration[KeyVaultConstants.SecretNameProductsDbConnectionString];
-        services.AddDbContext<ProductsDbContext>(options => options.UseSqlServer(productsDbConnectionString), ServiceLifetime.Singleton);
+        services.AddDbContext<ProductsDbContext>(options => options.UseSqlServer(productsDbConnectionString), ServiceLifetime.Scoped);
 
         var profilesDbConnectionString = configuration[KeyVaultConstants.SecretNameProfilesDbConnectionString];
-        services.AddDbContext<ProfilesDbContext>(options => options.UseSqlServer(profilesDbConnectionString), ServiceLifetime.Singleton);
+        services.AddDbContext<ProfilesDbContext>(options => options.UseSqlServer(profilesDbConnectionString), ServiceLifetime.Scoped);
 
         // injecting the cosmosdb clients
         var stocksDbConnectionString = configuration[KeyVaultConstants.SecretNameStocksDbConnectionString];
-        services.AddSingleton(new CosmosClient(stocksDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameStocks));
+        services.AddScoped<Database>(_ => new CosmosClient(stocksDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameStocks));
 
         var cartsDbConnectionString = configuration[KeyVaultConstants.SecretNameCartsDbConnectionString];
-        services.AddSingleton(new CosmosClient(cartsDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameCarts));
+        services.AddScoped<Database>(_ => new CosmosClient(cartsDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameCarts));
 
         // inject services
         services
-            .AddSingleton<ICartService, CartService>()
-            .AddSingleton<IProductService, ProductService>()
-            .AddSingleton<IStockService, StockService>()
-            .AddSingleton<IProfileService, ProfileService>()
-            .AddSingleton<IImageSearchService, ImageSearchService>()
-            .AddSingleton<IImageSearchTermPredictor, OnnxImageSearchTermPredictor>();
+            .AddScoped<ICartService, CartService>()
+            .AddScoped<IProductService, ProductService>()
+            .AddScoped<IStockService, StockService>()
+            .AddScoped<IProfileService, ProfileService>()
+            .AddScoped<IImageSearchService, ImageSearchService>()
+            .AddScoped<IImageSearchTermPredictor, OnnxImageSearchTermPredictor>();
 
         // inject repositories
         services
-            .AddSingleton<ICartRepository, CartRepository>()
-            .AddSingleton<IStockRepository, StockRepository>();
+            .AddScoped<ICartRepository, CartRepository>()
+            .AddScoped<IStockRepository, StockRepository>();
     }
 
 
