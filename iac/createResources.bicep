@@ -104,7 +104,44 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   location: resourceLocation
   tags: resourceTags
   properties: {
-    accessPolicies: []
+    // @TODO: Hack to enable temporary access to devs during local development/debugging.
+    accessPolicies: [
+      {
+        objectId: '6524d577-ed94-42a0-8465-b99d8e0250ac'
+        tenantId: tenantId
+        permissions: {
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+      }
+      {
+        objectId: 'd56edb65-a0c3-40c2-8e92-77556c99a996'
+        tenantId: tenantId
+        permissions: {
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+      }
+      {
+        objectId: 'e9c72dae-7ea1-483d-be9c-f629f6641f7e'
+        tenantId: tenantId
+        permissions: {
+          secrets: [
+            'get'
+            'list'
+            'delete'
+            'set'
+            'recover'
+            'backup'
+            'restore'
+          ]
+        }
+      }
+    ]
     sku: {
       family: 'A'
       name: 'standard'
@@ -466,6 +503,20 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
     }
     environmentId: cartsapiacaenv.id
     template: {
+      scale: {
+        minReplicas: 0
+        maxReplicas: 4
+        rules: [
+          {
+            name: 'http-scaling-rule'
+            http: {
+              metadata: {
+                concurrentRequests: '3'
+              }
+            }
+          }
+        ]
+      }
       containers: [
         {
           env: [
