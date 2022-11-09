@@ -35,6 +35,7 @@ class Header extends Component {
     }
 
     async componentDidMount() {
+        console.log(this.props.location.pathname)
         this.loadSettings();
 
         if (this.props.userInfo.token) {
@@ -103,10 +104,10 @@ class Header extends Component {
                     <header className="header">
                         <Categories />
                         <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
-                            <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/list/homeappliances">
+                            <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/">
                                 {t('shared.header.home')}
                             </Link>
-                            <Link className="main-nav__item" to="/list/sink">
+                            <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals">
                                 {t('shared.header.newArrivals')}
                             </Link>
                             <Link className="main-nav__item" to="/list/home">

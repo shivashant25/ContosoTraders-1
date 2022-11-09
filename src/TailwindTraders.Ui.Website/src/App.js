@@ -95,7 +95,6 @@ class App extends Component {
               <Header quantity={quantity} />
             </div>
             <Route exact path="/" component={Home} />
-
             <Route exact path="/meeting" component={Meeting} />
             <Route exact path="/list" component={List} />
             <Route exact path="/list/:code" component={List} />

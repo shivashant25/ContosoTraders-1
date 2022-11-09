@@ -8,7 +8,7 @@ import productImg3 from '../../../../assets/images/original/Contoso_Assets/Cauro
 import productImg4 from '../../../../assets/images/original/Contoso_Assets/Caurosal/product_4.jpg'
 import productImg5 from '../../../../assets/images/original/Contoso_Assets/Caurosal/product_5.jpg'
 
-export default function Corousel(props)
+export default function Slider(props)
 {
     var items = [
         {
@@ -35,7 +35,7 @@ export default function Corousel(props)
             }}
             >
             {
-                items.map( (item, i) => <Item key={i} item={item} /> )
+                items.map( (item, i) => <Item key={i} item={item} {...props}/> )
             }
         </Carousel>
     )
@@ -49,8 +49,8 @@ function Item(props)
                 <Grid item xs={12}>
                     <div className='topSection'>
                         <div className="LapHeadSection">
-                            <div className="LapHead">Explore Awesome Products</div>
-                            <div className="LapHeadmain">RECOMMENTED FOR YOU</div>
+                            <div className="LapHead">{props.firstHeading}</div>
+                            <p className="LapHeadmain">{props.secondHeading}</p>
                         </div>
                         <div className='LapButtonSection'>
                             <button className='outlined-primary-btn'>See All</button>

@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
-
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap"); */
+@import url('https://fonts.googleapis.com/css2?family=Heebo&family=Inter&family=Poppins&family=Roboto&display=swap');
 body {
   margin: 0;
   padding: 0;
@@ -59,7 +59,7 @@ body {
 .outlined-primary-btn{
   text-align: center;
   font: normal normal medium 16px/21px "Roboto";
-  letter-spacing: -0.36px;
+  /* letter-spacing: -0.36px; */
   color: #302f2f;
   text-transform: capitalize;
   opacity: 1;
@@ -77,6 +77,16 @@ body {
   border-color: #2874F0 !important;
   color: #2874F0 !important;
 }
+.box-shadow-0{
+  box-shadow: none !important;
+}
+.justify-content-end{
+  justify-content: end;
+}
+.text-transform-capitalize{
+  text-transform: capitalize !important;
+}
+
 
 /* mainHeader */
 .mainHeader{
@@ -95,6 +105,17 @@ body {
   padding-left: 70px;
   padding-right: 70px;
   padding-top: 31px;
+}
+.appbar .searchBar input{
+  font-family: 'Roboto' !important;
+  font-size: 14px !important;
+  font-weight: 300 !important;
+}
+.appbar .searchBar input::placeholder{
+  font-family: 'Roboto' !important;
+  font-size: 14px !important;
+  font-weight: 300 !important;
+  color: #686868 !important;
 }
 .appbar .searchbar-upload{
   position: absolute;
@@ -136,31 +157,24 @@ body {
 .appbar .searchBtn:focus{
   outline: none;
 }
-.appbar ..upload__subtitle{
+.appbar .upload__subtitle{
   font-family: 'Roboto' !important;
 }
-.box-shadow-0{
-  box-shadow: none !important;
-}
-.justify-content-end{
-  justify-content: end;
-}
-.text-transform-capitalize{
-  text-transform: capitalize !important;
+.main-nav{
+  margin-left: 50px;
 }
 .main-nav__item{
   text-decoration: none!important;
   text-transform: capitalize !important;
   text-align: left;
-  font-family: 'Roboto', sans-serif !important;
-  letter-spacing: 0px !important;
-  color: #000000 !important;
+  font-family: 'Roboto' !important;
+  /* letter-spacing: 0px !important; */
+  color: #302F2F !important;
   opacity: 0.92 !important;
-  font-size: 14px;
-  font-weight: 400;
-  padding: 14px 24px;
-  margin: 0 10px;
-  min-width: 120px;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  padding: 14px 24px 20px 24px;
+  /* min-width: 120px; */
   text-align: center;
 }
 .main-nav__item_active{
@@ -168,16 +182,15 @@ body {
   text-transform: capitalize !important;
   text-align: left;
   font-family: 'Roboto', sans-serif !important;
-  letter-spacing: 0px !important;
+  /* letter-spacing: 0px !important; */
   color: #2F4B66 !important;
   opacity: 0.92 !important;
   font-size: 14px;
   font-weight: 500;
-  padding: 14px 24px;
+  padding: 14px 24px 20px 24px;
   border-bottom: 5px solid #2874F0 !important;
   background: rgba(40, 116, 240 , 0.1) !important;
-  margin: 0 10px 0 50px;
-  min-width: 120px;
+  /* min-width: 120px; */
   text-align: center;
 }
 /* Button test */
@@ -193,33 +206,31 @@ button[aria-label='Next'] {
   background-repeat: no-repeat !important;
   background-size: cover !important;
   background-position: right !important;
-  min-height: 750px;
+  min-height: 594px;
 }
 .courousel-style {
-  background: blue;
+  background: #000000;
   cursor: pointer;
-  height: 541px;
+  max-height: 594px;
 }
 .courousel-style .BannerGrid{
-  padding: 150px 100px 0px 70px !important;
+  padding: 100px 100px 0px 70px !important;
 }
 .courousel-style .BannerHeading {
-  font: var(--unnamed-font-style-normal) normal 600 34px/36px "Poppins";
-  color: var(--unnamed-color-ffffff);
+  font-family: 'Inter' !important;
+  font-size: 34px !important;
+  font-weight: 600 !important;
   text-align: left;
-  font: normal normal 600 34px/36px "Poppins";
-  letter-spacing: -1.59px;
   color: #ffffff;
   opacity: 1;
   padding: 0px 0px 0px 0px;
+  text-transform: capitalize;
 }
 .courousel-style .BannerContent {
-  font: var(--unnamed-font-style-normal) normal
-    var(--unnamed-font-weight-normal) 16px/24px "Poppins";
-  color: var(--unnamed-color-ffffff);
+  font-family: 'Heebo' !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
   text-align: left;
-  font: normal normal normal 16px/24px "Poppins";
-  letter-spacing: -0.75px;
   color: #ffffff;
   opacity: 1;
   padding: 16px 0px 0px 0px;
@@ -228,7 +239,7 @@ button[aria-label='Next'] {
   padding: 50px 0px 0px 0px;
 }
 .courousel-style .BannerButton1 {
-  max-width: 134px;
+  max-width: 142px;
   opacity: 1;
   width: 224px;
   height: 49px;
@@ -236,14 +247,15 @@ button[aria-label='Next'] {
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  font: normal normal medium 16px/21px "Roboto";
-  letter-spacing: -0.36px;
+  font-family: "Heebo" !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
   color: #ffffff;
   box-shadow: none;
   margin-right: 24px;
 }
 .courousel-style .BannerButton2 {
-  max-width: 134px;
+  max-width: 142px;
   opacity: 1;
   width: 224px;
   height: 49px;
@@ -251,8 +263,9 @@ button[aria-label='Next'] {
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  font: normal normal medium 16px/21px "Roboto";
-  letter-spacing: -0.36px;
+  font-family: "Heebo" !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
   color: #ffffff;
   box-shadow: none;
   margin-right: 24px;
@@ -261,7 +274,7 @@ button[aria-label='Next'] {
 
 /* product slider */
 .slider-style{
-  padding: 40px 90px;
+  padding: 40px 70px;
 }
 .slider-style .topSection{
   display: flex;
@@ -279,14 +292,15 @@ button[aria-label='Next'] {
 }
 .slider-style .LapHead {
   font: normal normal normal 14px/21px "Poppins";
-  letter-spacing: -0.31px;
+  /* letter-spacing: -0.31px; */
   color: #302f2f;
-  text-transform: uppercase;
+  text-transform: capitalize;
   opacity: 1;
 }
 .slider-style .LapHeadmain {
+  line-height: unset !important;
   font: normal normal 600 25px/56px "Poppins";
-  letter-spacing: -1.44px;
+  /* letter-spacing: -1.44px; */
   color: #111111;
   text-transform: uppercase;
   opacity: 1;
@@ -299,23 +313,57 @@ button[aria-label='Next'] {
   box-shadow: 1px 5px 5px #aaaaaa !important;
   /* box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%) !important; */
 }
+.productName{
+  font-family: 'Inter' !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #171520 !important;
+}
 
+.productType{
+  font-family: 'Inter' !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #626262 !important;
+}
+.productOrgPrice{
+  font-family: 'Inter' !important;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+  color: #171520 !important;
+}
+.productOldPrice{
+  font-family: 'Inter' !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #626262 !important;
+  text-decoration: line-through;
 
+}
+.productOffer{
+  font-family: 'Inter' !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #E21D1D !important;
+}
 /* ********************************* */
 .BannerSection {
   background-image: url("./assets/images/original/Contoso_Assets/Static_Banner/banner_controller.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100%;
   cursor: pointer;
-  height: 541px;
+  min-height: 540px;
 }
 
 .BannerSection .BannerHeading {
+  font-family: 'Poppins' !important;
+  font-weight: 600 !important;
+  font-size: 34px !important;
   font: var(--unnamed-font-style-normal) normal 600 34px/36px "Poppins";
   color: var(--unnamed-color-ffffff);
   text-align: left;
   font: normal normal 600 34px/36px "Poppins";
-  letter-spacing: -1.59px;
+  /* letter-spacing: -1.59px; */
   color: #ffffff;
   opacity: 1;
   padding: 144px 0px 0px 150px;
@@ -326,7 +374,7 @@ button[aria-label='Next'] {
   color: var(--unnamed-color-ffffff);
   text-align: left;
   font: normal normal normal 16px/24px "Poppins";
-  letter-spacing: -0.75px;
+  /* letter-spacing: -0.75px; */
   color: #ffffff;
   opacity: 1;
   padding: 16px 0px 0px 150px;
@@ -346,7 +394,7 @@ button[aria-label='Next'] {
   color: var(--unnamed-color-ffffff);
   text-align: center;
   font: normal normal medium 16px/21px "Roboto";
-  letter-spacing: -0.36px;
+  /* letter-spacing: -0.36px; */
   color: #ffffff;
 
   font-weight: 500;
@@ -368,7 +416,7 @@ button[aria-label='Next'] {
 .LaptopSection .LapHead {
   text-align: center;
   font: normal normal normal 14px/21px "Poppins";
-  letter-spacing: -0.31px;
+  /* letter-spacing: -0.31px; */
   color: #302f2f;
   text-transform: uppercase;
   opacity: 1;
@@ -376,13 +424,13 @@ button[aria-label='Next'] {
 .LaptopSection .LapHeadmain {
   text-align: center;
   font: normal normal 600 30px/56px "Poppins";
-  letter-spacing: -1.44px;
+  /* letter-spacing: -1.44px; */
   color: #111111;
   text-transform: uppercase;
   opacity: 1;
 }
 .LaptopSection .ProductSection {
-  margin: 30px 70px 70px 70px;
+  margin: 30px 38px 70px 70px;
 }
 .LaptopSection .LaptopButtondiv {
   text-align: center;
@@ -391,7 +439,7 @@ button[aria-label='Next'] {
 .LaptopSection .LaptopButton {
   text-align: center;
   font: normal normal medium 16px/21px "Roboto";
-  letter-spacing: -0.36px;
+  /* letter-spacing: -0.36px; */
   color: #302f2f;
   text-transform: capitalize;
   opacity: 1;
@@ -413,28 +461,29 @@ button[aria-label='Next'] {
   width: 75%;
   margin: auto;
   display: block;
-  margin-bottom: 30px !important;
-  margin-top: 30px !important;
+  margin-bottom: 23px !important;
+  margin-top: 2px !important;
 }
 .LaptopSection .cardlap {
-  min-height: 405px;
+  min-height: 310px;
   background: #f5f5f580 0% 0% no-repeat padding-box;
   border-radius: 10px;
   opacity: 1;
+  box-shadow: none;
 }
 .LaptopSection .Productname {
   font: var(--unnamed-font-style-normal) normal 600 18px /
     var(--unnamed-line-spacing-32) "Poppins";
   text-align: center;
   font: normal normal 600 18px/32px "Poppins";
-  letter-spacing: -0.33px;
+  /* letter-spacing: -0.33px; */
   color: #111111;
   opacity: 1;
   margin-right: auto;
 }
 .LaptopSection .price {
   text-align: center;
-  letter-spacing: -0.36px;
+  /* letter-spacing: -0.36px; */
   color: #2874f0;
   opacity: 1;
   background-color: white !important;
@@ -465,12 +514,12 @@ button[aria-label='Next'] {
 
 /* sha********************* */
 .footer-container {
-  padding: 60px;
+  padding: 60px 70px;
   font-size: smaller;
 }
-.footer-container .MuiGrid-container {
+/* .footer-container .MuiGrid-container {
   justify-content: space-around;
-}
+} */
 .footer-container .footer-grid-container ul {
   list-style: none;
 }
@@ -486,7 +535,7 @@ button[aria-label='Next'] {
   padding-left: 20px;
 }
 .footer-container .section-3 {
-  padding-left: 100px;
+  padding-left: 60px;
 }
 .footer-container .section-4 {
   padding-left: 100px;
@@ -530,15 +579,15 @@ button[aria-label='Next'] {
   max-height: 100%;
 }
 .final-section-container  .content-section {
-  padding-top: 140px;
-  padding-left: 60px;
-  padding-right: 140px;
+  padding-top: 170px;
+  padding-right: 70px;
 }
 .final-section-container  .content-section h1{
   font-family: 'Poppins' !important;
   font-size: 34px !important;
   color: #000000 !important;
-  font-weight: 500;
+  font-weight: 600;
+  margin: 16px 0;
 }
 .final-section-container  .content-section p{
   font-family: 'Poppins' !important;
@@ -547,8 +596,18 @@ button[aria-label='Next'] {
   font-weight: 400;
 }
 .final-section-container  .start-btn {
-  margin-top: 20px !important;
-  padding: 7px 30px !important;
-  border: 1px solid #000000  !important;
-  text-transform: unset !important;
+  text-align: center;
+  color: #302f2f;
+  text-transform: capitalize;
+  opacity: 1;
+  border: 1px solid #707070;
+  cursor: pointer;
+  width: 224px;
+  height: 56px;
+  background: none;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: "Roboto" !important;
+  margin-top: 34px;
 }

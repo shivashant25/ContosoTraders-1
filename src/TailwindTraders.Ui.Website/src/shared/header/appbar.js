@@ -41,11 +41,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: 0,
+    marginLeft: 67,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
+      marginLeft: 67,
       width: '50%',
+      maxWidth: '650px',
+      maxHeight: '48px'
     },
   },
   searchIcon: {
@@ -174,9 +176,10 @@ export default function PrimarySearchAppBar() {
             <Link to="/">
                 <Logo />
             </Link>
-          <div className={classes.search} style={{marginLeft:'65px',position:'relative'}}>
+          <div className={`${classes.search} searchBar`}>
             <TextField
-                label="Search by product name or search by image"
+                // label="Search by product name or search by image"
+                placeholder='Search by product name or search by image'
                 variant="outlined"
                 fullWidth
                 InputProps={{

@@ -46,7 +46,7 @@ export default function Product({prodImg}) {
       />
       <CardContent>
         <div style={{display:'flex',alignItems:'center'}}>
-            <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}}>
+            <Typography variant="h6" color="initial" component="h6" className='productName' style={{marginRight:'auto'}}>
                 Lunar Shift Special Edition
             </Typography>
             <IconButton aria-label="add to favorites">
@@ -54,17 +54,17 @@ export default function Product({prodImg}) {
                 <img src={WishlistIcon} alt="like"/>
             </IconButton>
         </div>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body2" color="textSecondary" className='productType' component="p">
           Controller
         </Typography>
         <div style={{display:'flex',alignItems:'center',paddingTop:'10px'}}>
-            <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}} className="m-0 mr-1">
+            <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}} className="productOrgPrice m-0 mr-1">
                 $39.49
             </Typography>
-            <Typography paragraph color="textSecondary" className="m-0 mr-1">
+            <Typography paragraph color="textSecondary" className="productOldPrice m-0 mr-1">
                 $78.46
             </Typography>
-            <Typography paragraph color="error" className="m-0 mr-1 ">
+            <Typography paragraph color="error" className="productOffer m-0 mr-1 ">
                 50% OFF
             </Typography>
         </div>

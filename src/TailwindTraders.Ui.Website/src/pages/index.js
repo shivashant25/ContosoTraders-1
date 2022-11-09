@@ -5,10 +5,11 @@ import List from './list/listContainer';
 import SuggestedProductsList from './suggestedproductslist/suggestedProductsList';
 import Profile from './profile/profileContainer';
 import ShoppingCart from './shoppingcart/shoppingCart'
-
+import Arrivals from './arrivals/arrivals';
 
 export {
     Home,
+    Arrivals,
     MyCoupons,
     Detail,
     List,
