@@ -87,6 +87,12 @@ var redisCacheName = 'tailwind-traders-cache${suffix}'
 var acrName = 'tailwindtradersacr${suffix}'
 var acrCartsApiRepositoryName = 'tailwindtradersapicarts'
 
+// load testing service
+var loadTestSvcName = 'tailwind-traders-loadtest${suffix}'
+
+// portal dashboard
+var portalDashboardName = 'tailwind-traders-dashboard' // @TODO: rename later with suffix
+
 // tags
 var resourceTags = {
   Product: 'tailwind-traders'
@@ -220,6 +226,13 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
         {
           tenantId: tenantId
           objectId: cartsapiaca.identity.principalId
+          permissions: {
+            secrets: [ 'get', 'list' ]
+          }
+        }
+        {
+          tenantId: tenantId
+          objectId: loadtestsvc.identity.principalId
           permissions: {
             secrets: [ 'get', 'list' ]
           }
@@ -959,6 +972,46 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
   properties: {
     adminUserEnabled: true
     publicNetworkAccess: 'Enabled'
+  }
+}
+
+//
+// load testing service
+//
+
+resource loadtestsvc 'Microsoft.LoadTestService/loadTests@2022-12-01' = {
+  name: loadTestSvcName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+}
+
+//
+// portal dashboard
+//
+
+resource dashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
+  name: portalDashboardName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    lenses: [
+      {
+        order: 0
+        parts: [
+          {
+            position: {
+              x: 0
+              y: 0
+              rowSpan: 4
+              colSpan: 2
+            }
+          }
+        ]
+      }
+    ]
   }
 }
 

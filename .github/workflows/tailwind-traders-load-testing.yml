@@ -1,0 +1,58 @@
+name: tailwind-traders-load-testing
+
+on:
+  workflow_dispatch:
+
+env:
+  LOAD_TEST_SERVICE_NAME: tailwind-traders-loadtest
+  LOAD_TEST_SERVICE_RESOURCE_GROUP: tailwind-traders-rg
+  ACR_REPOSITORY_NAME: tailwindtradersapicarts
+  WEBAPP_NAME: tailwind-traders-carts
+  ACA_NAME: tailwind-traders-carts
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+    - name: azure login
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
+    - name: load test (carts API)
+      uses: Azure/load-testing@v1.1.7
+      with:
+        # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+        loadtestConfigFile: ./tests/loadtests/tailwind-traders-carts.yaml
+        loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secret.TAILWINDTRADERS_SUFFIX }}
+        resourceGroup: ${{ env.LOAD_TEST_SERVICE_RESOURCE_GROUP }}
+        env: |
+          [
+            {
+              "name": "domain",
+              "value": "tailwind-traders-carts987654.wittycoast-f32fc010.eastus.azurecontainerapps.io",
+            },
+            {
+              "name": "protocol",
+              "value": "https",
+            },
+            {
+              "name": "path",
+              "value": "v1/ShoppingCart/loadtest",
+            },
+            {
+              "name": "threads_per_engine",
+              "value": "5",
+            },
+            {
+              "name": "ramp_up_time",
+              "value": "0",
+            },
+            {
+              "name": "duration_in_sec",
+              "value": "120",
+            }
+          ]
