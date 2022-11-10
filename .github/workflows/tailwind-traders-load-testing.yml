@@ -27,7 +27,7 @@ jobs:
       with:
         # Path of the YAML file. Should be fully qualified path or relative to the default working directory
         loadtestConfigFile: ./tests/loadtests/tailwind-traders-carts.yaml
-        loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secret.TAILWINDTRADERS_SUFFIX }}
+        loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}
         resourceGroup: ${{ env.LOAD_TEST_SERVICE_RESOURCE_GROUP }}
         env: |
           [
