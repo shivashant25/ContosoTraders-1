@@ -33,26 +33,26 @@ jobs:
           [
             {
               "name": "domain",
-              "value": "tailwind-traders-carts987654.wittycoast-f32fc010.eastus.azurecontainerapps.io",
+              "value": "tailwind-traders-carts987654.wittycoast-f32fc010.eastus.azurecontainerapps.io"
             },
             {
               "name": "protocol",
-              "value": "https",
+              "value": "https"
             },
             {
               "name": "path",
-              "value": "v1/ShoppingCart/loadtest",
+              "value": "v1/ShoppingCart/loadtest"
             },
             {
               "name": "threads_per_engine",
-              "value": "5",
+              "value": "5"
             },
             {
               "name": "ramp_up_time",
-              "value": "0",
+              "value": "0"
             },
             {
               "name": "duration_in_sec",
-              "value": "120",
+              "value": "120"
             }
           ]
