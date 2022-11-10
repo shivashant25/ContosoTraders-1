@@ -107,12 +107,17 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     // @TODO: Hack to enable temporary access to devs during local development/debugging.
     accessPolicies: [
       {
-        objectId: '6524d577-ed94-42a0-8465-b99d8e0250ac'
+        objectId: '70667219-36e5-4217-be0a-3a5cd0eba66d'
         tenantId: tenantId
         permissions: {
           secrets: [
             'get'
             'list'
+            'delete'
+            'set'
+            'recover'
+            'backup'
+            'restore'
           ]
         }
       }
