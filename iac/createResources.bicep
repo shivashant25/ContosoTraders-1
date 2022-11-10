@@ -57,6 +57,7 @@ var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 var cartsApiAcaName = 'tailwind-traders-carts${suffix}'
 var cartsApiAcaEnvName = 'tailwindtradersacaenv${suffix}'
 var cartsApiAcaSecretAcrPassword = 'acr-password'
+var cartsApiAcaContainerDetailsName = 'tailwind-traders-carts${suffix}'
 
 // storage account (product images)
 var productImagesStgAccName = 'tailwindtradersimg${suffix}'
@@ -530,8 +531,11 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
               value: kv.properties.vaultUri
             }
           ]
-          image: '${acr.properties.loginServer}/${acrCartsApiRepositoryName}:latest'
-          name: 'todotempchangelater'
+          // using a public image initially because no images have been pushed to our private ACR yet
+          // at this point. At a later point, our github workflow will update the ACA app to use the 
+          // images from our private ACR.
+          image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+          name: cartsApiAcaContainerDetailsName
           resources: {
             cpu: json('0.5')
             memory: '1.0Gi'
