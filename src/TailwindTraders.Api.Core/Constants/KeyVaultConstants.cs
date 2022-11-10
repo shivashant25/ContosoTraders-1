@@ -18,5 +18,9 @@ internal class KeyVaultConstants
 
     public static readonly string SecretNameStocksDbConnectionString = "stocksDbConnectionString";
 
+    public static readonly string SecretNameCognitiveServicesEndpoint = "cognitiveServicesEndpoint";
+
+    public static readonly string SecretNameCognitiveServicesAccountKey = "cognitiveServicesAccountKey";
+
     #endregion
 }

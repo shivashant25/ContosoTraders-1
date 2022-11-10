@@ -85,8 +85,8 @@ public class DependencyInjection : FunctionsStartup
             .AddScoped<IProductService, ProductService>()
             .AddScoped<IStockService, StockService>()
             .AddScoped<IProfileService, ProfileService>()
-            .AddScoped<IImageSearchService, ImageSearchService>()
-            .AddScoped<IImageSearchTermPredictor, OnnxImageSearchTermPredictor>();
+            .AddScoped<IImageAnalysisService, ImageAnalysisService>()
+            .AddScoped<IImageSearchService, ImageSearchService>();
 
         // inject repositories
         services
