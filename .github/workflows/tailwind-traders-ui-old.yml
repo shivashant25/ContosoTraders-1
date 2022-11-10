@@ -1,4 +1,4 @@
-name: tailwind-traders-website-old
+name: tailwind-traders-ui-old
 
 on:
   workflow_dispatch:

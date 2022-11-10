@@ -1,4 +1,4 @@
-name: tailwind-traders-products
+name: tailwind-traders-products-api
 
 on:
   workflow_dispatch:
