@@ -4,12 +4,12 @@ On the github repository, go to the `Settings` tab > `Secrets` > `Actions` and c
 
 | Secret Name                                    | Secret Value                                             |
 | ---------------------------------------------- | -------------------------------------------------------- |
-| `TAILWINDTRADERS_SUFFIX`                       | Six-digit lab suffix specified during bicep provisioning |
-| `TAILWINDTRADERS_ACR_PASSWORD`                 | Admin password for your Azure Container Registry         |
-| `TAILWINDTRADERS_PRODUCTSDB_CONNECTION_STRING` | Connection string for ProductsDB (SQL Azure)             |
-| `TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL`     | See details below                                        |
+| `CONTOSOTRADERS_SUFFIX`                       | Six-digit lab suffix specified during bicep provisioning |
+| `CONTOSOTRADERS_ACR_PASSWORD`                 | Admin password for your Azure Container Registry         |
+| `CONTOSOTRADERS_PRODUCTSDB_CONNECTION_STRING` | Connection string for ProductsDB (SQL Azure)             |
+| `CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL`     | See details below                                        |
 
-The value of the `TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL` secret above needs to have the following format:
+The value of the `CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL` secret above needs to have the following format:
 
 ```json
 {
