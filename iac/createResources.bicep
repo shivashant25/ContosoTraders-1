@@ -774,8 +774,6 @@ resource deploymentScript2 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
   }
 }
 
-
-
 //
 // image classifier
 //
@@ -845,6 +843,25 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
     contentTypesToCompress: [
       'image/svg+xml'
     ]
+    deliveryPolicy: {
+      rules: [
+        {
+          name: 'Global'
+          order: 0
+          actions: [
+            {
+              name: 'CacheExpiration'
+              parameters: {
+                typeName: 'DeliveryRuleCacheExpirationActionParameters'
+                cacheBehavior: 'SetIfMissing'
+                cacheType: 'All'
+                cacheDuration: '10:00:00'
+              }
+            }
+          ]
+        }
+      ]
+    }
     originHostHeader: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
     origins: [
       {
@@ -909,6 +926,25 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
       'text/x-component'
       'text/x-java-source'
     ]
+    deliveryPolicy: {
+      rules: [
+        {
+          name: 'Global'
+          order: 0
+          actions: [
+            {
+              name: 'CacheExpiration'
+              parameters: {
+                typeName: 'DeliveryRuleCacheExpirationActionParameters'
+                cacheBehavior: 'SetIfMissing'
+                cacheType: 'All'
+                cacheDuration: '10:00:00'
+              }
+            }
+          ]
+        }
+      ]
+    }
     originHostHeader: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
     origins: [
       {
@@ -973,6 +1009,25 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
       'text/x-component'
       'text/x-java-source'
     ]
+    deliveryPolicy: {
+      rules: [
+        {
+          name: 'Global'
+          order: 0
+          actions: [
+            {
+              name: 'CacheExpiration'
+              parameters: {
+                typeName: 'DeliveryRuleCacheExpirationActionParameters'
+                cacheBehavior: 'SetIfMissing'
+                cacheType: 'All'
+                cacheDuration: '02:00:00'
+              }
+            }
+          ]
+        }
+      ]
+    }
     originHostHeader: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
     origins: [
       {
