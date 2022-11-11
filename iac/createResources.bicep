@@ -90,7 +90,7 @@ var redisCacheName = 'tailwind-traders-cache${suffix}'
 
 // azure container registry
 var acrName = 'tailwindtradersacr${suffix}'
-var acrCartsApiRepositoryName = 'tailwindtradersapicarts'
+// var acrCartsApiRepositoryName = 'tailwindtradersapicarts' // @TODO: unused, probably remove later
 
 // load testing service
 var loadTestSvcName = 'tailwind-traders-loadtest${suffix}'
