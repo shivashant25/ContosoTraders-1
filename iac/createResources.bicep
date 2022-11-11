@@ -1026,6 +1026,35 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
             }
           ]
         }
+        {
+          name: 'EnforceHttps'
+          order: 1
+          conditions: [
+            {
+              name: 'RequestScheme'
+              parameters: {
+                typeName: 'DeliveryRuleRequestSchemeConditionParameters'
+                matchValues: [
+                  'HTTP'
+                ]
+                operator: 'Equal'
+                negateCondition: false
+                transforms: []
+              }
+            }
+          ]
+          actions: [
+            {
+              name: 'UrlRedirect'
+              parameters: {
+                typeName: 'DeliveryRuleUrlRedirectActionParameters'
+                redirectType: 'Found'
+                destinationProtocol: 'Https'
+                customHostname: 'www.contosotraders.com'
+              }
+            }
+          ]
+        }
       ]
     }
     originHostHeader: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
