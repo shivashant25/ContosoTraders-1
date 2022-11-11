@@ -17,7 +17,7 @@ const Footer = () => {
             </Link>
             <p  className='mt-2'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
         </Grid>
-        <Grid item xs={2} className='section-2'>
+        <Grid item xs={2.5} className='section-2'>
             <ul>
                 <li className='main-element'>Products</li>
                 <li className='list-element'>Trending</li>
@@ -34,7 +34,7 @@ const Footer = () => {
             <li className='list-element'>About Us</li>
             </ul>
         </Grid>
-        <Grid item xs={4} className='section-4'>
+        <Grid item xs={3} className='section-4'>
             <ul>
                 <li className='main-element'>Contact us</li>
                 <li className='list-element'>Feel free to get in touch with us via phone or send us a message</li>

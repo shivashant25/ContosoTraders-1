@@ -8,7 +8,7 @@ import productImg3 from '../../../../assets/images/original/Contoso_Assets/Cauro
 import productImg4 from '../../../../assets/images/original/Contoso_Assets/Caurosal/product_4.jpg'
 import productImg5 from '../../../../assets/images/original/Contoso_Assets/Caurosal/product_5.jpg'
 
-export default function Slider(props)
+export default function Corousel(props)
 {
     var items = [
         {
@@ -25,6 +25,7 @@ export default function Slider(props)
 
     return (
         <Carousel
+            className='product-slider-corousel'
             navButtonsAlwaysVisible={true} autoPlay={true} indicators={false}
             navButtonsProps={{
                 style: {
@@ -35,7 +36,7 @@ export default function Slider(props)
             }}
             >
             {
-                items.map( (item, i) => <Item key={i} item={item} {...props}/> )
+                items.map( (item, i) => <Item key={i} item={item} /> )
             }
         </Carousel>
     )
@@ -49,8 +50,8 @@ function Item(props)
                 <Grid item xs={12}>
                     <div className='topSection'>
                         <div className="LapHeadSection">
-                            <div className="LapHead">{props.firstHeading}</div>
-                            <p className="LapHeadmain">{props.secondHeading}</p>
+                            <div className="LapHead">Explore Awesome Products</div>
+                            <div className="LapHeadmain">RECOMMENTED FOR YOU</div>
                         </div>
                         <div className='LapButtonSection'>
                             <button className='outlined-primary-btn'>See All</button>
@@ -58,7 +59,7 @@ function Item(props)
                     </div>
                     <div className="LapSectionContent">
                         {props.item.page === 1 ?
-                        <Grid container justifyContent="center" spacing={5}>
+                        <Grid container justifyContent="center" spacing={4}>
                             <Grid item xs={3}>
                                 <Product prodImg={productImg1}/>
                             </Grid>
@@ -71,10 +72,13 @@ function Item(props)
                             <Grid item xs={3}>
                                 <Product prodImg={productImg4}/>
                             </Grid>
+                            <Grid item xs={3}>
+                                <Product prodImg={productImg5}/>
+                            </Grid>
                         </Grid>
                         :null}
                         {props.item.page === 2 ?
-                        <Grid container justifyContent="center" spacing={5}>
+                        <Grid container justifyContent="center" spacing={4}>
                             <Grid item xs={3}>
                                 <Product prodImg={productImg5}/>
                             </Grid>
@@ -86,6 +90,9 @@ function Item(props)
                             </Grid>
                             <Grid item xs={3}>
                                 <Product prodImg={productImg4}/>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Product prodImg={productImg1}/>
                             </Grid>
                         </Grid>
                         :null}

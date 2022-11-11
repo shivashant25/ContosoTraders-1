@@ -1,9 +1,8 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
 import { Button, Grid } from '@material-ui/core'
-// import LocalMallIcon from '@material-ui/icons/LocalMall';
+import LocalMallIcon from '@material-ui/icons/LocalMall';
 import heroBg from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg'
-import LocalMallIcon from '../../../../assets/images/original/Contoso_Assets/Icons/cart-icon-copy.svg'
 export default function Corousel(props)
 {
     var items = [
@@ -17,17 +16,6 @@ export default function Corousel(props)
             description: "Elevate your game with the all-new Xbox Wireless Controller - Lunar Shift Special Edition",
             bg: heroBg
         },
-        {
-            name: "The Fastest, Most Powerful Xbox Ever.",
-            description: "Elevate your game with the all-new Xbox Wireless Controller - Lunar Shift Special Edition",
-            bg: heroBg
-        },
-        {
-            name: "The Fastest, Most Powerful Xbox Ever.",
-            description: "Elevate your game with the all-new Xbox Wireless Controller - Lunar Shift Special Edition",
-            bg: heroBg
-        },
-        
     ]
 
     return (
@@ -53,17 +41,13 @@ export default function Corousel(props)
             }}
             indicatorIconButtonProps={{
                 style: {
-                    color:'white',
-                    backgroundColor:'white',
-                    margin:'0 2px'
+                    color:'white'
                 }
         
             }}
             activeIndicatorIconButtonProps={{
                 style: {
-                    color:'#2874F0',
-                    backgroundColor:'#2874F0',
-                    margin:'0 2px'
+                    color:'#2874F0'
                 }
         
             }}
@@ -80,7 +64,7 @@ function Item(props)
     return (
         <div className="courousel-style" style={{ backgroundImage: 'url('+props.item.bg+')'}}>
             <Grid container spacing={3}>
-                <Grid item xs={6} className="BannerGrid">
+                <Grid item xs={5} className="BannerGrid">
                     <div className="BannerHeading">
                         {props.item.name}
                     </div>
@@ -94,7 +78,7 @@ function Item(props)
                             variant="contained"
                             color="primary"
                             className="box-shadow-0 text-transform-capitalize fw-regular BannerButton1"
-                            endIcon={<img src={LocalMallIcon} width={25} height='auto' alt=""/>}
+                            endIcon={<LocalMallIcon />}
                             size="large"
                         >
                             Buy Now
@@ -111,7 +95,7 @@ function Item(props)
                         </Button>
                     </div>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={7}>
                 </Grid>
             </Grid>
         </div>

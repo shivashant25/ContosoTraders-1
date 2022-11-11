@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-
-import CheckboxContainer from "./components/checkboxContainer";
 import { NamespacesConsumer } from "react-i18next";
-
-import { ReactComponent as FilterImg } from "../../../../assets/images/icon-filter.svg";
-
+import SidebarAccordion from "./components/sidebaraccordion";
 class ListAside extends Component {
     constructor() {
         super();
@@ -58,16 +54,12 @@ class ListAside extends Component {
     }
 
     render() {
-        const { typesList, brandsList } = this.props;
         return (
             <NamespacesConsumer>
                 {t => (
                     <aside className="list__aside">
-                        <button className="btn btn--secondary btn--float" onClick={this.openFilterPanel}>
-                            <FilterImg />
-                            <span>{t("list.aside.filtersTitle")}</span>
-                        </button>
-                        {this.state.showComponent && (
+                        <SidebarAccordion />
+                        {/* {this.state.showComponent && (
                             <div className={ this.state.isopened ? "list__panel is-opened" : "list__panel" } ref={this.filterPanel}>
                                 <CheckboxContainer
                                     onFilterChecked={this.props.onFilterChecked}
@@ -87,7 +79,7 @@ class ListAside extends Component {
                                     {t("list.aside.close")}
                                 </button>
                             </div>
-                        )}
+                        )} */}
                     </aside>
                 )}
             </NamespacesConsumer>

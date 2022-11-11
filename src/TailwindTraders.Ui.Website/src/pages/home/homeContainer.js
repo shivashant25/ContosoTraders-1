@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import Electrical from "../../assets/images/home_electrical.jpg";
 import Garden from "../../assets/images/home_gardencenter.jpg";
@@ -130,4 +131,4 @@ class HomeContainer extends Component {
 
 const mapStateToProps = state => state.login;
 
-export default connect(mapStateToProps)(HomeContainer);
+export default withRouter(connect(mapStateToProps)(HomeContainer));

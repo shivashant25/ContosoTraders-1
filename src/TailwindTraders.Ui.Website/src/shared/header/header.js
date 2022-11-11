@@ -35,7 +35,6 @@ class Header extends Component {
     }
 
     async componentDidMount() {
-        console.log(this.props.location.pathname)
         this.loadSettings();
 
         if (this.props.userInfo.token) {
@@ -49,7 +48,9 @@ class Header extends Component {
             setComponentVisibility(document.documentElement.clientWidth);
         });
     }
-
+    componentDidUpdate(prevProps){
+        this.props.setPathname(window.location.pathname)
+    }
     loadSettings = async () => {
         await ConfigService.loadSettings();
         const UseB2C = ConfigService._UseB2C;
@@ -104,22 +105,22 @@ class Header extends Component {
                     <header className="header">
                         <Categories />
                         <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
-                            <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/">
+                            <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/list/homeappliances">
                                 {t('shared.header.home')}
                             </Link>
-                            <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals">
+                            <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals" >
                                 {t('shared.header.newArrivals')}
                             </Link>
-                            <Link className="main-nav__item" to="/list/home">
+                            <Link className={window.location.pathname === '/list/home' ? "main-nav__item_active" : "main-nav__item"} to="/list/home">
                                 {t('shared.header.consoles')}
                             </Link>
-                            <Link className="main-nav__item" to="/list/gardening">
+                            <Link className={window.location.pathname === '/list/gardening' ? "main-nav__item_active" : "main-nav__item"} to="/list/gardening">
                                 {t('shared.header.laptops')}
                             </Link>
-                            <Link className="main-nav__item" to="/list/decor">
+                            <Link className={window.location.pathname === '/list/decor' ? "main-nav__item_active" : "main-nav__item"} to="/list/decor">
                                 {t('shared.header.accessories')}
                             </Link>
-                            <Link className="main-nav__item" to="/list/kitchen">
+                            <Link className={window.location.pathname === '/list/kitchen' ? "main-nav__item_active" : "main-nav__item"} to="/list/kitchen">
                                 {t('shared.header.deals')}
                             </Link>
                             <div className="main-nav__actions">
@@ -161,4 +162,4 @@ class Header extends Component {
 
 const mapStateToProps = state => state.login;
 
-export default connect(mapStateToProps, { clickAction })(withRouter(Header));
+export default withRouter(connect(mapStateToProps, { clickAction })(Header));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import {AppBar, InputAdornment, TextField} from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,7 +11,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { ReactComponent as Logo } from '../../assets/images/logo-horizontal.svg';
+import Logo from '../../assets/images/logo-horizontal.svg';
 import SearchIconNew from '../../assets/images/original/Contoso_Assets/Icons/image_search_icon.svg'
 import WishlistIcon from '../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
 import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: 67,
+    marginLeft: 63,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: 67,
+      marginLeft: 63,
       width: '50%',
       maxWidth: '650px',
       maxHeight: '48px'
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+function TopAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -173,9 +173,11 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar color='inherit' className='appbar box-shadow-0' position="static">
         <Toolbar className='p-0'>
-            <Link to="/">
-                <Logo />
-            </Link>
+          <div className='headerLogo'>
+            <a href="/">
+                <img src={Logo} alt=""/>
+            </a>
+          </div>
           <div className={`${classes.search} searchBar`}>
             <TextField
                 // label="Search by product name or search by image"
@@ -247,3 +249,4 @@ export default function PrimarySearchAppBar() {
     </div>
   );
 }
+export default withRouter(TopAppBar);

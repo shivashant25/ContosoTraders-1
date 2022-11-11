@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-
+import { withRouter } from 'react-router-dom';
 import { LoadingSpinner } from '../../shared/index';
 
 import List from './list';
@@ -102,4 +102,4 @@ class ListContainer extends Component {
   }
 }
 
-export default ListContainer;
+export default withRouter(ListContainer);

@@ -19,8 +19,8 @@ const Home = ({ recommendedProducts, popularProducts, loggedIn }) => {
     return (
         <div className="home">
             <Hero />
-            <Slider firstHeading="Explore Awesome Products" secondHeading="RECOMMENTED FOR YOU"/>
-            <Banner firstHeading="Xbox Wireless Controller – Mineral Camo Special Edition" secondHeading="Textured triggers and bumpers | Hybrid D-pad | Button mapping | Bluetooth® technology"/>
+            <Slider />
+            <Banner />
             <Gridsection />
             <Finalsection />
             {/* <Recommended recommendedProductsData={recommendedProducts} loggedIn={loggedIn} /> */}

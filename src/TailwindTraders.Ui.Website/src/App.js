@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import { Route, Router, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { CartService } from "./services";
-import { ConfigService } from "./services";
 import Meeting from './pages/home/components/videoCall/Meeting';
 
 import { Header, Footer ,Appbar } from "./shared";
@@ -14,23 +13,24 @@ import {
   SuggestedProductsList,
   Profile,
   ShoppingCart,
+  Arrivals,
 } from "./pages";
 
 import "./i18n";
 import "./main.scss";
 
 import { createBrowserHistory } from "history";
-import { ai } from "./services/telemetryClient";
+// import { ai } from "./services/telemetryClient";
 // add appinsights
 const history = createBrowserHistory({ basename: "" });
-(async () => {
-  await ConfigService.loadSettings();
-  if (ConfigService._applicationInsightsIntrumentationKey) {
-    ai.initialize(ConfigService._applicationInsightsIntrumentationKey, {
-      history,
-    });
-  }
-})();
+// (async () => {
+//   await ConfigService.loadSettings();
+//   if (ConfigService._applicationInsightsIntrumentationKey) {
+//     ai.initialize(ConfigService._applicationInsightsIntrumentationKey, {
+//       history,
+//     });
+//   }
+// })();
 
 class App extends Component {
   constructor() {
@@ -38,6 +38,7 @@ class App extends Component {
     this.state = {
       shoppingCart: [],
       quantity: null,
+      path: '/',
     };
   }
 
@@ -70,6 +71,9 @@ class App extends Component {
     });
   };
 
+  setPathname = (path) => {
+    this.setState({ path });
+  }
   render() {
     const { quantity } = this.state;
 
@@ -92,9 +96,13 @@ class App extends Component {
           <Fragment>
             <div className="mainHeader">
               <Appbar />
-              <Header quantity={quantity} />
+              {this.state.path === '/' || this.state.path === '/new-arrivals'?
+              <Header quantity={quantity} setPathname={this.setPathname}/>
+              :
+              <div id="box"></div>}
             </div>
             <Route exact path="/" component={Home} />
+            <Route exact path="/new-arrivals" component={Arrivals} />
             <Route exact path="/meeting" component={Meeting} />
             <Route exact path="/list" component={List} />
             <Route exact path="/list/:code" component={List} />
