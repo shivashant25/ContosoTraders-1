@@ -1,4 +1,4 @@
-name: tailwind-traders-products-api
+name: contoso-traders-products-api
 
 on:
   workflow_dispatch:

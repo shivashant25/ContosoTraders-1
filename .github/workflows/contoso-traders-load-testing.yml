@@ -1,4 +1,4 @@
-name: tailwind-traders-load-testing
+name: contoso-traders-load-testing
 
 on:
   workflow_dispatch:

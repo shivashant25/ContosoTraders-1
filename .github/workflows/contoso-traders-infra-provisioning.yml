@@ -1,4 +1,4 @@
-name: tailwind-traders-infra-provisioning
+name: contoso-traders-infra-provisioning
 
 on:
   workflow_dispatch:

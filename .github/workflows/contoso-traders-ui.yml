@@ -1,4 +1,4 @@
-name: tailwind-traders-ui
+name: contoso-traders-ui
 
 on:
   workflow_dispatch:
