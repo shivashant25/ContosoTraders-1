@@ -17,7 +17,6 @@
 		<Folder Include="Constants\" />
 		<Folder Include="EventStreams\Interfaces\" />
 		<Folder Include="EventStreams\Implementations\" />
-		<Folder Include="Exceptions\" />
 		<Folder Include="Models\Misc\" />
 		<Folder Include="Utilities\ExtensionMethods\" />
 		<Folder Include="Utilities\MiscHelpers\" />

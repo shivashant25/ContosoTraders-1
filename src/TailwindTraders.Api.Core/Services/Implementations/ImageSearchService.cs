@@ -12,11 +12,9 @@ internal class ImageSearchService : IImageSearchService
         _imageAnalysisService = imageAnalysisService;
     }
 
-    public async Task<ImageSearchResult> GetSimilarProductsAsync(Stream imageStream, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ProductDto>> GetSimilarProductsAsync(Stream imageStream, CancellationToken cancellationToken = default)
     {
         var searchTerms = await _imageAnalysisService.AnalyzeImageAsync(imageStream, cancellationToken);
-
-        var result = new ImageSearchResult();
 
         var products = new List<ProductDto>();
 
@@ -27,11 +25,20 @@ internal class ImageSearchService : IImageSearchService
             if (matchingProducts.Any())
                 products.AddRange(matchingProducts);
         }
-        
-        result.PredictedSearchTags = searchTerms;
 
-        result.SearchResults = products.Distinct();
+        if (!products.Any())
+        {
+            var searchTags = string.Empty;
 
-        return result;
+            searchTerms.ToList().ForEach(tag => { searchTags += $"{tag}, "; });
+
+            searchTags = searchTags.Remove(searchTags.Length - 2, 2) + '.';
+
+            throw new MatchingProductsNotFoundException(searchTags);
+        }
+
+        products = products.Distinct().ToList();
+
+        return products;
     }
 }

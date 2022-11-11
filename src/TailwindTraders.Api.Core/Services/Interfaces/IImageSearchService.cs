@@ -7,5 +7,5 @@ internal interface IImageSearchService
     /// <param name="imageStream"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<ImageSearchResult> GetSimilarProductsAsync(Stream imageStream, CancellationToken cancellationToken = default);
+    Task<IEnumerable<ProductDto>> GetSimilarProductsAsync(Stream imageStream, CancellationToken cancellationToken = default);
 }
