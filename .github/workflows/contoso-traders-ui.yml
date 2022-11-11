@@ -29,12 +29,12 @@ jobs:
     - name: azure login
       uses: azure/login@v1.1
       with:
-        creds: ${{ secrets.TAILWINDTRADERS_TESTING_SERVICEPRINCIPAL }}
+        creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
     - name: deploy to storage
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
     - name: purge CDN endpoint
       uses: azure/CLI@v1
       with:
-        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.TAILWINDTRADERS_SUFFIX }}'
+        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}'
