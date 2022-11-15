@@ -7,6 +7,8 @@ on:
     paths: [ 'src/TailwindTraders.Api.Products/**', 'src/TailwindTraders.Api.Core/**' ]
 
 env:
+  ACR_NAME: tailwindtradersacr
+  ACR_REPOSITORY_NAME: tailwindtradersapiproducts
   WEBAPP_NAME: tailwind-traders-products
 
 jobs:
@@ -24,6 +26,17 @@ jobs:
     - name: dotnet publish
       run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
       working-directory: src/TailwindTraders.Api.Products
+    - name: azure container registry login
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io
+        username: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+        password: ${{ secrets.CONTOSOTRADERS_ACR_PASSWORD }}
+    - name: docker build
+      run: docker build src -f ./src/TailwindTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
+    - name: docker push (to acr)
+      run: docker push ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
+    # @TODO: REMOVE EVERYTHING BELOW THIS LINE AFTER AKS INTEGRATION IS DONE
     - name: azure login
       uses: azure/login@v1.1
       with:
