@@ -101,6 +101,9 @@ public class DependencyInjection : FunctionsStartup
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
+        var appInsightsConnectionString = configuration[KeyVaultConstants.SecretNameAppInsightsConnectionString];
+        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsConnectionString);
+
         // @TODO: Temporary. Fix later.
         services.AddCors(options =>
             options.AddPolicy(_allowSpecificOrigins,

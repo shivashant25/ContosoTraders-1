@@ -8,6 +8,8 @@ internal class KeyVaultConstants
 
     public static readonly string SecretNameJwtAuthority = "jwtAuthority";
 
+    public static readonly string SecretNameAppInsightsConnectionString = "appInsightsConnectionString";
+
     public static readonly string SecretNameImagesEndpoint = "imagesEndpoint";
 
     public static readonly string SecretNameCartsDbConnectionString = "cartsDbConnectionString";

@@ -27,6 +27,7 @@ var kvSecretNameCartsDbConnStr = 'cartsDbConnectionString'
 var kvSecretNameImagesEndpoint = 'imagesEndpoint'
 var kvSecretNameCognitiveServicesEndpoint = 'cognitiveServicesEndpoint'
 var kvSecretNameCognitiveServicesAccountKey = 'cognitiveServicesAccountKey'
+var kvSecretNameAppInsightsConnStr = 'appInsightsConnectionString'
 
 // cosmos db (stocks db)
 var stocksDbAcctName = 'tailwind-traders-stocks${suffix}'
@@ -94,6 +95,10 @@ var acrName = 'tailwindtradersacr${suffix}'
 
 // load testing service
 var loadTestSvcName = 'tailwind-traders-loadtest${suffix}'
+
+// application insights
+var logAnalyticsWorkspaceName = 'tailwind-traders-loganalytics${suffix}'
+var appInsightsName = 'tailwind-traders-ai${suffix}'
 
 // portal dashboard
 var portalDashboardName = 'tailwind-traders-dashboard' // @TODO: rename later with suffix
@@ -234,6 +239,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'account key of the cognitive services'
       value: cognitiveservice.listKeys().key1
+    }
+  }
+
+  // secret
+  resource kv_secretAppInsightsConnStr 'secrets' = {
+    name: kvSecretNameAppInsightsConnStr
+    tags: resourceTags
+    properties: {
+      contentType: 'connection string to the app insights instance'
+      value: appinsights.properties.ConnectionString
     }
   }
 
@@ -1114,6 +1129,36 @@ resource loadtestsvc 'Microsoft.LoadTestService/loadTests@2022-12-01' = {
   tags: resourceTags
   identity: {
     type: 'SystemAssigned'
+  }
+}
+
+//
+// application insights
+//
+
+// log analytics workspace
+resource loganalyticsworkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: logAnalyticsWorkspaceName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+    sku: {
+      name: 'PerGB2018' // pay-as-you-go
+    }
+  }
+}
+
+// app insights instance
+resource appinsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: resourceLocation
+  tags: resourceTags
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: loganalyticsworkspace.id
   }
 }
 
