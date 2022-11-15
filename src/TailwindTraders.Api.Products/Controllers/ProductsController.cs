@@ -52,6 +52,7 @@ public class ProductsController : TailwindTradersControllerBase
     [HttpPost("imageclassifier")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostImage(IFormFile file)
     {
         var request = new PostImageRequest
