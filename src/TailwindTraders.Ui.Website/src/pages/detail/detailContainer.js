@@ -5,8 +5,11 @@ import { animateScroll as scroll } from "react-scroll";
 import { LoadingSpinner } from "../../shared";
 import Alert from "react-s-alert";
 
-import Detail from "./detail";
+// import Detail from "./detail";
 import { CartService, ProductService, UserService } from '../../services';
+import ProductDetails from "./productdetails";
+import Breadcrump from "../../components/breadcrump";
+import Slider from "../home/components/slider/slider";
 
 class DetailContainer extends Component {
     constructor(props) {
@@ -93,16 +96,22 @@ class DetailContainer extends Component {
         const { loggedIn } = this.props.userInfo
         return (
             <Fragment>
-                <Alert stack={{ limit: 1 }} />
-                {loading ? <LoadingSpinner /> :
-                    <Detail
+                <div className="ProductContainerSection">
+                    <Alert stack={{ limit: 1 }} />
+                    <Breadcrump />
+                    {loading ? <LoadingSpinner /> :
+                        <ProductDetails
                         loggedIn={loggedIn}
                         detailProductData={detailProduct}
                         addProductToCart={this.addProductToCart}
                         loadingRelated={loadingRelated}
                         relatedDetailProducts={relatedDetailProducts}
-                    />
-                }
+                        />
+                    }
+                </div>
+                <hr className="mb-3"/>
+                <Slider firstHeading="Explore Awesome Products" secondHeading="RECOMMENTED FOR YOU"/>
+                <hr className="m-0" />
             </Fragment>
         );
     }

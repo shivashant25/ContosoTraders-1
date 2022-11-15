@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import { OfferBanner, ListGrid, ListAside, Breadcrump } from "./components";
+import { OfferBanner, ListGrid, ListAside } from "./components";
+import Breadcrump  from "../../components/breadcrump";
 import { withRouter } from "react-router-dom";
 
 const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }) => {

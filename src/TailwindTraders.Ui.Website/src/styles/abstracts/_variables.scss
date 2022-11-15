@@ -145,13 +145,13 @@ $checkbox-size: 1.5rem;
 $container-width-xl: 76.5rem;
 
 $space-default: $font-base; // Is dependant on $font-base and should be 1em;
-$space-xxs: $space-default / 8; // 2px
-$space-xs: $space-default / 4; // 4px
-$space-s: $space-default / 2; // 8px
-$space-m: $space-default; // 16px
-$space-l: $space-default * 2; // 32px
-$space-xl: $space-default * 4; // 64px
-$space-xxl: $space-default * 6; // 96px
+$space-xxs: calc($space-default / 8); // 2px
+$space-xs: calc($space-default / 4); // 4px
+$space-s: calc($space-default / 2); // 8px
+$space-m: calc($space-default); // 16px
+$space-l: calc($space-default * 2); // 32px
+$space-xl: calc($space-default * 4); // 64px
+$space-xxl: calc($space-default * 6); // 96px
 
 // #Padding
 $padding-xxs: $space-xxs; // 2px

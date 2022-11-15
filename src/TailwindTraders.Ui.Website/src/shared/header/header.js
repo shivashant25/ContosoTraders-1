@@ -48,9 +48,7 @@ class Header extends Component {
             setComponentVisibility(document.documentElement.clientWidth);
         });
     }
-    componentDidUpdate(prevProps){
-        this.props.setPathname(window.location.pathname)
-    }
+
     loadSettings = async () => {
         await ConfigService.loadSettings();
         const UseB2C = ConfigService._UseB2C;

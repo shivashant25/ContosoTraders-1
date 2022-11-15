@@ -1,7 +1,7 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
 import { Button, Grid } from '@material-ui/core'
-import LocalMallIcon from '@material-ui/icons/LocalMall';
+import LocalMallIcon from '../../../../assets/images/original/Contoso_Assets/Icons/cart-icon-copy.svg'
 import heroBg from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg'
 export default function Corousel(props)
 {
@@ -41,13 +41,17 @@ export default function Corousel(props)
             }}
             indicatorIconButtonProps={{
                 style: {
-                    color:'white'
+                    color:'white',
+                    backgroundColor:'white',
+                    margin:'0 2px'
                 }
         
             }}
             activeIndicatorIconButtonProps={{
                 style: {
-                    color:'#2874F0'
+                    color:'#2874F0',
+                    backgroundColor:'#2874F0',
+                    margin:'0 2px'
                 }
         
             }}
@@ -64,7 +68,7 @@ function Item(props)
     return (
         <div className="courousel-style" style={{ backgroundImage: 'url('+props.item.bg+')'}}>
             <Grid container spacing={3}>
-                <Grid item xs={5} className="BannerGrid">
+                <Grid item xs={6} className="BannerGrid">
                     <div className="BannerHeading">
                         {props.item.name}
                     </div>
@@ -78,7 +82,7 @@ function Item(props)
                             variant="contained"
                             color="primary"
                             className="box-shadow-0 text-transform-capitalize fw-regular BannerButton1"
-                            endIcon={<LocalMallIcon />}
+                            endIcon={<img src={LocalMallIcon} width={25} height='auto' alt=""/>}
                             size="large"
                         >
                             Buy Now
@@ -95,7 +99,7 @@ function Item(props)
                         </Button>
                     </div>
                 </Grid>
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                 </Grid>
             </Grid>
         </div>

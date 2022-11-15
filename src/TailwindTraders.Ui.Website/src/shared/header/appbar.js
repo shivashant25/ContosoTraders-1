@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import {AppBar, InputAdornment, TextField} from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: 63,
+    marginLeft: 50,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: 63,
+      marginLeft: 50,
       width: '50%',
       maxWidth: '650px',
       maxHeight: '48px'
@@ -174,9 +174,9 @@ function TopAppBar() {
       <AppBar color='inherit' className='appbar box-shadow-0' position="static">
         <Toolbar className='p-0'>
           <div className='headerLogo'>
-            <a href="/">
+            <Link to="/">
                 <img src={Logo} alt=""/>
-            </a>
+            </Link>
           </div>
           <div className={`${classes.search} searchBar`}>
             <TextField
