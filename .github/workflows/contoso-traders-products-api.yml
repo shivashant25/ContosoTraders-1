@@ -3,48 +3,71 @@ name: contoso-traders-products-api
 on:
   workflow_dispatch:
   push:
-    branches: [ "master" ]
-    paths: [ 'src/TailwindTraders.Api.Products/**', 'src/TailwindTraders.Api.Core/**' ]
+    branches: ["master"]
+    paths:
+      ["src/TailwindTraders.Api.Products/**", "src/TailwindTraders.Api.Core/**"]
 
 env:
   ACR_NAME: tailwindtradersacr
   ACR_REPOSITORY_NAME: tailwindtradersapiproducts
+  AKS_CLUSTER_NAME: tailwind-traders-aks
+  AKS_RESOURCE_GROUP_NAME: tailwind-traders-rg
+  AKS_SECRET_NAME: tailwind-traders-aks-secret
   WEBAPP_NAME: tailwind-traders-products
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: checkout code
-      uses: actions/checkout@v3
-    - name: install dotnet
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    - name: dotnet publish
-      run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
-      working-directory: src/TailwindTraders.Api.Products
-    - name: azure container registry login
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io
-        username: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
-        password: ${{ secrets.CONTOSOTRADERS_ACR_PASSWORD }}
-    - name: docker build
-      run: docker build src -f ./src/TailwindTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
-    - name: docker push (to acr)
-      run: docker push ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
-    # @TODO: REMOVE EVERYTHING BELOW THIS LINE AFTER AKS INTEGRATION IS DONE
-    - name: azure login
-      uses: azure/login@v1.1
-      with:
-        creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
-    - name: diagnostic output
-      run: ls -la ./src/Publish/TailwindTraders.Api.Products
-    - name: deploy to app service
-      uses: Azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.WEBAPP_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
-        package: ./src/Publish/TailwindTraders.Api.Products
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure container registry login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io
+          username: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+          password: ${{ secrets.CONTOSOTRADERS_ACR_PASSWORD }}
+      - name: docker build
+        run: docker build src -f ./src/TailwindTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: docker push (to acr)
+        run: docker push ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: azure login
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+      - name: set aks context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.AKS_RESOURCE_GROUP_NAME }}
+          cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+      - name: setup kubectl
+        uses: azure/setup-kubectl@v3
+      - name: create kubernetes secret
+        uses: Azure/k8s-create-secret@v1.1
+        with:
+          container-registry-url: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io
+          container-registry-username: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+          container-registry-password: ${{ secrets.CONTOSOTRADERS_ACR_PASSWORD }}
+          secret-name: ${{ env.AKS_SECRET_NAME }}
+      - name: deploy to aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./iac/aks/aks.yaml
+          images: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
+          imagepullsecrets: ${{ env.AKS_SECRET_NAME }}
+      # @TODO: REMOVE EVERYTHING BELOW THIS LINE AFTER AKS INTEGRATION IS DONE
+      - name: install dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      - name: dotnet publish
+        run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
+        working-directory: src/TailwindTraders.Api.Products
+      - name: diagnostic output
+        run: ls -la ./src/Publish/TailwindTraders.Api.Products
+      - name: deploy to app service
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.WEBAPP_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+          package: ./src/Publish/TailwindTraders.Api.Products

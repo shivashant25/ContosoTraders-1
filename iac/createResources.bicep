@@ -280,6 +280,13 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
             secrets: [ 'get', 'list' ]
           }
         }
+        {
+          tenantId: tenantId
+          objectId: aks.identity.principalId
+          permissions: {
+            secrets: [ 'get', 'list' ]
+          }
+        }
       ]
     }
   }
