@@ -18,6 +18,13 @@
           font-family: 'Heebo';
           font-size: 14px;
           font-weight: 500;
+          a{
+            color: #000000;
+            &:hover{
+              color: #2974f0 !important;
+              text-decoration: none;
+            }
+          }
       }
     }
   }

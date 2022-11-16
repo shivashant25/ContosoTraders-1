@@ -1,16 +1,18 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import { OfferBanner, ListGrid, ListAside } from "./components";
-import Breadcrump  from "../../components/breadcrump";
-import { withRouter } from "react-router-dom";
+import Breadcrump  from "../../components/breadcrumb";
+import { withRouter, useHistory } from "react-router-dom";
 
 const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }) => {
+    const history = useHistory();
+    const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
     return (
         <div className="list">
-            <Breadcrump />
+            <Breadcrump parentPath='Product Collection' parentUrl="/list/home" currentPath={currentCategory} />
             <OfferBanner />
             <div className="list__content">
-                <h6 className="mainHeading">Controllers</h6>
+                <h6 className="mainHeading">{currentCategory}</h6>
                 <Grid container>
                     <Grid item xs={3}>
                         <ListAside

@@ -46,7 +46,7 @@
     will-change: right;
     z-index: $z-index-l;
 
-    @media (min-width: $mq-r) {
+    @media (min-width: $mq-sl) {
         background-color: transparent;
         height: auto;
         // justify-content: space-around;
@@ -127,7 +127,7 @@
         display: none;
     }
 
-    @media (min-width: $mq-r) {
+    @media (min-width: $mq-sl) {
         svg:nth-child(2) {
             display: inline;
         }

@@ -20,10 +20,10 @@ const Footer = () => {
         <Grid item xs={2} className='section-2'>
             <ul>
                 <li className='main-element'>Products</li>
-                <li className='list-element'>Trending</li>
-                <li className='list-element'>My Account</li>
-                <li className='list-element'>Vendors</li>
-                <li className='list-element'>Brands</li>
+                {/* <li className='list-element'>My Account</li> */}
+                <li className='list-element'><Link to='/list/home'>Consoles</Link></li>
+                <li className='list-element'><Link to='/list/gardening'>Laptops</Link></li>
+                <li className='list-element'><Link to='/list/decor'>Accessories</Link></li>
             </ul>
         </Grid>
         <Grid item xs={2} className='section-3'>

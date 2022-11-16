@@ -10,8 +10,8 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-
+// import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import { useHistory } from 'react-router-dom';
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
@@ -44,6 +44,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export default function CustomizedMenus() {
+  const history  = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -53,6 +54,10 @@ export default function CustomizedMenus() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const redirectUrl = (url) => {
+    history.push(url)
+  }
 
   return (
     <div>
@@ -76,31 +81,67 @@ export default function CustomizedMenus() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/home')}>
           <ListItemIcon>
             <SendIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Laptops" />
           <ListItemIcon className='justify-content-end'>
-            <ArrowForwardIosIcon fontSize="small"/>
+            {/* <ArrowForwardIosIcon fontSize="small" size="small" /> */}
           </ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/gardening')}>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Gaming & Accessories" />
           <ListItemIcon className='justify-content-end'>
-            <ArrowForwardIosIcon fontSize="small"/>
+            {/* <ArrowForwardIosIcon fontSize="small"/> */}
           </ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/decor')}>
+          <ListItemIcon>
+            <InboxIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Computer Accessories" />
+          <ListItemIcon className='justify-content-end'>
+            {/* <ArrowForwardIosIcon fontSize="small"/> */}
+          </ListItemIcon>
+        </StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/kitchen')}>
           <ListItemIcon>
             <InboxIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Tablets" />
           <ListItemIcon className='justify-content-end'>
-            <ArrowForwardIosIcon fontSize="small"/>
+            {/* <ArrowForwardIosIcon fontSize="small"/> */}
+          </ListItemIcon>
+        </StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/home')}>
+          <ListItemIcon>
+            <SendIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Speakers" />
+          <ListItemIcon className='justify-content-end'>
+            {/* <ArrowForwardIosIcon fontSize="small"/> */}
+          </ListItemIcon>
+        </StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/home')}>
+          <ListItemIcon>
+            <InboxIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Camera" />
+          <ListItemIcon className='justify-content-end'>
+            {/* <ArrowForwardIosIcon fontSize="small"/> */}
+          </ListItemIcon>
+        </StyledMenuItem>
+        <StyledMenuItem onClick={() => redirectUrl('/list/home')}>
+          <ListItemIcon>
+            <DraftsIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Network Components" />
+          <ListItemIcon className='justify-content-end'>
+            {/* <ArrowForwardIosIcon fontSize="small"/> */}
           </ListItemIcon>
         </StyledMenuItem>
       </StyledMenu>

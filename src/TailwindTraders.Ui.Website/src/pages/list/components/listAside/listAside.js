@@ -58,7 +58,12 @@ class ListAside extends Component {
             <NamespacesConsumer>
                 {t => (
                     <aside className="list__aside">
-                        <SidebarAccordion />
+                        <SidebarAccordion 
+                            onFilterChecked={this.props.onFilterChecked}
+                            data={this.props.brandsList}
+                            title="Brands"
+                            id="brand"
+                        />
                         {/* {this.state.showComponent && (
                             <div className={ this.state.isopened ? "list__panel is-opened" : "list__panel" } ref={this.filterPanel}>
                                 <CheckboxContainer

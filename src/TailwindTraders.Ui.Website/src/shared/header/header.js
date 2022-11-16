@@ -106,9 +106,9 @@ class Header extends Component {
                             <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/list/homeappliances">
                                 {t('shared.header.home')}
                             </Link>
-                            <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals" >
+                            {/* <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals" >
                                 {t('shared.header.newArrivals')}
-                            </Link>
+                            </Link> */}
                             <Link className={window.location.pathname === '/list/home' ? "main-nav__item_active" : "main-nav__item"} to="/list/home">
                                 {t('shared.header.consoles')}
                             </Link>
@@ -118,9 +118,9 @@ class Header extends Component {
                             <Link className={window.location.pathname === '/list/decor' ? "main-nav__item_active" : "main-nav__item"} to="/list/decor">
                                 {t('shared.header.accessories')}
                             </Link>
-                            <Link className={window.location.pathname === '/list/kitchen' ? "main-nav__item_active" : "main-nav__item"} to="/list/kitchen">
+                            {/* <Link className={window.location.pathname === '/list/kitchen' ? "main-nav__item_active" : "main-nav__item"} to="/list/kitchen">
                                 {t('shared.header.deals')}
-                            </Link>
+                            </Link> */}
                             <div className="main-nav__actions">
                                 <Link className="main-nav__item" to="/profile">
                                     {t('shared.header.profile')}

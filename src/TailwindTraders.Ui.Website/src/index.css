@@ -1,14 +1,16 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Heebo&family=Inter&family=Poppins&family=Roboto&display=swap');
-@font-face {
-  font-family: 'Inter';
-  src: local('Inter'), url('./fonts/Inter/static/Inter-Regular.ttf') format('truetype');
-} */
+:root {
+  --primaryblue: #2974f0;
+  --fontInter: 'Inter';
+  --fontRoboto: 'Roboto';
+  --fontHeebo: 'Heebo';
+  --white: #ffffff;
+}
 body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Roboto'!important;
+  font-family: var(--fontRoboto) !important;
 }
 .fs-12{
   font-size: 12px!important;
@@ -63,7 +65,7 @@ body {
 }
 .outlined-primary-btn{
   text-align: center;
-  font: normal normal medium 16px/21px "Roboto";
+  font: normal normal medium 16px/21px var(--fontRoboto);
   color: #302f2f;
   text-transform: capitalize;
   opacity: 1;
@@ -75,7 +77,7 @@ body {
   border-radius: 5px;
   font-weight: 500;
   font-size: 16px;
-  font-family: "Roboto";
+  font-family: var(--fontRoboto);
 }
 .outlined-primary-btn:hover{
   border-color: #2874F0 !important;
@@ -104,8 +106,25 @@ body {
   z-index:-1;
   transform:scale(.9); */
 }
-
-
+#customized-menu .MuiPopover-paper{
+  left: 70px!important;
+}
+#customized-menu .MuiMenu-paper{
+  box-shadow: 0px 3px 26px #00000029;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+}
+#customized-menu .MuiPopover-paper .MuiTypography-root{
+  font-family: 'Poppins' !important;
+  font-size: 16px;
+}
+#customized-menu .MuiPopover-paper .MuiListItemIcon-root{
+  min-width: 40px;
+}
+#customized-menu .MuiPopover-paper ul li{
+  min-width: 341px;
+  padding: 12px 19px;
+}
 .minimalSelect{
   background-color: #0000000A;
   min-width: 238px;
@@ -118,7 +137,7 @@ body {
 }
 .minimalSelect .MuiSelect-select{
   background-color: transparent !important;
-  font-family: 'Inter';
+  font-family: var(--fontInter);
   font-weight: 500;
   color: #626262;
   font-size: 16px;
@@ -154,6 +173,7 @@ body {
   width: 100%;
 }
 .mainHeader .categories-btn{
+  min-width: 198px;
   background-color: #F8F8F8 !important;
   border: 1px solid #EFEFEF !important;
 }
@@ -283,17 +303,18 @@ button[aria-label='Next'] {
 }
 .courousel-style .BannerHeading {
   text-align: left;
-  font-family: 'Inter' !important;
+  font-family: var(--fontInter) !important;
   font-size: 34px !important;
   font-weight: 600 !important;
   color: #ffffff;
   opacity: 1;
   padding: 0px 0px 0px 0px;
   text-transform: capitalize;
+  letter-spacing: -1.59px;
 }
 .courousel-style .BannerContent {
   text-align: left;
-  font-family: 'Heebo' !important;
+  font-family: var(--fontHeebo) !important;
   font-size: 16px !important;
   font-weight: 400 !important;
   color: #ffffff;
@@ -312,7 +333,7 @@ button[aria-label='Next'] {
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  font-family: "Heebo" !important;
+  font-family: var(--fontHeebo) !important;
   font-size: 16px !important;
   font-weight: 500 !important;
   color: #ffffff;
@@ -328,7 +349,7 @@ button[aria-label='Next'] {
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  font-family: "Heebo" !important;
+  font-family: var(--fontHeebo) !important;
   font-size: 16px !important;
   font-weight: 500 !important;
   letter-spacing: -0.36px;
@@ -396,26 +417,26 @@ button[aria-label='Next'] {
   cursor: pointer;
 }
 .productName{
-  font-family: 'Inter' !important;
+  font-family: var(--fontInter) !important;
   font-weight: 600 !important;
   font-size: 16px !important;
   color: #171520 !important;
 }
 
 .productType{
-  font-family: 'Inter' !important;
+  font-family: var(--fontInter) !important;
   font-weight: 400 !important;
   font-size: 14px !important;
   color: #626262 !important;
 }
 .productOrgPrice{
-  font-family: 'Inter' !important;
+  font-family: var(--fontInter) !important;
   font-weight: 500 !important;
   font-size: 20px !important;
   color: #171520 !important;
 }
 .productOldPrice{
-  font-family: 'Inter' !important;
+  font-family: var(--fontInter) !important;
   font-weight: 400 !important;
   font-size: 14px !important;
   color: #626262 !important;
@@ -423,7 +444,7 @@ button[aria-label='Next'] {
 
 }
 .productOffer{
-  font-family: 'Inter' !important;
+  font-family: var(--fontInter) !important;
   font-weight: 400 !important;
   font-size: 14px !important;
   color: #E21D1D !important;
@@ -474,13 +495,13 @@ button[aria-label='Next'] {
 
   color: var(--unnamed-color-ffffff);
   text-align: center;
-  font: normal normal medium 16px/21px "Roboto";
+  font: normal normal medium 16px/21px var(--fontRoboto);
   letter-spacing: -0.36px;
   color: #ffffff;
 
   font-weight: 500;
   font-size: 16px;
-  font-family: "Roboto";
+  font-family: var(--fontRoboto);
 }
 
 
@@ -519,7 +540,7 @@ button[aria-label='Next'] {
 }
 .LaptopSection .LaptopButton {
   text-align: center;
-  font: normal normal medium 16px/21px "Roboto";
+  font: normal normal medium 16px/21px var(--fontRoboto);
   letter-spacing: -0.36px;
   color: #302f2f;
   text-transform: capitalize;
@@ -532,7 +553,7 @@ button[aria-label='Next'] {
   border-radius: 5px;
   font-weight: 500;
   font-size: 16px;
-  font-family: "Roboto";
+  font-family: var(--fontRoboto);
 }
 .LaptopSection .lapsecimage {
   border-radius: 5px;
@@ -606,6 +627,10 @@ button[aria-label='Next'] {
 }
 .footer-container .footer-grid-container li {
   padding-bottom: 20px;
+}
+.footer-container .footer-grid-container li a{
+  color: #302F2F;
+  text-decoration: none !important;
 }
 .footer-container .footer-grid-container p {
   font-family: 'Roboto' !important;
@@ -689,6 +714,13 @@ button[aria-label='Next'] {
   border-radius: 5px;
   font-weight: 500;
   font-size: 16px;
-  font-family: "Roboto" !important;
+  font-family: var(--fontRoboto) !important;
   margin-top: 34px;
+}
+
+
+@media screen and (max-width : 1350px){
+  .final-section-container{
+    background-size: contain;
+  }
 }

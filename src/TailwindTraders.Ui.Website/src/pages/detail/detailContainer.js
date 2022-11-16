@@ -8,7 +8,7 @@ import Alert from "react-s-alert";
 // import Detail from "./detail";
 import { CartService, ProductService, UserService } from '../../services';
 import ProductDetails from "./productdetails";
-import Breadcrump from "../../components/breadcrump";
+import Breadcrump from "../../components/breadcrumb";
 import Slider from "../home/components/slider/slider";
 
 class DetailContainer extends Component {
@@ -98,7 +98,7 @@ class DetailContainer extends Component {
             <Fragment>
                 <div className="ProductContainerSection">
                     <Alert stack={{ limit: 1 }} />
-                    <Breadcrump />
+                    <Breadcrump parentPath='Products' parentUrl="/list/home" currentPath={detailProduct.name} />
                     {loading ? <LoadingSpinner /> :
                         <ProductDetails
                         loggedIn={loggedIn}

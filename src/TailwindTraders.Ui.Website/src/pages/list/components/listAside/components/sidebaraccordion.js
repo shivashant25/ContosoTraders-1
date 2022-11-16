@@ -50,15 +50,23 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-export default function SidebarAccordion() {
-  const [expanded, setExpanded] = React.useState("panel2");
+export default function SidebarAccordion(props) {
+  const [expanded, setExpanded] = React.useState("panel1");
   const [color, setColorState] = React.useState({ blue : true });
+  const [checkedItems, setCheckedItems] =  React.useState(new Map());
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
   const handleColorChange = (event) => {
     setColorState({ ...color, [event.target.name]: event.target.checked });
   };
+  const handleChangeBrands = (e, dataType) => {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    setCheckedItems(checkedItems.set(item, isChecked));
+    props.onFilterChecked(e, dataType);
+  };
+  const dataType = props.id;
   return (
     <div className="AccordionSection">
       <Accordion
@@ -82,19 +90,25 @@ export default function SidebarAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={2}>
-            <Grid item xs={12} className="descpAttributes">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={true}
-                  // onChange={handleChange}
-                  name="blue"
-                  color="primary"
+            {props.data && props.data.map((item,key) => (
+              <Grid item xs={12} className="descpAttributes">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkedItems.get(item.name)}
+                      onChange={(e)=>{
+                        handleChangeBrands(e, dataType)
+                      }}
+                      name={`brand${item.id}`}
+                      color="primary"
+                      code={`${item.code || item.id}`}
+                      id={item.id}
+                    />
+                  }
+                  label={item.name}
                 />
-              }
-              label="Blue"
-            />
-            </Grid>
+              </Grid>
+            ))}
           </Grid>
         </AccordionDetails>
       </Accordion>

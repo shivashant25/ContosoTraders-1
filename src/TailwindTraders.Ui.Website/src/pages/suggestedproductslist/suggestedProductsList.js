@@ -1,27 +1,24 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import Breadcrump from "../../components/breadcrump";
+import Breadcrump from "../../components/breadcrumb";
 import { ListAside, ListGrid } from "../list/components";
-
+import { useHistory } from "react-router-dom";
 const SuggestedProductsList = (props) => {
     const [suggestedProductsList, setSuggestedProductsList] = React.useState(null);
+    const history = useHistory();
+    const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
     React.useEffect(() => {
         const suggestedProducts = props.location.state;
         setSuggestedProductsList(suggestedProducts.relatedProducts);
     }, [props.location.state]);
     return (
         <div className="list">
-            <Breadcrump />
-            {/* <OfferBanner /> */}
+            <Breadcrump currentPath={currentCategory}/>
             <div className="list__content">
-                <h6 className="mainHeading">Controllers</h6>
+                <h6 className="mainHeading">{currentCategory}</h6>
                 <Grid container>
                     <Grid item xs={3}>
-                        <ListAside
-                            // onFilterChecked={onFilterChecked}
-                            // typesList={typesList}
-                            // brandsList={brandsList}
-                        />
+                        <ListAside/>
                     </Grid>
                     <Grid item xs={9}>
                         <ListGrid productsList={suggestedProductsList} />
