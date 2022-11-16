@@ -4,6 +4,9 @@
   "parameters": {
     "suffix": {
       "value": "111222"
+    },
+    "aksLinuxAdminUsername": {
+      "value": "localadmin"
     }
   }
 }

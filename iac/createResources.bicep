@@ -15,6 +15,9 @@ param resourceLocation string = resourceGroup().location
 // tenant
 param tenantId string = subscription().tenantId
 
+// aks
+param aksLinuxAdminUsername string // value supplied via parameters file
+
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -102,6 +105,10 @@ var appInsightsName = 'tailwind-traders-ai${suffix}'
 
 // portal dashboard
 var portalDashboardName = 'tailwind-traders-dashboard' // @TODO: rename later with suffix
+
+// aks cluster
+var aksClusterName = 'tailwind-traders-aks${suffix}'
+var aksClusterDnsPrefix = 'tailwind-traders-aks${suffix}'
 
 // tags
 var resourceTags = {
@@ -1186,6 +1193,42 @@ resource dashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
         ]
       }
     ]
+  }
+}
+
+//
+// aks cluster
+//
+
+resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
+  name: aksClusterName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    dnsPrefix: aksClusterDnsPrefix
+    agentPoolProfiles: [
+      {
+        name: 'agentpool'
+        osDiskSizeGB: 0 // Specifying 0 will apply the default disk size for that agentVMSize.
+        count: 3
+        vmSize: 'standard_d2s_v3'
+        osType: 'Linux'
+        mode: 'System'
+      }
+    ]
+    linuxProfile: {
+      adminUsername: aksLinuxAdminUsername
+      ssh: {
+        publicKeys: [
+          {
+            keyData: loadTextContent('rsa.pub') // @TODO: temporary hack, until we autogen the keys
+          }
+        ]
+      }
+    }
   }
 }
 
