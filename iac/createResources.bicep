@@ -131,7 +131,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     // @TODO: Hack to enable temporary access to devs during local development/debugging.
     accessPolicies: [
       {
-        objectId: '70667219-36e5-4217-be0a-3a5cd0eba66d'
+        objectId: '31de563b-fc1a-43a2-9031-c47630038328'
         tenantId: tenantId
         permissions: {
           secrets: [
@@ -146,7 +146,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
         }
       }
       {
-        objectId: 'd56edb65-a0c3-40c2-8e92-77556c99a996'
+        objectId: '934b38ce-5fb9-4c3d-9dbe-b621ffecd34c'
         tenantId: tenantId
         permissions: {
           secrets: [
@@ -156,17 +156,12 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
         }
       }
       {
-        objectId: 'e9c72dae-7ea1-483d-be9c-f629f6641f7e'
+        objectId: '55694e57-8acc-40cf-bad2-a8a7a37a905c'
         tenantId: tenantId
         permissions: {
           secrets: [
             'get'
             'list'
-            'delete'
-            'set'
-            'recover'
-            'backup'
-            'restore'
           ]
         }
       }
@@ -426,10 +421,19 @@ resource productsdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
   }
 
   // sql azure firewall rule (allow access from all azure resources/services)
-  resource productsdbsrv_db_fwl 'firewallRules' = {
+  resource productsdbsrv_db_fwlallowazureresources 'firewallRules' = {
     name: 'AllowAllWindowsAzureIps'
     properties: {
       endIpAddress: '0.0.0.0'
+      startIpAddress: '0.0.0.0'
+    }
+  }
+
+  // @TODO: Hack to enable temporary access to devs during local development/debugging.
+  resource productsdbsrv_db_fwllocaldev 'firewallRules' = {
+    name: 'AllowLocalDevelopment'
+    properties: {
+      endIpAddress: '255.255.255.255'
       startIpAddress: '0.0.0.0'
     }
   }
