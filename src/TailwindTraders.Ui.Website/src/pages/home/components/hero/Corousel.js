@@ -3,6 +3,7 @@ import Carousel from 'react-material-ui-carousel'
 import { Button, Grid } from '@material-ui/core'
 import LocalMallIcon from '../../../../assets/images/original/Contoso_Assets/Icons/cart-icon-copy.svg'
 import heroBg from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg'
+import { useHistory } from 'react-router-dom';
 export default function Corousel(props)
 {
     var items = [
@@ -65,6 +66,10 @@ export default function Corousel(props)
 
 function Item(props)
 {
+    const history = useHistory()
+    const buyNow = (id) => {
+        history.push('/product/detail/'+id)
+    }
     return (
         <div className="courousel-style" style={{ backgroundImage: 'url('+props.item.bg+')'}}>
             <Grid container spacing={3}>
@@ -84,6 +89,7 @@ function Item(props)
                             className="box-shadow-0 text-transform-capitalize fw-regular BannerButton1"
                             endIcon={<img src={LocalMallIcon} width={25} height='auto' alt=""/>}
                             size="large"
+                            onClick={()=>buyNow(1)}
                         >
                             Buy Now
                         </Button>

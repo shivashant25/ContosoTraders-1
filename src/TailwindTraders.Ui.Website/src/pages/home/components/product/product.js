@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Product(props) {
   const classes = useStyles();
   const history = useHistory()
-  const  { prodImg, imageUrl, name, price, id } = props;
+  const  { prodImg, imageUrl, name, price, id, type } = props;
   const productDetailPage = (id = 1) => {
     history.push('/product/detail/'+id)
   }
@@ -55,7 +55,7 @@ export default function Product(props) {
             </IconButton>
         </div>
         <Typography variant="body2" color="textSecondary" className='productType' component="p">
-          Controller
+          {type?type.name:'Controller'}
         </Typography>
         <div style={{display:'flex',alignItems:'center',paddingTop:'10px'}}>
             <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}} className="productOrgPrice m-0 mr-1">

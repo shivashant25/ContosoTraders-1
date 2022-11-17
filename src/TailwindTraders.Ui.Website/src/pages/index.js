@@ -6,7 +6,10 @@ import SuggestedProductsList from './suggestedproductslist/suggestedProductsList
 import Profile from './profile/profileContainer';
 import ShoppingCart from './shoppingcart/shoppingCart'
 import Arrivals from './arrivals/arrivals';
-
+import RefundPolicy from './legals/refundPolicy';
+import TermsOfService from './legals/termsOfService';
+import AboutUs from './legals/aboutUs';
+import ErrorPage from './error/errorPage';
 export {
     Home,
     Arrivals,
@@ -15,5 +18,9 @@ export {
     List,
     SuggestedProductsList,
     Profile,
-    ShoppingCart
+    ShoppingCart,
+    RefundPolicy,
+    TermsOfService,
+    AboutUs,
+    ErrorPage
 };

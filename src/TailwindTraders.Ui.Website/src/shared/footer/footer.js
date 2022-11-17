@@ -19,19 +19,20 @@ const Footer = () => {
         </Grid>
         <Grid item xs={2} className='section-2'>
             <ul>
-                <li className='main-element'>Products</li>
+                <li className='main-element'>Catalog</li>
                 {/* <li className='list-element'>My Account</li> */}
-                <li className='list-element'><Link to='/list/home'>Consoles</Link></li>
-                <li className='list-element'><Link to='/list/gardening'>Laptops</Link></li>
-                <li className='list-element'><Link to='/list/decor'>Accessories</Link></li>
+                <li className='list-element'><Link to='/list/home'>All Products</Link></li>
+                <li className='list-element'><Link to='/list/gardening'>Controllers</Link></li>
+                <li className='list-element'><Link to='/list/decor'>Laptops</Link></li>
+                <li className='list-element'><Link to='/list/decor'>Monitors</Link></li>
             </ul>
         </Grid>
         <Grid item xs={2} className='section-3'>
-        <ul>
-            <li className='main-element'>Legals</li>
-            <li className='list-element'>License</li>
-            <li className='list-element'>Refund Policy</li>
-            <li className='list-element'>About Us</li>
+            <ul>
+                <li className='main-element'>Legals</li>
+                <li className='list-element'><Link to='/terms-of-service'>Terms of Service</Link></li>
+                <li className='list-element'><Link to='/refund-policy'>Refund Policy</Link></li>
+                <li className='list-element'><Link to='/about-us'>About Us</Link></li>
             </ul>
         </Grid>
         <Grid item xs={4} className='section-4'>

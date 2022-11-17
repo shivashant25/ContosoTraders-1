@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { Route, withRouter } from "react-router-dom";
+import { Route, withRouter, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { CartService } from "./services";
 import Meeting from './pages/home/components/videoCall/Meeting';
 
-import { Header, Footer ,Appbar } from "./shared";
+import { Header, Footer, Appbar } from "./shared";
 import {
   Home,
   List,
@@ -14,6 +14,10 @@ import {
   Profile,
   ShoppingCart,
   Arrivals,
+  RefundPolicy,
+  TermsOfService,
+  AboutUs,
+  ErrorPage
 } from "./pages";
 
 import "./i18n";
@@ -76,15 +80,15 @@ class App extends Component {
 
     return (
       <div className="App">
-        {/* <Router history={history}> */}
-          <Fragment>
-            <div className="mainHeader">
-              <Appbar />
-              {this.props.history.location.pathname === '/' || this.props.history.location.pathname === '/new-arrivals'?
-              <Header quantity={quantity}/>
+        <Fragment>
+          <div className="mainHeader">
+            <Appbar />
+            {this.props.history.location.pathname === '/' || this.props.history.location.pathname === '/new-arrivals' ?
+              <Header quantity={quantity} />
               :
               <div id="box"></div>}
-            </div>
+          </div>
+          <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/new-arrivals" component={Arrivals} />
             <Route exact path="/meeting" component={Meeting} />
@@ -100,6 +104,9 @@ class App extends Component {
                 <Detail sumProductInState={this.sumProductInState} {...props} />
               )}
             />
+            <Route path="/refund-policy" component={RefundPolicy} />
+            <Route path="/terms-of-service" component={TermsOfService} />
+            <Route path="/about-us" component={AboutUs} />
             <PrivateRoute path="/coupons" component={MyCoupons} />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute
@@ -108,9 +115,10 @@ class App extends Component {
               ShoppingCart={this.ShoppingCart}
               quantity={this.state.quantity}
             />
-            <Footer />
-          </Fragment>
-        {/* </Router> */}
+            <Route path="*" component={ErrorPage} />
+          </Switch>
+          <Footer />
+        </Fragment>
       </div>
     );
   }
