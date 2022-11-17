@@ -54,7 +54,7 @@ jobs:
         region: ${{ env.SUB_DEPLOYMENT_REGION }}
         resourceGroupName: ${{ env.RG_DEPLOYMENT_RGNAME }}
         template: ./iac/createResources.bicep
-        parameters: suffix=${{ secrets.CONTOSOTRADERS_SUFFIX }}
+        parameters: ./iac/createResources.parameters.json suffix=${{ secrets.CONTOSOTRADERS_SUFFIX }}
         failOnStdErr: false # @TODO: Remove this later. Temporarily added to suppress warnings-as-errors during execution.
     # Next step is to seed the products DB.
     - uses: azure/sql-action@v2
