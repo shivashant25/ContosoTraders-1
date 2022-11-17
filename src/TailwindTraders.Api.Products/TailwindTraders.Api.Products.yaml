@@ -16,7 +16,14 @@ spec:
         "kubernetes.io/os": linux
       containers:
         - name: tailwind-traders-products
+          #TODO: This needs to be auto-extracted
           image: tailwindtradersacr111222.azurecr.io/tailwindtradersapiproducts:latest
+          env:
+            - name: KeyVaultEndpoint
+              valueFrom:
+                secretKeyRef:
+                  name: tailwind-traders-kv-endpoint
+                  key: tailwind-traders-kv-endpoint
           resources:
             requests:
               cpu: 100m
@@ -31,6 +38,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tailwind-traders-products
+  annotations:
+    #TODO: This needs to be auto-extracted
+    service.beta.kubernetes.io/azure-dns-label-name: tailwind-traders-products111222
 spec:
   type: LoadBalancer
   ports:

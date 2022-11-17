@@ -109,6 +109,7 @@ var portalDashboardName = 'tailwind-traders-dashboard' // @TODO: rename later wi
 // aks cluster
 var aksClusterName = 'tailwind-traders-aks${suffix}'
 var aksClusterDnsPrefix = 'tailwind-traders-aks${suffix}'
+var aksClusterNodeResourceGroup = 'tailwind-traders-aks-nodes-rg'
 
 // tags
 var resourceTags = {
@@ -258,6 +259,8 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   resource kv_accesspolicies 'accessPolicies' = {
     name: 'replace'
     properties: {
+      // @TODO: I was unable to figure out how to assign an access policy to the AKS cluster's agent pool's managed identity.
+      // Hence, that specific access policy will be assigned from a github workflow (using AZ CLI).
       accessPolicies: [
         {
           tenantId: tenantId
@@ -276,13 +279,6 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
         {
           tenantId: tenantId
           objectId: loadtestsvc.identity.principalId
-          permissions: {
-            secrets: [ 'get', 'list' ]
-          }
-        }
-        {
-          tenantId: tenantId
-          objectId: aks.identity.principalId
           permissions: {
             secrets: [ 'get', 'list' ]
           }
@@ -1220,6 +1216,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
   }
   properties: {
     dnsPrefix: aksClusterDnsPrefix
+    nodeResourceGroup: aksClusterNodeResourceGroup
     agentPoolProfiles: [
       {
         name: 'agentpool'
