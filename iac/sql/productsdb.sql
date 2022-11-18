@@ -217,7 +217,7 @@ VALUES
     (28,'OnePlus 10T',999,'PID29-1.jpg',5,4,NULL),
     (29,'Xbox Wireless Controller Forza Horizon 5 Limited Edition',299,'PID29-1.jpg',1,1,NULL),
     (30,'Xbox Wireless Controller Aqua Shift Special Edition',299,'PID30-1.jpg',1,1,NULL),
-    (31,'Xbox Wireless Controller Daystrike Camo Special Edition',299,'PI31-1.jpg',1,1,NULL),
+    (31,'Xbox Wireless Controller Daystrike Camo Special Edition',299,'PID31-1.jpg',1,1,NULL),
     (32,'Xbox Wireless Controller Black',299,'PID32-1.jpg',1,1,NULL),
     (33,'Xbox Wireless Controller White',299,'PID33-1.jpg',1,1,NULL),
     (34,'Lenovo IdeaCentre AIO 3 21.5 inches Full HD IPS All-in-One Desktop',899,'PID34-1.jpg',7,3,NULL),
@@ -237,6 +237,3 @@ VALUES
     (48,'Acer HA270 27 Inch (68.58 cm) Full HD 1920 x 1080 IPS Ultra Slim Monitor',799,'PID48-1.jpg',4,5,NULL),
     (49,'Zebronics Zeb-V16HD LED Monitor',799,'PID49-1.jpg',10,5,NULL),
     (50,'ZEBRONICS Zeb-V19Hd 18.5 Inch (46.99 Cm) Led Monitor',799,'PID50-1.jpg',10,5,NULL)
-   
-
- 
