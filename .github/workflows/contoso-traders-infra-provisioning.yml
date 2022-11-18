@@ -2,75 +2,47 @@ name: contoso-traders-infra-provisioning
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ 'master' ]
-    paths: [ 'src/TailwindTraders.Api.Images/**', 'iac/sql/**' ]
 
 env:
-  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment 
+  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
   # metadata will be stored, and not where the resource groups will be deployed.
   SUB_DEPLOYMENT_REGION: eastus2
   RG_DEPLOYMENT_RGNAME: tailwind-traders-rg
   STORAGE_ACCOUNT_NAME: tailwindtradersimg
-  PRODUCT_DETAILS_CONTAINER_NAME: product-details
-  PRODUCT_LIST_CONTAINER_NAME: product-list
-  CDN_PROFILE_NAME: tailwind-traders-cdn
-  CDN_ENDPOINT_NAME: tailwind-traders-images
-  CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
 
 jobs:
-  build:
-
+  infrastructure-provisioning:
     runs-on: ubuntu-latest
-
     steps:
-    - name: checkout code
-      uses: actions/checkout@v3
-    - name: azure login
-      uses: azure/login@v1.1
-      with:
-        creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
-    # The first step is to create the resource group: `tailwind-traders-rg`.
-    # The below step can also be manually executed as follows:
-    # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
-    # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not 
-    # where the resource groups will be deployed.
-    - name: create resource group
-      uses: Azure/arm-deploy@v1.0.8
-      with:
-        scope: subscription
-        region: ${{ env.SUB_DEPLOYMENT_REGION }}
-        template: ./iac/createResourceGroup.bicep
-    # Next step is to deploy the Azure resources to the resource group `tailwind-traders-rg` created above. The deployed resources 
-    # include storage accounts, function apps, app services cosmos db, and service bus etc.
-    # The below step can also be manually executed as follows:
-    # az deployment group create -g tailwind-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
-    # Note: The `createResources.parameters.json` file contains the parameters for the deployment; specifically the per-lab 
-    # suffix. You can modify the parameters to customize the deployment.
-    - name: create resources
-      uses: Azure/arm-deploy@v1.0.8
-      with:
-        scope: resourcegroup
-        region: ${{ env.SUB_DEPLOYMENT_REGION }}
-        resourceGroupName: ${{ env.RG_DEPLOYMENT_RGNAME }}
-        template: ./iac/createResources.bicep
-        parameters: ./iac/createResources.parameters.json suffix=${{ secrets.CONTOSOTRADERS_SUFFIX }}
-        failOnStdErr: false # @TODO: Remove this later. Temporarily added to suppress warnings-as-errors during execution.
-    # Next step is to seed the products DB.
-    - uses: azure/sql-action@v2
-      with:
-        connection-string: ${{ secrets.CONTOSOTRADERS_PRODUCTSDB_CONNECTION_STRING }}
-        path: './iac/sql/productsdb.sql'
-    # Next step is to seed the product images
-    - name: deploy to storage - product details
-      uses: azure/CLI@v1
-      with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
-    - name: deploy to storage - product list
-      uses: azure/CLI@v1
-      with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
-    - name: purge CDN endpoint
-      uses: azure/CLI@v1
-      with:
-        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}'
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+      # The first step is to create the resource group: `tailwind-traders-rg`.
+      # The below step can also be manually executed as follows:
+      # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
+      # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not
+      # where the resource groups will be deployed.
+      - name: create resource group
+        uses: Azure/arm-deploy@v1.0.8
+        with:
+          scope: subscription
+          region: ${{ env.SUB_DEPLOYMENT_REGION }}
+          template: ./iac/createResourceGroup.bicep
+      # Next step is to deploy the Azure resources to the resource group `tailwind-traders-rg` created above. The deployed resources
+      # include storage accounts, function apps, app services cosmos db, and service bus etc.
+      # The below step can also be manually executed as follows:
+      # az deployment group create -g tailwind-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
+      # Note: The `createResources.parameters.json` file contains the parameters for the deployment; specifically the per-lab
+      # suffix. You can modify the parameters to customize the deployment.
+      - name: create resources
+        uses: Azure/arm-deploy@v1.0.8
+        with:
+          scope: resourcegroup
+          region: ${{ env.SUB_DEPLOYMENT_REGION }}
+          resourceGroupName: ${{ env.RG_DEPLOYMENT_RGNAME }}
+          template: ./iac/createResources.bicep
+          parameters: ./iac/createResources.parameters.json suffix=${{ secrets.CONTOSOTRADERS_SUFFIX }}
+          failOnStdErr: false # @TODO: Remove this later. Temporarily added to suppress warnings-as-errors during execution.

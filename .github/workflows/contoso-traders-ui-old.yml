@@ -10,10 +10,8 @@ env:
   CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
 
 jobs:
-  build:
-
+  deploy-ui:
     runs-on: ubuntu-latest
-
     steps:
     - name: checkout code
       uses: actions/checkout@v3

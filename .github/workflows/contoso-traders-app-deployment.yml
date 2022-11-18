@@ -1,23 +1,68 @@
-name: contoso-traders-products-api
+name: contoso-traders-app-deployment
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["master"]
+    paths:
+      [
+        "src/TailwindTraders.Api.Carts/**",
+        "src/TailwindTraders.Api.Core/**",
+        "src/TailwindTraders.Api.Images/**",
+        "src/TailwindTraders.Api.Products/**",
+        "src/TailwindTraders.Ui.Website/**",
+      ]
 
 env:
   ACR_NAME: tailwindtradersacr
-  PRODUCTS_ACR_REPOSITORY_NAME: tailwindtradersapiproducts
   AKS_CLUSTER_NAME: tailwind-traders-aks
   AKS_NODES_RESOURCE_GROUP_NAME: tailwind-traders-aks-nodes-rg
   AKS_SECRET_NAME_ACR_PASSWORD: tailwind-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: tailwind-traders-kv-endpoint
+  CARTS_ACA_NAME: tailwind-traders-carts
+  CARTS_ACR_REPOSITORY_NAME: tailwindtradersapicarts
+  CDN_PROFILE_NAME: tailwind-traders-cdn
   KV_NAME: tailwindtraderskv
-  PRODUCTS_WEBAPP_NAME: tailwind-traders-products
   PRODUCT_DETAILS_CONTAINER_NAME: product-details
   PRODUCT_LIST_CONTAINER_NAME: product-list
-  CDN_PROFILE_NAME: tailwind-traders-cdn
+  PRODUCTS_ACR_REPOSITORY_NAME: tailwindtradersapiproducts
   PRODUCTS_CDN_ENDPOINT_NAME: tailwind-traders-images
+  PRODUCTS_WEBAPP_NAME: tailwind-traders-products
+  RESOURCE_GROUP_NAME: tailwind-traders-rg
+  UI_CDN_ENDPOINT_NAME: tailwind-traders-ui2
+  UI_STORAGE_ACCOUNT_NAME: tailwindtradersui2
 
 jobs:
+  deploy-carts-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: install dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      - name: azure container registry login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io
+          username: ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+          password: ${{ secrets.CONTOSOTRADERS_ACR_PASSWORD }}
+      - name: docker build
+        run: docker build src -f ./src/TailwindTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: docker push (to acr)
+        run: docker push --all-tags ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}
+      - name: azure login
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+      - name: deploy to aca
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az containerapp update -n ${{ env.CARTS_ACA_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }} --image ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+
   deploy-products-api:
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +89,6 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}'
-
       - name: azure container registry login
         uses: azure/docker-login@v1
         with:
@@ -105,3 +149,27 @@ jobs:
         with:
           app-name: ${{ env.PRODUCTS_WEBAPP_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
           package: ./src/Publish/TailwindTraders.Api.Products
+
+  deploy-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: npm install
+        run: npm install
+        working-directory: src/TailwindTraders.Ui.Website
+      - name: npm run build
+        run: npm run build
+        working-directory: src/TailwindTraders.Ui.Website
+      - name: azure login
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+      - name: deploy to storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
+      - name: purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}'

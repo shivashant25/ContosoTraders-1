@@ -2,9 +2,6 @@ name: contoso-traders-ui
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ 'master' ]
-    paths: [ 'src/TailwindTraders.Ui.Website/**' ]
 
 env:
   STORAGE_ACCOUNT_NAME: tailwindtradersui2
@@ -13,28 +10,26 @@ env:
   CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
 
 jobs:
-  build:
-
+  deploy-ui:
     runs-on: ubuntu-latest
-
     steps:
-    - name: checkout code
-      uses: actions/checkout@v3
-    - name: npm install
-      run: npm install
-      working-directory: src/TailwindTraders.Ui.Website
-    - name: npm run build
-      run: npm run build
-      working-directory: src/TailwindTraders.Ui.Website
-    - name: azure login
-      uses: azure/login@v1.1
-      with:
-        creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
-    - name: deploy to storage
-      uses: azure/CLI@v1
-      with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
-    - name: purge CDN endpoint
-      uses: azure/CLI@v1
-      with:
-        inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}'
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: npm install
+        run: npm install
+        working-directory: src/TailwindTraders.Ui.Website
+      - name: npm run build
+        run: npm run build
+        working-directory: src/TailwindTraders.Ui.Website
+      - name: azure login
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+      - name: deploy to storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
+      - name: purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.CDN_ENDPOINT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -g '${{ env.CDN_RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}'
