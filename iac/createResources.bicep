@@ -26,6 +26,7 @@ var kvName = 'tailwindtraderskv${suffix}'
 var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
 var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
 var kvSecretNameStocksDbConnStr = 'stocksDbConnectionString'
+var kvSecretNameCartsApiEndpoint = 'cartsApiEndpoint'
 var kvSecretNameCartsDbConnStr = 'cartsDbConnectionString'
 var kvSecretNameImagesEndpoint = 'imagesEndpoint'
 var kvSecretNameCognitiveServicesEndpoint = 'cognitiveServicesEndpoint'
@@ -202,6 +203,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'connection string to the stocks db'
       value: stocksdba.listConnectionStrings().connectionStrings[0].connectionString
+    }
+  }
+
+  // secret
+  resource kv_secretCartsApiEndpoint 'secrets' = {
+    name: kvSecretNameCartsApiEndpoint
+    tags: resourceTags
+    properties: {
+      contentType: 'endpoint url (fqdn) of the carts api'
+      value: cartsapiaca.properties.latestRevisionFqdn
     }
   }
 
