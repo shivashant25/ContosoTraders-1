@@ -33,7 +33,7 @@ jobs:
       - name: docker build
         run: docker build src -f ./src/TailwindTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: docker push (to acr)
-        run: docker push ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}:${{ github.sha }}
+        run: docker push --all-tags ${{ env.ACR_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.azurecr.io/${{ env.ACR_REPOSITORY_NAME }}
       - name: azure login
         uses: azure/login@v1.1
         with:
