@@ -15,6 +15,7 @@ env:
   AKS_NODES_RESOURCE_GROUP_NAME: tailwind-traders-aks-nodes-rg
   AKS_SECRET_NAME_ACR_PASSWORD: tailwind-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: tailwind-traders-kv-endpoint
+  KV_NAME: tailwindtraderskv
   WEBAPP_NAME: tailwind-traders-products
 
 jobs:
@@ -42,7 +43,7 @@ jobs:
       - name: kv access policy for agentpool managed identity
         uses: azure/CLI@v1
         with:
-          inlineScript: az keyvault set-policy --name tailwindtraderskv${{ secrets.CONTOSOTRADERS_SUFFIX }} --secret-permissions get list --object-id $(az identity show --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}-agentpool -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "principalId" -o tsv)
+          inlineScript: az keyvault set-policy --name ${{ env.KV_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }} --secret-permissions get list --object-id $(az identity show --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}-agentpool -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "principalId" -o tsv)
       - name: set aks context
         uses: azure/aks-set-context@v3
         with:
@@ -62,7 +63,7 @@ jobs:
         with:
           secret-type: 'generic'
           secret-name: ${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}
-          string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://tailwindtraderskv${{ secrets.CONTOSOTRADERS_SUFFIX }}.vault.azure.net/" }'
+          string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://${{ env.KV_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}.vault.azure.net/" }'
       - name: lint manifest
         uses: azure/k8s-lint@v1
         with:
