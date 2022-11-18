@@ -24,6 +24,7 @@ env:
   CDN_PROFILE_NAME: tailwind-traders-cdn
   KV_NAME: tailwindtraderskv
   PRODUCT_DETAILS_CONTAINER_NAME: product-details
+  PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: tailwindtradersimg
   PRODUCT_LIST_CONTAINER_NAME: product-list
   PRODUCTS_ACR_REPOSITORY_NAME: tailwindtradersapiproducts
   PRODUCTS_CDN_ENDPOINT_NAME: tailwind-traders-images
@@ -80,11 +81,11 @@ jobs:
       - name: seed product image (product details)
         uses: azure/CLI@v1
         with:
-          inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
+          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
       - name: seed product image (product list)
         uses: azure/CLI@v1
         with:
-          inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
+          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
       - name: purge CDN endpoint
         uses: azure/CLI@v1
         with:
