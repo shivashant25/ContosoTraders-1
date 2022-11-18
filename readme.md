@@ -15,5 +15,5 @@
 
 ## Documentation
 
-- [Infrastructure Provisioning Instructions](./docs/provisioning-instructions.md)
+- [Setup Instructions](./docs/setup-instructions.md)
 - [Running ContosoTraders Locally](./docs/running-locally.md)
