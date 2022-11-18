@@ -2,8 +2,8 @@
 
 On the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary secrets:
 
-| Secret Name                                    | Secret Value                                             |
-| ---------------------------------------------- | -------------------------------------------------------- |
+| Secret Name                                   | Secret Value                                             |
+| --------------------------------------------- | -------------------------------------------------------- |
 | `CONTOSOTRADERS_SUFFIX`                       | Six-digit lab suffix specified during bicep provisioning |
 | `CONTOSOTRADERS_ACR_PASSWORD`                 | Admin password for your Azure Container Registry         |
 | `CONTOSOTRADERS_PRODUCTSDB_CONNECTION_STRING` | Connection string for ProductsDB (SQL Azure)             |
