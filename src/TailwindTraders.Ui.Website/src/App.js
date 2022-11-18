@@ -52,6 +52,12 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.location.pathname !== prevProps.location.pathname){
+      window.scrollTo(0, 0);
+    }
+  }
+
   ShoppingCart = (quantity) => {
     this.setState({ quantity });
   };

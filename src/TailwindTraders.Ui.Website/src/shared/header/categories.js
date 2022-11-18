@@ -86,14 +86,14 @@ export default function CustomizedMenus() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem onClick={() => redirectUrl('/list/home')}>
+        <StyledMenuItem onClick={() => redirectUrl('/list/laptops')}>
           <ListItemIcon>
             <img src={laptopsImg} alt=""/>
           </ListItemIcon>
           <ListItemText primary="Laptops" />
           <ListItemIcon className='justify-content-end'></ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem onClick={() => redirectUrl('/list/gardening')}>
+        <StyledMenuItem onClick={() => redirectUrl('/list/controllers')}>
           <ListItemIcon>
             <img src={controllersImg} alt=""/>
           </ListItemIcon>
@@ -102,7 +102,7 @@ export default function CustomizedMenus() {
             {/* <ArrowForwardIosIcon fontSize="small"/> */}
           </ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem onClick={() => redirectUrl('/list/decor')}>
+        <StyledMenuItem onClick={() => redirectUrl('/list/desktops')}>
           <ListItemIcon>
             <img src={desktopsImg} alt=""/>
           </ListItemIcon>
@@ -111,7 +111,7 @@ export default function CustomizedMenus() {
             {/* <ArrowForwardIosIcon fontSize="small"/> */}
           </ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem onClick={() => redirectUrl('/list/kitchen')}>
+        <StyledMenuItem onClick={() => redirectUrl('/list/mobiles')}>
           <ListItemIcon>
             <img src={mobilesImg} alt=""/>
           </ListItemIcon>
@@ -120,7 +120,7 @@ export default function CustomizedMenus() {
             {/* <ArrowForwardIosIcon fontSize="small"/> */}
           </ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem onClick={() => redirectUrl('/list/home')}>
+        <StyledMenuItem onClick={() => redirectUrl('/list/monitors')}>
           <ListItemIcon>
             <img src={monitorImg} alt=""/>
           </ListItemIcon>

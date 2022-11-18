@@ -8,7 +8,7 @@ const ListGrid = ({ productsList }) => {
     return (
         <div className="list-grid">
             <div className="filter-section">
-                <div className="page">Showing 1 - 9 of 40 items</div>
+                <div className="page">Showing 1 - {productsList ? productsList.length : 0} of {productsList ? productsList.length:0} items</div>
                 <div>Sort By</div>&nbsp;&nbsp;&nbsp;&nbsp;
                 <MinimalSelect />
             </div>

@@ -52,14 +52,14 @@ const AccordionDetails = withStyles((theme) => ({
 
 export default function SidebarAccordion(props) {
   const [expanded, setExpanded] = React.useState("panel1");
-  const [color, setColorState] = React.useState({ blue : true });
+  // const [color, setColorState] = React.useState({ blue : true });
   const [checkedItems, setCheckedItems] =  React.useState(new Map());
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  const handleColorChange = (event) => {
-    setColorState({ ...color, [event.target.name]: event.target.checked });
-  };
+  // const handleColorChange = (event) => {
+  //   setColorState({ ...color, [event.target.name]: event.target.checked });
+  // };
   const handleChangeBrands = (e, dataType) => {
     const item = e.target.name;
     const isChecked = e.target.checked;
@@ -112,7 +112,7 @@ export default function SidebarAccordion(props) {
           </Grid>
         </AccordionDetails>
       </Accordion>
-      <Accordion
+      {/* <Accordion
         square
         expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}
@@ -299,7 +299,7 @@ export default function SidebarAccordion(props) {
             lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </div>
   );
 }

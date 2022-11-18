@@ -9,7 +9,7 @@ import Alert from "react-s-alert";
 import { CartService, ProductService, UserService } from '../../services';
 import ProductDetails from "./productdetails";
 import Breadcrump from "../../components/breadcrumb";
-import Slider from "../home/components/slider/slider";
+// import Slider from "../home/components/slider/slider";
 
 class DetailContainer extends Component {
     constructor(props) {
@@ -98,7 +98,7 @@ class DetailContainer extends Component {
             <Fragment>
                 <div className="ProductContainerSection">
                     <Alert stack={{ limit: 1 }} />
-                    <Breadcrump parentPath='Products' parentUrl="/list/home" currentPath={detailProduct.name} />
+                    <Breadcrump parentPath='Products' parentUrl="/list/all-products" currentPath={detailProduct.name} />
                     {loading ? <LoadingSpinner /> :
                         <ProductDetails
                         loggedIn={loggedIn}
@@ -110,8 +110,8 @@ class DetailContainer extends Component {
                     }
                 </div>
                 <hr className="mb-3"/>
-                <Slider firstHeading="Explore Awesome Products" secondHeading="RECOMMENTED FOR YOU"/>
-                <hr className="m-0" />
+                {/* <Slider firstHeading="Explore Awesome Products" secondHeading="RECOMMENDED FOR YOU"/> */}
+                {/* <hr className="m-0" /> */}
             </Fragment>
         );
     }

@@ -211,14 +211,27 @@ body {
 .appbar .searchbar-upload .upload{
   margin: auto;
   max-width: 100%;
-  border: 2px dotted #C7C7C7;
-  padding: 30px;
   margin-top: 10px;
-  background: #FAFAFA !important;
+  background: transparent !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.appbar .searchbar-upload .upload .MuiDropzoneArea-textContainer, .appbar .searchbar-upload .upload .MuiDropzoneArea-textContainer .MuiDropzonePreviewList-root{
+  display: none;
+}
+.appbar .searchbar-upload .upload .MuiDropzoneArea-root{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: #FAFAFA !important; */
+  background: transparent;
 }
 .appbar .searchbar-upload .upload .upload__label{
   box-shadow: none;
-  background: #FAFAFA !important;
+  /* background: #FAFAFA !important; */
+  position: absolute;
+  z-index: -1;
 }
 .appbar .searchbar-upload .upload .upload__label img{
   width: 50px;

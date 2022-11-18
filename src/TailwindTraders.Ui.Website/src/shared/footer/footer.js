@@ -21,10 +21,10 @@ const Footer = () => {
             <ul>
                 <li className='main-element'>Catalog</li>
                 {/* <li className='list-element'>My Account</li> */}
-                <li className='list-element'><Link to='/list/home'>All Products</Link></li>
-                <li className='list-element'><Link to='/list/gardening'>Controllers</Link></li>
-                <li className='list-element'><Link to='/list/decor'>Laptops</Link></li>
-                <li className='list-element'><Link to='/list/decor'>Monitors</Link></li>
+                <li className='list-element'><Link to='/list/all-products'>All Products</Link></li>
+                <li className='list-element'><Link to='/list/controllers'>Controllers</Link></li>
+                <li className='list-element'><Link to='/list/laptops'>Laptops</Link></li>
+                <li className='list-element'><Link to='/list/monitors'>Monitors</Link></li>
             </ul>
         </Grid>
         <Grid item xs={2} className='section-3'>

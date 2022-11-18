@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import WishlistIcon from '../../../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
+// import WishlistIcon from '../../../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
 import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +51,7 @@ export default function Product(props) {
                 {name?name:'Lunar Shift Special Edition'}
             </Typography>
             <IconButton className='wishlist_icon' aria-label="add to favorites">
-                <img src={WishlistIcon} alt="like"/>
+                {/* <img src={WishlistIcon} alt="like"/> */}
             </IconButton>
         </div>
         <Typography variant="body2" color="textSecondary" className='productType' component="p">

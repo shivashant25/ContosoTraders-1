@@ -7,7 +7,12 @@ import {
 } from "@material-ui/core";
 import laptopgirl from "../../../../assets/images/original/Contoso_Assets/Grid_Products_Collection/banner_1.jpg";
 import laptoppic from "../../../../assets/images/original/Contoso_Assets/Grid_Products_Collection/product_image.png";
+import { useHistory } from "react-router-dom";
 function Gridsection() {
+  const history = useHistory()
+  const startShopping = () => {
+    history.push('/list/laptops')
+  }
   return (
     <div className="LaptopSection">
       <div className="LapHeadSection">
@@ -104,7 +109,7 @@ function Gridsection() {
         </div>
       </div>
       <div className="LaptopButtondiv">
-        <button className="LaptopButton">Explore Other Products</button>
+        <button className="LaptopButton" onClick={() => startShopping()} >Explore Other Products</button>
       </div>
     </div>
   );

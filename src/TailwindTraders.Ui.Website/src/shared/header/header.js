@@ -109,19 +109,19 @@ class Header extends Component {
                             {/* <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals" >
                                 {t('shared.header.newArrivals')}
                             </Link> */}
-                            <Link className={window.location.pathname === '/list/home' ? "main-nav__item_active" : "main-nav__item"} to="/list/home">
+                            <Link className={window.location.pathname === '/list/laptops' ? "main-nav__item_active" : "main-nav__item"} to="/list/laptops">
                                 Laptops
                             </Link>
-                            <Link className={window.location.pathname === '/list/gardening' ? "main-nav__item_active" : "main-nav__item"} to="/list/gardening">
+                            <Link className={window.location.pathname === '/list/controllers' ? "main-nav__item_active" : "main-nav__item"} to="/list/controllers">
                                 Controllers
                             </Link>
-                            <Link className={window.location.pathname === '/list/decor' ? "main-nav__item_active" : "main-nav__item"} to="/list/decor">
+                            <Link className={window.location.pathname === '/list/desktops' ? "main-nav__item_active" : "main-nav__item"} to="/list/desktops">
                                 Desktops
                             </Link>
-                            <Link className={window.location.pathname === '/list/kitchen' ? "main-nav__item_active" : "main-nav__item"} to="/list/kitchen">
+                            <Link className={window.location.pathname === '/list/mobiles' ? "main-nav__item_active" : "main-nav__item"} to="/list/mobiles">
                                 Mobiles
                             </Link>
-                            <Link className={window.location.pathname === '/list/kitchen' ? "main-nav__item_active" : "main-nav__item"} to="/list/kitchen">
+                            <Link className={window.location.pathname === '/list/monitors' ? "main-nav__item_active" : "main-nav__item"} to="/list/monitors">
                                 Monitors
                             </Link>
                             <div className="main-nav__actions">

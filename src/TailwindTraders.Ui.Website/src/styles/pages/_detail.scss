@@ -31,18 +31,22 @@
   .ProductDetailsSection {
     font-family: "Inter";
     padding-top: 16px;
+    .MuiGrid-container{
+      align-items: center;
+      justify-content: center;
     .productdetailsimagediv{
-      width: 518px;
-      height: 518px;
+      // width: 518px;
+      // height: 518px;
       .productdetailsimage {
         // width: 100%;
         margin: auto;
         display: block;
         mix-blend-mode: darken;
         opacity: 1;
-        height: 100%;
+        width: 100%;
       }
     }
+  }
     .CartButton {
       background: #2874f0 0% 0% no-repeat padding-box;
       border-radius: 8px;

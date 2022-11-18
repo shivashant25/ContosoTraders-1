@@ -70,6 +70,9 @@ function Item(props)
     const buyNow = (id) => {
         history.push('/product/detail/'+id)
     }
+    const moreDetails = () => {
+        history.push('/list/controllers')
+    }
     return (
         <div className="courousel-style" style={{ backgroundImage: 'url('+props.item.bg+')'}}>
             <Grid container spacing={3}>
@@ -100,6 +103,7 @@ function Item(props)
                             color="default"
                             className="box-shadow-0 text-transform-capitalize fw-regular BannerButton2"
                             size="large"
+                            onClick={()=>moreDetails()}
                         >
                             More Details
                         </Button>

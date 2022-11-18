@@ -9,7 +9,7 @@ const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }
     const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
     return (
         <div className="list">
-            <Breadcrump parentPath='Product Collection' parentUrl="/list/home" currentPath={currentCategory} />
+            <Breadcrump parentPath='Product Collection' parentUrl="/list/all-products" currentPath={currentCategory} />
             <OfferBanner />
             <div className="list__content">
                 <h6 className="mainHeading">{currentCategory}</h6>
