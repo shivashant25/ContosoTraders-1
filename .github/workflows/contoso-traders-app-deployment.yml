@@ -24,10 +24,7 @@ env:
   CDN_PROFILE_NAME: tailwind-traders-cdn
   KV_NAME: tailwindtraderskv
   PRODUCT_DETAILS_CONTAINER_NAME: product-details
-  PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: tailwindtradersimg
-  PRODUCT_LIST_CONTAINER_NAME: product-list
   PRODUCTS_ACR_REPOSITORY_NAME: tailwindtradersapiproducts
-  PRODUCTS_CDN_ENDPOINT_NAME: tailwind-traders-images
   PRODUCTS_WEBAPP_NAME: tailwind-traders-products
   RESOURCE_GROUP_NAME: tailwind-traders-rg
   UI_CDN_ENDPOINT_NAME: tailwind-traders-ui2
@@ -73,23 +70,6 @@ jobs:
         uses: azure/login@v1.1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: seed products db
-        uses: azure/sql-action@v2
-        with:
-          connection-string: ${{ secrets.PRODUCTSDB_CONNECTION_STRING }}
-          path: ./src/TailwindTraders.Api.Products/Migration/productsdb.sql
-      - name: seed product image (product details)
-        uses: azure/CLI@v1
-        with:
-          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
-      - name: seed product image (product list)
-        uses: azure/CLI@v1
-        with:
-          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
-      - name: purge CDN endpoint
-        uses: azure/CLI@v1
-        with:
-          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ secrets.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.ENVIRONMENT }}'
       - name: azure container registry login
         uses: azure/docker-login@v1
         with:

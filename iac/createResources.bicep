@@ -10,6 +10,10 @@ targetScope = 'resourceGroup'
 @description('A unique environment name.')
 param environment string
 
+@secure()
+@description('A password which will be set on all SQL Azure DBs.')
+param sqlPassword string // @TODO: Obviously, we need to fix this!
+
 param resourceLocation string = resourceGroup().location
 
 // tenant
@@ -47,13 +51,13 @@ var cartsDbStocksContainerName = 'carts'
 var productsDbServerName = 'tailwind-traders-products${environment}'
 var productsDbName = 'productsdb'
 var productsDbServerAdminLogin = 'localadmin'
-var productsDbServerAdminPassword = 'Password123!'
+var productsDbServerAdminPassword = sqlPassword
 
 // sql azure (profiles db)
 var profilesDbServerName = 'tailwind-traders-profiles${environment}'
 var profilesDbName = 'profilesdb'
 var profilesDbServerAdminLogin = 'localadmin'
-var profilesDbServerAdminPassword = 'Password123!'
+var profilesDbServerAdminPassword = sqlPassword
 
 // app service plan (products api)
 var productsApiAppSvcPlanName = 'tailwind-traders-products${environment}'

@@ -6,9 +6,16 @@ on:
 env:
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
   # metadata will be stored, and not where the resource groups will be deployed.
+  CDN_PROFILE_NAME: tailwind-traders-cdn
   SUB_DEPLOYMENT_REGION: eastus2
   KV_NAME: tailwindtraderskv
-  RG_DEPLOYMENT_RGNAME: tailwind-traders-rg
+  PRODUCTS_DB_NAME: productsdb
+  PRODUCTS_DB_SERVER_NAME: tailwind-traders-products
+  PRODUCTS_DB_USER_NAME: localadmin
+  PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: tailwindtradersimg
+  PRODUCT_LIST_CONTAINER_NAME: product-list
+  PRODUCTS_CDN_ENDPOINT_NAME: tailwind-traders-images
+  RESOURCE_GROUP_NAME: tailwind-traders-rg
   STORAGE_ACCOUNT_NAME: tailwindtradersimg
 
 jobs:
@@ -43,12 +50,30 @@ jobs:
         with:
           scope: resourcegroup
           region: ${{ env.SUB_DEPLOYMENT_REGION }}
-          resourceGroupName: ${{ env.RG_DEPLOYMENT_RGNAME }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./iac/createResources.bicep
-          parameters: ./iac/createResources.parameters.json environment=${{ secrets.ENVIRONMENT }}
+          parameters: ./iac/createResources.parameters.json environment=${{ secrets.ENVIRONMENT }} sqlPassword=${{ secrets.SQL_PASSWORD }}
           failOnStdErr: false # @TODO: Remove this later. Temporarily added to suppress warnings-as-errors during execution.
       # Add the logged-in service principal to the key vault access policy
       - name: add service principal to kv access policy
         uses: azure/CLI@v1
         with:
           inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --secret-permissions get list --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
+      # Seed the DBs and storage accounts
+      - name: seed products db
+        uses: azure/sql-action@v2
+        with:
+          connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ secrets.ENVIRONMENT }}.database.windows.net,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQL_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+          path: ./src/TailwindTraders.Api.Products/Migration/productsdb.sql
+      - name: seed product image (product details)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-details'
+      - name: seed product image (product list)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/TailwindTraders.Api.Images/product-list'
+      - name: purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ secrets.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.ENVIRONMENT }}'

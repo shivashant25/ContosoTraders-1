@@ -2,12 +2,12 @@
 
 On the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary secrets:
 
-| Secret Name                    | Secret Value                                                |
-| ------------------------------ | ----------------------------------------------------------- |
-| `ENVIRONMENT`                  | A unique environment name (max 6 characters). E.g. 'test51' |
-| `ACR_PASSWORD`                 | Admin password for your Azure Container Registry            |
-| `PRODUCTSDB_CONNECTION_STRING` | Connection string for ProductsDB (SQL Azure)                |
-| `SERVICEPRINCIPAL`             | See details below                                           |
+| Secret Name        | Secret Value                                                |
+| ------------------ | ----------------------------------------------------------- |
+| `ENVIRONMENT`      | A unique environment name (max 6 characters). E.g. 'test51' |
+| `ACR_PASSWORD`     | Admin password for your Azure Container Registry            |
+| `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs           |
+| `SERVICEPRINCIPAL` | See details below                                           |
 
 The value of the `SERVICEPRINCIPAL` secret above needs to have the following format:
 
