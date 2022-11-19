@@ -13,7 +13,7 @@ internal class PostImageRequestHandler : IRequestPreProcessor<PostImageRequest>,
 
     public async Task<IActionResult> Handle(PostImageRequest request, CancellationToken cancellationToken = default)
     {
-        if(!request.File.ContentType.Contains("image"))
+        if (!request.File.ContentType.Contains("image"))
             return new BadRequestObjectResult("Invalid file type.");
 
         var products = await _imageSearchService.GetSimilarProductsAsync(request.File.OpenReadStream(), cancellationToken);

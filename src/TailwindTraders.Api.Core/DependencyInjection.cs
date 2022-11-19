@@ -38,10 +38,9 @@ public class DependencyInjection : FunctionsStartup
     {
         var builder = WebApplication.CreateBuilder();
 
-        if (!builder.Environment.IsDevelopment())
-            builder.Configuration.AddAzureKeyVault(
-                new Uri(builder.Configuration["KeyVaultEndpoint"]),
-                new DefaultAzureCredential());
+        builder.Configuration.AddAzureKeyVault(
+            new Uri(builder.Configuration["KeyVaultEndpoint"]),
+            new DefaultAzureCredential());
 
         ConfigureServicesInternal(builder.Services, builder.Configuration);
 
