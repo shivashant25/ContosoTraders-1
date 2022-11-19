@@ -21,13 +21,13 @@ jobs:
     - name: azure login
       uses: azure/login@v1.1
       with:
-        creds: ${{ secrets.CONTOSOTRADERS_SERVICEPRINCIPAL }}
+        creds: ${{ secrets.SERVICEPRINCIPAL }}
     - name: load test (carts API)
       uses: Azure/load-testing@v1.1.7
       with:
         # Path of the YAML file. Should be fully qualified path or relative to the default working directory
         loadtestConfigFile: ./tests/loadtests/tailwind-traders-carts.yaml
-        loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.CONTOSOTRADERS_SUFFIX }}
+        loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.ENVIRONMENT }}
         resourceGroup: ${{ env.LOAD_TEST_SERVICE_RESOURCE_GROUP }}
         env: |
           [

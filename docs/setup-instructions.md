@@ -4,7 +4,7 @@
 
 1. You'll need a service principal in the `owner` role on the Azure subscription where the infrastructure is to be provisioned.
 2. Git clone this repository to your machine.
-3. Create the `CONTOSOTRADERS_SERVICEPRINCIPAL` github secret ([instructions here](./github-secrets.md)).
+3. Create the `SERVICEPRINCIPAL` and `ENVIRONMENT` github secrets ([instructions here](./github-secrets.md)).
 4. Next, provision the infrastructure on Azure by running the `contoso-traders-infra-provisioning` github workflow. You can do this by going to the github repo's `Actions` tab, selecting the workflow, and clicking on the `Run workflow` button.
 5. Next, create the rest of the github secrets ([instructions here](./github-secrets.md)).
 6. Next, deploy the apps, by running the `contoso-traders-app-deployment` workflow.
@@ -22,12 +22,12 @@
    * `az login --service-principal -u <clientId> -p <clientSecret> --tenant <tenantId>`
 4. Run the Products API locally:
    * Open a cmd window and navigate to the `src/TailwindTraders.Api.Products` folder.
-   * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<suffix>.vault.azure.net/"`. Replace `<suffix>` with the [value used previously](./github-secrets.md).
+   * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<ENVIRONMENT>.vault.azure.net/"`. Replace `<ENVIRONMENT>` with the [value used previously](./github-secrets.md).
    * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 5. Run the Carts API locally
    * Open a cmd window and navigate to the `src/TailwindTraders.Api.Carts` folder.
-   * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<suffix>.vault.azure.net/"`. Replace `<suffix>` with the [value used previously](./github-secrets.md).
+   * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<ENVIRONMENT>.vault.azure.net/"`. Replace `<ENVIRONMENT>` with the [value used previously](./github-secrets.md).
    * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 6. Run the UI locally:

@@ -2,14 +2,14 @@
 
 On the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary secrets:
 
-| Secret Name                                   | Secret Value                                             |
-| --------------------------------------------- | -------------------------------------------------------- |
-| `CONTOSOTRADERS_SUFFIX`                       | Six-digit lab suffix specified during bicep provisioning |
-| `CONTOSOTRADERS_ACR_PASSWORD`                 | Admin password for your Azure Container Registry         |
-| `CONTOSOTRADERS_PRODUCTSDB_CONNECTION_STRING` | Connection string for ProductsDB (SQL Azure)             |
-| `CONTOSOTRADERS_SERVICEPRINCIPAL`             | See details below                                        |
+| Secret Name                    | Secret Value                                                |
+| ------------------------------ | ----------------------------------------------------------- |
+| `ENVIRONMENT`                  | A unique environment name (max 6 characters). E.g. 'test51' |
+| `ACR_PASSWORD`                 | Admin password for your Azure Container Registry            |
+| `PRODUCTSDB_CONNECTION_STRING` | Connection string for ProductsDB (SQL Azure)                |
+| `SERVICEPRINCIPAL`             | See details below                                           |
 
-The value of the `CONTOSOTRADERS_SERVICEPRINCIPAL` secret above needs to have the following format:
+The value of the `SERVICEPRINCIPAL` secret above needs to have the following format:
 
 ```json
 {
