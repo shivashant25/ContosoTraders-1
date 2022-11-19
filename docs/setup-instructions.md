@@ -18,17 +18,19 @@
    * [Node v16.18.0](https://nodejs.org/download/release/v16.8.0/)
    * [DOTNET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
    * [AZ CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-3. Run the UI locally:
-   * Open a cmd window and navigate to the `src/TailwindTraders.Ui.Website` folder.
-   * Run `npm install`.
-   * Run `npm run start`. This will start the UI on `http://localhost:3000`.
+3. Login to AZ CLI using the [service principal details](./github-secrets.md):
+   * `az login --service-principal -u <clientId> -p <clientSecret> --tenant <tenantId>`
 4. Run the Products API locally:
    * Open a cmd window and navigate to the `src/TailwindTraders.Api.Products` folder.
-   * Login to AZ CLI using the [service principal details](./github-secrets.md): `az login --service-principal -u <clientId> -p <clientSecret> --tenant <tenantId>`
+   * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<suffix>.vault.azure.net/"`. Replace `<suffix>` with the [value used previously](./github-secrets.md).
    * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 5. Run the Carts API locally
    * Open a cmd window and navigate to the `src/TailwindTraders.Api.Carts` folder.
-   * Login to AZ CLI using the [service principal details](./github-secrets.md): `az login --service-principal -u <clientId> -p <clientSecret> --tenant <tenantId>`
-   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62400/swagger`.
+   * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<suffix>.vault.azure.net/"`. Replace `<suffix>` with the [value used previously](./github-secrets.md).
+   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
+6. Run the UI locally:
+   * Open a cmd window and navigate to the `src/TailwindTraders.Ui.Website` folder.
+   * Run `npm install`.
+   * Run `npm run start`. This will start the UI on `http://localhost:3000`.
