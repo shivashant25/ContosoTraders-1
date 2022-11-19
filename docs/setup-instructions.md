@@ -13,8 +13,6 @@
 
 ## Running ContosoTraders Locally
 
-### Prerequisites
-
 1. First ensure that the infrastructure setup has been completed as per steps above.
 2. Ensure that you have the following installed:
    * [Node v16.18.0](https://nodejs.org/download/release/v16.8.0/)
