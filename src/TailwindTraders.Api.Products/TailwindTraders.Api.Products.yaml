@@ -17,7 +17,7 @@ spec:
       containers:
         - name: tailwind-traders-products
           #TODO: This needs to be auto-extracted
-          image: tailwindtradersacr111222.azurecr.io/tailwindtradersapiproducts:latest
+          image: tailwindtradersacrtest.azurecr.io/tailwindtradersapiproducts:latest
           env:
             - name: KeyVaultEndpoint
               valueFrom:
@@ -40,7 +40,7 @@ metadata:
   name: tailwind-traders-products
   annotations:
     #TODO: This needs to be auto-extracted
-    service.beta.kubernetes.io/azure-dns-label-name: tailwind-traders-products111222
+    service.beta.kubernetes.io/azure-dns-label-name: tailwind-traders-productstest
 spec:
   type: LoadBalancer
   ports:

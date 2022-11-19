@@ -2,11 +2,11 @@
 
 ## Application Links
 
-| Application  | Link                                                                                                   |
-| ------------ | ------------------------------------------------------------------------------------------------------ |
-| UI           | [NEW UI](https://www.contosotraders.com/) \| [OLD UI](https://tailwind-traders-ui111222.azureedge.net) |
-| Carts API    | [LINK](https://tailwind-traders-carts111222.orangehill-9509f55e.eastus.azurecontainerapps.io/swagger/) |
-| Products API | [LINK](http://tailwind-traders-products111222.eastus.cloudapp.azure.com/swagger/)                      |
+| Application  | Link                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| UI           | [NEW UI](https://www.contosotraders.com/) \| [OLD UI](https://tailwind-traders-uitest.azureedge.net) |
+| Carts API    | [LINK](https://tailwind-traders-cartstest.orangehill-9509f55e.eastus.azurecontainerapps.io/swagger/) |
+| Products API | [LINK](http://tailwind-traders-productstest.eastus.cloudapp.azure.com/swagger/)                      |
 
 ## Pipeline Status
 
