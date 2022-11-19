@@ -4,7 +4,7 @@
 
 1. You'll need a service principal in the `owner` role on the Azure subscription where the infrastructure is to be provisioned.
 2. Git clone this repository to your machine.
-3. Create the `CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL` github secret ([instructions here](./github-secrets.md)).
+3. Create the `CONTOSOTRADERS_SERVICEPRINCIPAL` github secret ([instructions here](./github-secrets.md)).
 4. Next, provision the infrastructure on Azure by running the `contoso-traders-infra-provisioning` github workflow. You can do this by going to the github repo's `Actions` tab, selecting the workflow, and clicking on the `Run workflow` button.
 5. Next, create the rest of the github secrets ([instructions here](./github-secrets.md)).
 6. Next, deploy the apps, by running the `contoso-traders-app-deployment` workflow.

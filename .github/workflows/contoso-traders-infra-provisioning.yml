@@ -20,7 +20,7 @@ jobs:
       - name: azure login
         uses: azure/login@v1.1
         with:
-          creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+          creds: ${{ secrets.CONTOSOTRADERS_SERVICEPRINCIPAL }}
       # The first step is to create the resource group: `tailwind-traders-rg`.
       # The below step can also be manually executed as follows:
       # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep

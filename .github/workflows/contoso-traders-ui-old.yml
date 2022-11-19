@@ -26,7 +26,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1.1
       with:
-        creds: ${{ secrets.CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL }}
+        creds: ${{ secrets.CONTOSOTRADERS_SERVICEPRINCIPAL }}
     - name: deploy to storage
       uses: azure/CLI@v1
       with:
