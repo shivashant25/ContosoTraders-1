@@ -23,7 +23,6 @@ env:
   CARTS_ACR_REPOSITORY_NAME: tailwindtradersapicarts
   CDN_PROFILE_NAME: tailwind-traders-cdn
   KV_NAME: tailwindtraderskv
-  PRODUCT_DETAILS_CONTAINER_NAME: product-details
   PRODUCTS_ACR_REPOSITORY_NAME: tailwindtradersapiproducts
   PRODUCTS_WEBAPP_NAME: tailwind-traders-products
   RESOURCE_GROUP_NAME: tailwind-traders-rg

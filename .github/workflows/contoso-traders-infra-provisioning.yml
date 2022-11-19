@@ -12,6 +12,7 @@ env:
   PRODUCTS_DB_NAME: productsdb
   PRODUCTS_DB_SERVER_NAME: tailwind-traders-products
   PRODUCTS_DB_USER_NAME: localadmin
+  PRODUCT_DETAILS_CONTAINER_NAME: product-details
   PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: tailwindtradersimg
   PRODUCT_LIST_CONTAINER_NAME: product-list
   PRODUCTS_CDN_ENDPOINT_NAME: tailwind-traders-images
