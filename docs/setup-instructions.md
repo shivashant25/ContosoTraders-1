@@ -1,13 +1,36 @@
 # Instructions
 
-## Setting up ContosoTraders
+## Setting up ContosoTraders Infrastructure
 
-1. Git clone this repository to your machine.
-2. Create the `CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL` github secret ([instructions here](./github-secrets.md)).
-3. Next, provision the infrastructure on Azure by running the `contoso-traders-infra-provisioning` github workflow. You can do this by going to the github repo's `Actions` tab, selecting the workflow, and clicking on the `Run workflow` button.
-4. Next, create the rest of the github secrets ([instructions here](./github-secrets.md)).
-5. Next, deploy the apps, by running the `contoso-traders-app-deployment` workflow.
+1. You'll need a service principal in the `owner` role on the Azure subscription where the infrastructure is to be provisioned.
+2. Git clone this repository to your machine.
+3. Create the `CONTOSOTRADERS_TESTING_SERVICEPRINCIPAL` github secret ([instructions here](./github-secrets.md)).
+4. Next, provision the infrastructure on Azure by running the `contoso-traders-infra-provisioning` github workflow. You can do this by going to the github repo's `Actions` tab, selecting the workflow, and clicking on the `Run workflow` button.
+5. Next, create the rest of the github secrets ([instructions here](./github-secrets.md)).
+6. Next, deploy the apps, by running the `contoso-traders-app-deployment` workflow.
 
-## Setting up ContosoTraders in a lab
+> To set up ContosoTrader in CloudLabs, you have create a fork of this github repository (one fork per lab). Then you have to repeat the same steps as above using the forked repo.
 
-Same steps as above. But you have to create and use a fork of this github repository (instead of using this original repository); one fork per lab.
+## Running ContosoTraders Locally
+
+### Prerequisites
+
+1. First ensure that the infrastructure setup has been completed as per steps above.
+2. Ensure that you have the following installed:
+   * [Node v16.18.0](https://nodejs.org/download/release/v16.8.0/)
+   * [DOTNET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+   * [AZ CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+3. Run the UI locally:
+   * Open a cmd window and navigate to the `src/TailwindTraders.Ui.Website` folder.
+   * Run `npm install`.
+   * Run `npm run start`. This will start the UI on `http://localhost:3000`.
+4. Run the Products API locally:
+   * Open a cmd window and navigate to the `src/TailwindTraders.Api.Products` folder.
+   * Login to AZ CLI using the [service principal details](./github-secrets.md): `az login --service-principal -u <clientId> -p <clientSecret> --tenant <tenantId>`
+   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
+   * Note that your browser may show you a warning about insecure connection which you can safely ignore.
+5. Run the Carts API locally
+   * Open a cmd window and navigate to the `src/TailwindTraders.Api.Carts` folder.
+   * Login to AZ CLI using the [service principal details](./github-secrets.md): `az login --service-principal -u <clientId> -p <clientSecret> --tenant <tenantId>`
+   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62400/swagger`.
+   * Note that your browser may show you a warning about insecure connection which you can safely ignore.
