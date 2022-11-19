@@ -16,7 +16,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
         - name: tailwind-traders-products
-          #TODO: This needs to be auto-extracted
+          #@TODO: Replace 'test' in the next line with whatever your ENVIRONMENT github secret value is
           image: tailwindtradersacrtest.azurecr.io/tailwindtradersapiproducts:latest
           env:
             - name: KeyVaultEndpoint
@@ -39,7 +39,7 @@ kind: Service
 metadata:
   name: tailwind-traders-products
   annotations:
-    #TODO: This needs to be auto-extracted
+    #@TODO: Replace 'test' in the next line with whatever your ENVIRONMENT github secret value is
     service.beta.kubernetes.io/azure-dns-label-name: tailwind-traders-productstest
 spec:
   type: LoadBalancer

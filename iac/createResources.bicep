@@ -7,7 +7,7 @@ targetScope = 'resourceGroup'
 // common
 @minLength(3)
 @maxLength(6)
-@description('A unique environment name.')
+@description('A unique environment name (max 6 characters, alphanumeric only).')
 param environment string
 
 @secure()
