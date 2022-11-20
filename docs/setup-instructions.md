@@ -29,7 +29,7 @@
 5. Run the Carts API locally
    * Open a cmd window and navigate to the `src/TailwindTraders.Api.Carts` folder.
    * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://tailwindtraderskv<ENVIRONMENT>.vault.azure.net/"`. Replace `<ENVIRONMENT>` with the [value used above](./github-secrets.md).
-   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
+   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62400/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 6. Run the UI locally:
    * Open a cmd window and navigate to the `src/TailwindTraders.Ui.Website` folder.
