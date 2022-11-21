@@ -27,6 +27,7 @@ param aksLinuxAdminUsername string // value supplied via parameters file
 
 // key vault
 var kvName = 'tailwindtraderskv${environment}'
+var kvSecretNameProductsApiEndpoint = 'productsApiEndpoint'
 var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
 var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
 var kvSecretNameStocksDbConnStr = 'stocksDbConnectionString'
@@ -151,26 +152,6 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
           ]
         }
       }
-      {
-        objectId: '934b38ce-5fb9-4c3d-9dbe-b621ffecd34c'
-        tenantId: tenantId
-        permissions: {
-          secrets: [
-            'get'
-            'list'
-          ]
-        }
-      }
-      {
-        objectId: '55694e57-8acc-40cf-bad2-a8a7a37a905c'
-        tenantId: tenantId
-        permissions: {
-          secrets: [
-            'get'
-            'list'
-          ]
-        }
-      }
     ]
     sku: {
       family: 'A'
@@ -178,6 +159,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     softDeleteRetentionInDays: 7
     tenantId: tenantId
+  }
+
+  // secret
+  resource kv_secretProductsApiEndpoint 'secrets' = {
+    name: kvSecretNameProductsApiEndpoint
+    tags: resourceTags
+    properties: {
+      contentType: 'endpoint url (fqdn) of the products api'
+      value: 'placeholder' // Note: This will be set via github worfklow
+    }
   }
 
   // secret 
@@ -1094,7 +1085,6 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
                 typeName: 'DeliveryRuleUrlRedirectActionParameters'
                 redirectType: 'Found'
                 destinationProtocol: 'Https'
-                customHostname: 'www.contosotraders.com'
               }
             }
           ]

@@ -16,6 +16,7 @@ on:
 env:
   ACR_NAME: tailwindtradersacr
   AKS_CLUSTER_NAME: tailwind-traders-aks
+  AKS_NODES_RESOURCE_GROUP_NAME: tailwind-traders-aks-nodes-rg
   AKS_SECRET_NAME_ACR_PASSWORD: tailwind-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: tailwind-traders-kv-endpoint
   CARTS_ACA_NAME: tailwind-traders-carts
@@ -116,6 +117,17 @@ jobs:
           manifests: ./src/TailwindTraders.Api.Products/TailwindTraders.Api.Products.yaml
           images: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
           imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+      # hack: extract the endpoint url of the aks app from public IP address (AFAIK this can't be fetched from AZ AKS CLI or kubectl)
+      - name: get productsApiEndpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
+          inlineScript: echo "productsApiEndpoint"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }})" >> $GITHUB_OUTPUT
+      - name: set productsApiEndpoint in kv
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }} --description "endpoint url (fqdn) of the products api"
       # @TODO: REMOVE EVERYTHING BELOW THIS LINE AFTER AKS INTEGRATION IS DONE
       - name: install dotnet
         uses: actions/setup-dotnet@v3
