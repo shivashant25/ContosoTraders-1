@@ -16,8 +16,8 @@ spec:
         "kubernetes.io/os": linux
       containers:
         - name: tailwind-traders-products
-          #@TODO: Replace 'test' in the next line with whatever your ENVIRONMENT github secret value is
-          image: tailwindtradersacrtest.azurecr.io/tailwindtradersapiproducts:latest
+          #Note: The '{ENVIRONMENT}' token will be substituted with the value of the ENVIRONMENT github secret by github workflow. 
+          image: tailwindtradersacr{ENVIRONMENT}.azurecr.io/tailwindtradersapiproducts:latest
           env:
             - name: KeyVaultEndpoint
               valueFrom:
@@ -39,8 +39,8 @@ kind: Service
 metadata:
   name: tailwind-traders-products
   annotations:
-    #@TODO: Replace 'test' in the next line with whatever your ENVIRONMENT github secret value is
-    service.beta.kubernetes.io/azure-dns-label-name: tailwind-traders-productstest
+    #Note: The '{ENVIRONMENT}' token will be substituted with the value of the ENVIRONMENT github secret by github workflow. 
+    service.beta.kubernetes.io/azure-dns-label-name: tailwind-traders-products{ENVIRONMENT}
 spec:
   type: LoadBalancer
   ports:

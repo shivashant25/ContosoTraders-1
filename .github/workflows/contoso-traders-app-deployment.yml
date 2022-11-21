@@ -104,6 +104,14 @@ jobs:
           secret-type: "generic"
           secret-name: ${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}
           string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }}.vault.azure.net/" }'
+      - name: substitute tokens in manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/TailwindTraders.Api.Products/TailwindTraders.Api.Products.yaml
+        env:
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       - name: lint manifest
         uses: azure/k8s-lint@v1
         with:
