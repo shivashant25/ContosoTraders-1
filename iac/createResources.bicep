@@ -1242,6 +1242,14 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
         ]
       }
     }
+    addonProfiles: {
+      omsagent: {
+        enabled: true
+        config: {
+          logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
+        }
+      }
+    }
   }
 }
 
