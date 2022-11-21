@@ -14,10 +14,10 @@
 * [![contoso-traders-load-testing](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/contoso-traders-load-testing.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/contoso-traders-load-testing.yml)
 * [![contoso-traders-infra-provisioning](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/contoso-traders-infra-provisioning.yml/badge.svg)](https://github.com/CloudLabs-AI/TailwindTraders/actions/workflows/contoso-traders-infra-provisioning.yml)
 
-## Proposed Architecture
-
-![Proposed Architecture](./docs/architecture/tailwind-traders-enhancements.drawio.png)
-
 ## Documentation
 
 * [Setup Instructions](./docs/setup-instructions.md)
+
+## Architecture
+
+![Architecture](./docs/architecture/tailwind-traders-enhancements.drawio.png)
