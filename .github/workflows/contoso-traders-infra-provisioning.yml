@@ -6,6 +6,8 @@ on:
 env:
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
   # metadata will be stored, and not where the resource groups will be deployed.
+  AKS_CLUSTER_NAME: tailwind-traders-aks
+  AKS_NODES_RESOURCE_GROUP_NAME: tailwind-traders-aks-nodes-rg
   CDN_PROFILE_NAME: tailwind-traders-cdn
   SUB_DEPLOYMENT_REGION: eastus2
   KV_NAME: tailwindtraderskv
@@ -60,6 +62,11 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --secret-permissions get list --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
+      # @TODO: This next step really needs to go into the bicep provisioning script
+      - name: add aks agentpool to kv access policy
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --secret-permissions get list --object-id $(az identity show --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.ENVIRONMENT }}-agentpool -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "principalId" -o tsv)
       # Seed the DBs and storage accounts
       - name: seed products db
         uses: azure/sql-action@v2

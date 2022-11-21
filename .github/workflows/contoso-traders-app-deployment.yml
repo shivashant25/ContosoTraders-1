@@ -16,7 +16,6 @@ on:
 env:
   ACR_NAME: tailwindtradersacr
   AKS_CLUSTER_NAME: tailwind-traders-aks
-  AKS_NODES_RESOURCE_GROUP_NAME: tailwind-traders-aks-nodes-rg
   AKS_SECRET_NAME_ACR_PASSWORD: tailwind-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: tailwind-traders-kv-endpoint
   CARTS_ACA_NAME: tailwind-traders-carts
@@ -79,11 +78,6 @@ jobs:
         run: docker build src -f ./src/TailwindTraders.Api.Products/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: docker push (to acr)
         run: docker push --all-tags ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}
-      # @TODO: This next step really needs to go into the bicep provisioning script
-      - name: kv access policy for agentpool managed identity
-        uses: azure/CLI@v1
-        with:
-          inlineScript: az keyvault set-policy --name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --secret-permissions get list --object-id $(az identity show --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.ENVIRONMENT }}-agentpool -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "principalId" -o tsv)
       - name: set aks context
         uses: azure/aks-set-context@v3
         with:

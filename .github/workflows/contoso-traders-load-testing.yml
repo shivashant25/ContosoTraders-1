@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
 
 env:
+  ACA_NAME: tailwind-traders-carts
+  ACR_REPOSITORY_NAME: tailwindtradersapicarts
+  KV_NAME: tailwindtraderskv
   LOAD_TEST_SERVICE_NAME: tailwind-traders-loadtest
   LOAD_TEST_SERVICE_RESOURCE_GROUP: tailwind-traders-rg
-  ACR_REPOSITORY_NAME: tailwindtradersapicarts
   WEBAPP_NAME: tailwind-traders-carts
-  ACA_NAME: tailwind-traders-carts
 
 jobs:
   build:
@@ -22,6 +23,12 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.SERVICEPRINCIPAL }}
+    # extract the endpoint url of the aca app from kv
+    - name: fetch cartsApiEndpoint
+      uses: azure/CLI@v1
+      id: fetch-cartsApiEndpoint
+      with:
+        inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n cartsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
     - name: load test (carts API)
       uses: Azure/load-testing@v1.1.7
       with:
@@ -33,7 +40,7 @@ jobs:
           [
             {
               "name": "domain",
-              "value": "tailwind-traders-carts987654.wittycoast-f32fc010.eastus.azurecontainerapps.io"
+              "value": "${{ steps.fetch-cartsApiEndpoint.outputs.cartsApiEndpoint }}"
             },
             {
               "name": "protocol",
