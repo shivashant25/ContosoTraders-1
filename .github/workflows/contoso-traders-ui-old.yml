@@ -24,7 +24,7 @@ jobs:
       run: npm run build
       working-directory: src/TailwindTraders.Ui.Website
     - name: azure login
-      uses: azure/login@v1.1
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.SERVICEPRINCIPAL }}
     - name: deploy to storage

@@ -50,7 +50,7 @@ jobs:
       - name: docker push (to acr)
         run: docker push --all-tags ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}
       - name: azure login
-        uses: azure/login@v1.1
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: deploy to aca
@@ -66,7 +66,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
-        uses: azure/login@v1.1
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: azure container registry login
@@ -117,6 +117,7 @@ jobs:
           manifests: ./src/TailwindTraders.Api.Products/TailwindTraders.Api.Products.yaml
           images: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
           imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+          force: true
       # hack: extract the endpoint url of the aks app from public IP address (AFAIK this can't be fetched from AZ AKS CLI or kubectl)
       - name: get productsApiEndpoint
         uses: azure/CLI@v1
@@ -156,7 +157,7 @@ jobs:
         run: npm run build
         working-directory: src/TailwindTraders.Ui.Website
       - name: azure login
-        uses: azure/login@v1.1
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: deploy to storage

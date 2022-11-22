@@ -1242,14 +1242,15 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
         ]
       }
     }
-    addonProfiles: {
-      omsagent: {
-        enabled: true
-        config: {
-          logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
-        }
-      }
-    }
+    // Note: Commented out due to github issue #84: https://github.com/CloudLabs-AI/TailwindTraders/issues/84
+    // addonProfiles: {
+    //   omsagent: {
+    //     enabled: true
+    //     config: {
+    //       logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
+    //     }
+    //   }
+    // }
   }
 }
 
