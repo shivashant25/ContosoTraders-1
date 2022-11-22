@@ -22,11 +22,15 @@ param tenantId string = subscription().tenantId
 // aks
 param aksLinuxAdminUsername string // value supplied via parameters file
 
+param prefix string = 'contosotraders'
+
+param prefixHyphenated string = 'contoso-traders'
+
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
 // key vault
-var kvName = 'tailwindtraderskv${environment}'
+var kvName = '${prefix}kv${environment}'
 var kvSecretNameProductsApiEndpoint = 'productsApiEndpoint'
 var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
 var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
@@ -39,82 +43,82 @@ var kvSecretNameCognitiveServicesAccountKey = 'cognitiveServicesAccountKey'
 var kvSecretNameAppInsightsConnStr = 'appInsightsConnectionString'
 
 // cosmos db (stocks db)
-var stocksDbAcctName = 'tailwind-traders-stocks${environment}'
+var stocksDbAcctName = '${prefixHyphenated}-stocks${environment}'
 var stocksDbName = 'stocksdb'
 var stocksDbStocksContainerName = 'stocks'
 
 // cosmos db (carts db)
-var cartsDbAcctName = 'tailwind-traders-carts${environment}'
+var cartsDbAcctName = '${prefixHyphenated}-carts${environment}'
 var cartsDbName = 'cartsdb'
 var cartsDbStocksContainerName = 'carts'
 
 // sql azure (products db)
-var productsDbServerName = 'tailwind-traders-products${environment}'
+var productsDbServerName = '${prefixHyphenated}-products${environment}'
 var productsDbName = 'productsdb'
 var productsDbServerAdminLogin = 'localadmin'
 var productsDbServerAdminPassword = sqlPassword
 
 // sql azure (profiles db)
-var profilesDbServerName = 'tailwind-traders-profiles${environment}'
+var profilesDbServerName = '${prefixHyphenated}-profiles${environment}'
 var profilesDbName = 'profilesdb'
 var profilesDbServerAdminLogin = 'localadmin'
 var profilesDbServerAdminPassword = sqlPassword
 
 // azure container app (carts api)
-var cartsApiAcaName = 'tailwind-traders-carts${environment}'
-var cartsApiAcaEnvName = 'tailwindtradersacaenv${environment}'
+var cartsApiAcaName = '${prefixHyphenated}-carts${environment}'
+var cartsApiAcaEnvName = '${prefix}acaenv${environment}'
 var cartsApiAcaSecretAcrPassword = 'acr-password'
-var cartsApiAcaContainerDetailsName = 'tailwind-traders-carts${environment}'
+var cartsApiAcaContainerDetailsName = '${prefixHyphenated}-carts${environment}'
 
 // storage account (product images)
-var productImagesStgAccName = 'tailwindtradersimg${environment}'
+var productImagesStgAccName = '${prefix}img${environment}'
 var productImagesProductDetailsContainerName = 'product-details'
 var productImagesProductListContainerName = 'product-list'
 
 // storage account (old website)
-var uiStgAccName = 'tailwindtradersui${environment}'
+var uiStgAccName = '${prefix}ui${environment}'
 
 // storage account (new website)
-var ui2StgAccName = 'tailwindtradersui2${environment}'
+var ui2StgAccName = '${prefix}ui2${environment}'
 
 // storage account (image classifier)
-var imageClassifierStgAccName = 'tailwindtradersic${environment}'
+var imageClassifierStgAccName = '${prefix}ic${environment}'
 var imageClassifierWebsiteUploadsContainerName = 'website-uploads'
 
 // cognitive service (image recognition)
-var cognitiveServiceName = 'tailwind-traders-cs${environment}'
+var cognitiveServiceName = '${prefixHyphenated}-cs${environment}'
 
 // cdn
-var cdnProfileName = 'tailwind-traders-cdn${environment}'
-var cdnImagesEndpointName = 'tailwind-traders-images${environment}'
-var cdnUiEndpointName = 'tailwind-traders-ui${environment}'
-var cdnUi2EndpointName = 'tailwind-traders-ui2${environment}'
+var cdnProfileName = '${prefixHyphenated}-cdn${environment}'
+var cdnImagesEndpointName = '${prefixHyphenated}-images${environment}'
+var cdnUiEndpointName = '${prefixHyphenated}-ui${environment}'
+var cdnUi2EndpointName = '${prefixHyphenated}-ui2${environment}'
 
 // redis cache
-var redisCacheName = 'tailwind-traders-cache${environment}'
+var redisCacheName = '${prefixHyphenated}-cache${environment}'
 
 // azure container registry
-var acrName = 'tailwindtradersacr${environment}'
-// var acrCartsApiRepositoryName = 'tailwindtradersapicarts' // @TODO: unused, probably remove later
+var acrName = '${prefix}acr${environment}'
+// var acrCartsApiRepositoryName = '${prefix}apicarts' // @TODO: unused, probably remove later
 
 // load testing service
-var loadTestSvcName = 'tailwind-traders-loadtest${environment}'
+var loadTestSvcName = '${prefixHyphenated}-loadtest${environment}'
 
 // application insights
-var logAnalyticsWorkspaceName = 'tailwind-traders-loganalytics${environment}'
-var appInsightsName = 'tailwind-traders-ai${environment}'
+var logAnalyticsWorkspaceName = '${prefixHyphenated}-loganalytics${environment}'
+var appInsightsName = '${prefixHyphenated}-ai${environment}'
 
 // portal dashboard
-var portalDashboardName = 'tailwind-traders-dashboard${environment}'
+var portalDashboardName = '${prefixHyphenated}-dashboard${environment}'
 
 // aks cluster
-var aksClusterName = 'tailwind-traders-aks${environment}'
-var aksClusterDnsPrefix = 'tailwind-traders-aks${environment}'
-var aksClusterNodeResourceGroup = 'tailwind-traders-aks-nodes-rg'
+var aksClusterName = '${prefixHyphenated}-aks${environment}'
+var aksClusterDnsPrefix = '${prefixHyphenated}-aks${environment}'
+var aksClusterNodeResourceGroup = '${prefixHyphenated}-aks-nodes-rg'
 
 // tags
 var resourceTags = {
-  Product: 'tailwind-traders'
+  Product: prefixHyphenated
   Environment: 'testing'
 }
 
@@ -1187,7 +1191,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
         ]
       }
     }
-    // Note: Commented out due to github issue #84: https://github.com/CloudLabs-AI/TailwindTraders/issues/84
+    // Note: Commented out due to github issue #84: https://github.com/CloudLabs-AI/ContosoTraders/issues/84
     // addonProfiles: {
     //   omsagent: {
     //     enabled: true

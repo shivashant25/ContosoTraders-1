@@ -6,7 +6,7 @@ While our infra provisioning will be fully-automated to the greatest extent poss
 
 These are the sources files that we have to manually patch (with environment suffix) before deployment:
 
-* `src\TailwindTraders.Ui.Website\src\services\configService.js`
+* `src\ContosoTraders.Ui.Website\src\services\configService.js`
 
 ## Post Deployment For Local Development
 

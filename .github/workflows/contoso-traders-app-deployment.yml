@@ -6,28 +6,27 @@ on:
     branches: ["master"]
     paths:
       [
-        "src/TailwindTraders.Api.Carts/**",
-        "src/TailwindTraders.Api.Core/**",
-        "src/TailwindTraders.Api.Images/**",
-        "src/TailwindTraders.Api.Products/**",
-        "src/TailwindTraders.Ui.Website/**",
+        "src/ContosoTraders.Api.Carts/**",
+        "src/ContosoTraders.Api.Core/**",
+        "src/ContosoTraders.Api.Images/**",
+        "src/ContosoTraders.Api.Products/**",
+        "src/ContosoTraders.Ui.Website/**",
       ]
 
 env:
-  ACR_NAME: tailwindtradersacr
-  AKS_CLUSTER_NAME: tailwind-traders-aks
-  AKS_NODES_RESOURCE_GROUP_NAME: tailwind-traders-aks-nodes-rg
-  AKS_SECRET_NAME_ACR_PASSWORD: tailwind-traders-acr-password
-  AKS_SECRET_NAME_KV_ENDPOINT: tailwind-traders-kv-endpoint
-  CARTS_ACA_NAME: tailwind-traders-carts
-  CARTS_ACR_REPOSITORY_NAME: tailwindtradersapicarts
-  CDN_PROFILE_NAME: tailwind-traders-cdn
-  KV_NAME: tailwindtraderskv
-  PRODUCTS_ACR_REPOSITORY_NAME: tailwindtradersapiproducts
-  PRODUCTS_WEBAPP_NAME: tailwind-traders-products
-  RESOURCE_GROUP_NAME: tailwind-traders-rg
-  UI_CDN_ENDPOINT_NAME: tailwind-traders-ui2
-  UI_STORAGE_ACCOUNT_NAME: tailwindtradersui2
+  ACR_NAME: contosotradersacr
+  AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
+  AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
+  AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
+  CARTS_ACA_NAME: contoso-traders-carts
+  CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
+  CDN_PROFILE_NAME: contoso-traders-cdn
+  KV_NAME: contosotraderskv
+  PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+  UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
+  UI_STORAGE_ACCOUNT_NAME: contosotradersui2
 
 jobs:
   deploy-carts-api:
@@ -46,7 +45,7 @@ jobs:
           username: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}
           password: ${{ secrets.ACR_PASSWORD }}
       - name: docker build
-        run: docker build src -f ./src/TailwindTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+        run: docker build src -f ./src/ContosoTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: docker push (to acr)
         run: docker push --all-tags ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}
       - name: azure login
@@ -76,7 +75,7 @@ jobs:
           username: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}
           password: ${{ secrets.ACR_PASSWORD }}
       - name: docker build
-        run: docker build src -f ./src/TailwindTraders.Api.Products/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+        run: docker build src -f ./src/ContosoTraders.Api.Products/Dockerfile -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: docker push (to acr)
         run: docker push --all-tags ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}
       - name: set aks context
@@ -104,17 +103,17 @@ jobs:
         with:
           tokenPrefix: "{"
           tokenSuffix: "}"
-          files: ./src/TailwindTraders.Api.Products/TailwindTraders.Api.Products.yaml
+          files: ./src/ContosoTraders.Api.Products/ContosoTraders.Api.Products.yaml
         env:
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       - name: lint manifest
         uses: azure/k8s-lint@v1
         with:
-          manifests: ./src/TailwindTraders.Api.Products/TailwindTraders.Api.Products.yaml
+          manifests: ./src/ContosoTraders.Api.Products/ContosoTraders.Api.Products.yaml
       - name: deploy to aks
         uses: Azure/k8s-deploy@v4
         with:
-          manifests: ./src/TailwindTraders.Api.Products/TailwindTraders.Api.Products.yaml
+          manifests: ./src/ContosoTraders.Api.Products/ContosoTraders.Api.Products.yaml
           images: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
           imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
           force: true
@@ -129,21 +128,6 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }} --description "endpoint url (fqdn) of the products api"
-      # @TODO: REMOVE EVERYTHING BELOW THIS LINE AFTER AKS INTEGRATION IS DONE
-      - name: install dotnet
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6.0.x
-      - name: dotnet publish
-        run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
-        working-directory: src/TailwindTraders.Api.Products
-      - name: diagnostic output
-        run: ls -la ./src/Publish/TailwindTraders.Api.Products
-      - name: deploy to app service
-        uses: Azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.PRODUCTS_WEBAPP_NAME }}${{ secrets.ENVIRONMENT }}
-          package: ./src/Publish/TailwindTraders.Api.Products
 
   deploy-ui:
     runs-on: ubuntu-latest
@@ -152,10 +136,10 @@ jobs:
         uses: actions/checkout@v3
       - name: npm install
         run: npm install
-        working-directory: src/TailwindTraders.Ui.Website
+        working-directory: src/ContosoTraders.Ui.Website
       - name: npm run build
         run: npm run build
-        working-directory: src/TailwindTraders.Ui.Website
+        working-directory: src/ContosoTraders.Ui.Website
       - name: azure login
         uses: azure/login@v1
         with:
@@ -163,7 +147,7 @@ jobs:
       - name: deploy to storage
         uses: azure/CLI@v1
         with:
-          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
+          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '$web' -s 'src/ContosoTraders.Ui.Website/build'
       - name: purge CDN endpoint
         uses: azure/CLI@v1
         with:

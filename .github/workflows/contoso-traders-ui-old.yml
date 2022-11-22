@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
 
 env:
-  STORAGE_ACCOUNT_NAME: tailwindtradersui
-  CDN_PROFILE_NAME: tailwind-traders-cdn
-  CDN_ENDPOINT_NAME: tailwind-traders-ui
-  CDN_RESOURCE_GROUP_NAME: tailwind-traders-rg
+  STORAGE_ACCOUNT_NAME: contosotradersui
+  CDN_PROFILE_NAME: contoso-traders-cdn
+  CDN_ENDPOINT_NAME: contoso-traders-ui
+  CDN_RESOURCE_GROUP_NAME: contoso-traders-rg
 
 jobs:
   deploy-ui:
@@ -19,10 +19,10 @@ jobs:
         ref: old-ui # Branch created from commit bed687acc55374cf9f166ba8d518a046c1791724 (last commit having old ui)
     - name: npm install
       run: npm install
-      working-directory: src/TailwindTraders.Ui.Website
+      working-directory: src/ContosoTraders.Ui.Website
     - name: npm run build
       run: npm run build
-      working-directory: src/TailwindTraders.Ui.Website
+      working-directory: src/ContosoTraders.Ui.Website
     - name: azure login
       uses: azure/login@v1
       with:
@@ -30,7 +30,7 @@ jobs:
     - name: deploy to storage
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '$web' -s 'src/TailwindTraders.Ui.Website/build'
+        inlineScript: az storage blob sync --account-name '${{ env.STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '$web' -s 'src/ContosoTraders.Ui.Website/build'
     - name: purge CDN endpoint
       uses: azure/CLI@v1
       with:

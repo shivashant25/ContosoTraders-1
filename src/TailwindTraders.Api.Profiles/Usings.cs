@@ -1,1 +1,0 @@
-﻿global using TailwindTraders.Api.Core.Controllers;
