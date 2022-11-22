@@ -60,11 +60,6 @@ var profilesDbName = 'profilesdb'
 var profilesDbServerAdminLogin = 'localadmin'
 var profilesDbServerAdminPassword = sqlPassword
 
-// app service plan (products api)
-var productsApiAppSvcPlanName = 'tailwind-traders-products${environment}'
-var productsApiAppSvcName = 'tailwind-traders-products${environment}'
-var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
-
 // azure container app (carts api)
 var cartsApiAcaName = 'tailwind-traders-carts${environment}'
 var cartsApiAcaEnvName = 'tailwindtradersacaenv${environment}'
@@ -268,13 +263,6 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
       // @TODO: I was unable to figure out how to assign an access policy to the AKS cluster's agent pool's managed identity.
       // Hence, that specific access policy will be assigned from a github workflow (using AZ CLI).
       accessPolicies: [
-        {
-          tenantId: tenantId
-          objectId: productsapiappsvc.identity.principalId
-          permissions: {
-            secrets: [ 'get', 'list' ]
-          }
-        }
         {
           tenantId: tenantId
           objectId: cartsapiaca.identity.principalId
@@ -481,49 +469,6 @@ resource profilesdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
     properties: {
       endIpAddress: '0.0.0.0'
       startIpAddress: '0.0.0.0'
-    }
-  }
-}
-
-//
-// products api
-//
-
-// app service plan (linux)
-resource productsapiappsvcplan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: productsApiAppSvcPlanName
-  location: resourceLocation
-  tags: resourceTags
-  sku: {
-    name: 'B1'
-  }
-  properties: {
-    reserved: true
-  }
-  kind: 'linux'
-}
-
-// app service
-resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
-  name: productsApiAppSvcName
-  location: resourceLocation
-  tags: resourceTags
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    clientAffinityEnabled: false
-    httpsOnly: true
-    serverFarmId: productsapiappsvcplan.id
-    siteConfig: {
-      linuxFxVersion: 'DOTNETCORE|6.0'
-      alwaysOn: true
-      appSettings: [
-        {
-          name: productsApiSettingNameKeyVaultEndpoint
-          value: kv.properties.vaultUri
-        }
-      ]
     }
   }
 }
