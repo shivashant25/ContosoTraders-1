@@ -7,7 +7,7 @@ internal class ProductService : ContosoTradersServiceBase, IProductService
 {
     private readonly ProductsDbContext _productRepository;
 
-    public ProductService(ProductsDbContext productDbContext, IMapper mapper, IConfiguration configuration) : base(mapper, configuration)
+    public ProductService(ProductsDbContext productDbContext, IMapper mapper, IConfiguration configuration, ILogger<ProductService> logger) : base(mapper, configuration, logger)
     {
         _productRepository = productDbContext;
     }

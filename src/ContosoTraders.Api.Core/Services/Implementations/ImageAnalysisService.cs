@@ -2,7 +2,7 @@
 
 internal class ImageAnalysisService : ContosoTradersServiceBase, IImageAnalysisService
 {
-    public ImageAnalysisService(IMapper mapper, IConfiguration configuration) : base(mapper, configuration)
+    public ImageAnalysisService(IMapper mapper, IConfiguration configuration, ILogger<ImageAnalysisService> logger) : base(mapper, configuration, logger)
     {
     }
 

@@ -1,12 +1,18 @@
 namespace ContosoTraders.Api.Core.Services.Implementations;
 
-internal class ImageSearchService : IImageSearchService
+internal class ImageSearchService : ContosoTradersServiceBase, IImageSearchService
 {
     private readonly IImageAnalysisService _imageAnalysisService;
 
     private readonly IProductService _productService;
 
-    public ImageSearchService(IProductService productService, IImageAnalysisService imageAnalysisService)
+    public ImageSearchService(
+        IProductService productService,
+        IImageAnalysisService imageAnalysisService,
+        IMapper mapper,
+        IConfiguration configuration,
+        ILogger<ImageSearchService> logger)
+        : base(mapper, configuration, logger)
     {
         _productService = productService;
         _imageAnalysisService = imageAnalysisService;

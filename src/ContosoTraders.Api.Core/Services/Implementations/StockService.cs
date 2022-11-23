@@ -4,7 +4,7 @@ internal class StockService : ContosoTradersServiceBase, IStockService
 {
     private readonly IStockRepository _stockRepository;
 
-    public StockService(IStockRepository stockRepository, IMapper mapper, IConfiguration configuration) : base(mapper, configuration)
+    public StockService(IStockRepository stockRepository, IMapper mapper, IConfiguration configuration, ILogger<StockService> logger) : base(mapper, configuration, logger)
     {
         _stockRepository = stockRepository;
     }

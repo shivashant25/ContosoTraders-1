@@ -4,7 +4,7 @@ internal class CartService : ContosoTradersServiceBase, ICartService
 {
     private readonly ICartRepository _cartRepository;
 
-    public CartService(ICartRepository cartRepository, IMapper mapper, IConfiguration configuration) : base(mapper, configuration)
+    public CartService(ICartRepository cartRepository, IMapper mapper, IConfiguration configuration, ILogger<CartService> logger) : base(mapper, configuration, logger)
     {
         _cartRepository = cartRepository;
     }
