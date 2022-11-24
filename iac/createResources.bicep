@@ -52,6 +52,11 @@ var cartsDbAcctName = '${prefixHyphenated}-carts${environment}'
 var cartsDbName = 'cartsdb'
 var cartsDbStocksContainerName = 'carts'
 
+// app service plan (products api)
+var productsApiAppSvcPlanName = 'tailwind-traders-products${environment}'
+var productsApiAppSvcName = 'tailwind-traders-products${environment}'
+var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
+
 // sql azure (products db)
 var productsDbServerName = '${prefixHyphenated}-products${environment}'
 var productsDbName = 'productsdb'
@@ -269,6 +274,13 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
       accessPolicies: [
         {
           tenantId: tenantId
+          objectId: productsapiappsvc.identity.principalId
+          permissions: {
+            secrets: [ 'get', 'list' ]
+          }
+        }
+        {
+          tenantId: tenantId
           objectId: cartsapiaca.identity.principalId
           permissions: {
             secrets: [ 'get', 'list' ]
@@ -390,6 +402,49 @@ resource cartsdba 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
           }
         }
       }
+    }
+  }
+}
+
+//
+// products api
+//
+
+// app service plan (linux)
+resource productsapiappsvcplan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: productsApiAppSvcPlanName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'B1'
+  }
+  properties: {
+    reserved: true
+  }
+  kind: 'linux'
+}
+
+// app service
+resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
+  name: productsApiAppSvcName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    clientAffinityEnabled: false
+    httpsOnly: true
+    serverFarmId: productsapiappsvcplan.id
+    siteConfig: {
+      linuxFxVersion: 'DOTNETCORE|6.0'
+      alwaysOn: true
+      appSettings: [
+        {
+          name: productsApiSettingNameKeyVaultEndpoint
+          value: kv.properties.vaultUri
+        }
+      ]
     }
   }
 }

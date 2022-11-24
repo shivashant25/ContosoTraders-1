@@ -24,6 +24,7 @@ env:
   CDN_PROFILE_NAME: contoso-traders-cdn
   KV_NAME: contosotraderskv
   PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
+  PRODUCTS_WEBAPP_NAME: tailwind-traders-products
   RESOURCE_GROUP_NAME: contoso-traders-rg
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
@@ -128,6 +129,21 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }} --description "endpoint url (fqdn) of the products api"
+      # @TODO: REMOVE EVERYTHING BELOW THIS LINE AFTER AKS INTEGRATION IS DONE
+      - name: install dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      - name: dotnet publish
+        run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
+        working-directory: src/TailwindTraders.Api.Products
+      - name: diagnostic output
+        run: ls -la ./src/Publish/TailwindTraders.Api.Products
+      - name: deploy to app service
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.PRODUCTS_WEBAPP_NAME }}${{ secrets.ENVIRONMENT }}
+          package: ./src/Publish/TailwindTraders.Api.Products
 
   deploy-ui:
     runs-on: ubuntu-latest
