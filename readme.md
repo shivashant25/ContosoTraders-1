@@ -2,11 +2,11 @@
 
 ## Application Links
 
-| Application  | Link                                                                                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| UI           | [UI (PROD)](https://www.contosotraders.com/) \| [UI (TEST)](https://test.contosotraders.com/) \| [UI (LEGACY)](https://contoso-traders-uitest.azureedge.net) |
-| Carts API    | [LINK](https://contoso-traders-cartstest.orangeflower-95b09b9d.eastus.azurecontainerapps.io/swagger/)                                                        |
-| Products API | [LINK](https://contoso-traders-productstest.azurewebsites.net/swagger/)                                                                                      |
+| Application  | Link                                                                                                                                          |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| UI           | [PROD](https://www.contosotraders.com/) \| [TEST](https://test.contosotraders.com/) \| [LEGACY](https://contoso-traders-uitest.azureedge.net) |
+| Carts API    | [LINK](https://contoso-traders-cartstest.orangeflower-95b09b9d.eastus.azurecontainerapps.io/swagger/)                                         |
+| Products API | [LINK](https://contoso-traders-productstest.azurewebsites.net/swagger/)                                                                       |
 
 ## Pipeline Status
 
