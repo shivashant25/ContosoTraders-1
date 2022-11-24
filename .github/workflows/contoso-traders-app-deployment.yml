@@ -24,7 +24,7 @@ env:
   CDN_PROFILE_NAME: contoso-traders-cdn
   KV_NAME: contosotraderskv
   PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
-  PRODUCTS_WEBAPP_NAME: tailwind-traders-products
+  PRODUCTS_WEBAPP_NAME: contoso-traders-products
   RESOURCE_GROUP_NAME: contoso-traders-rg
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
@@ -135,15 +135,15 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: dotnet publish
-        run: dotnet publish -o ../Publish/TailwindTraders.Api.Products -c release
-        working-directory: src/TailwindTraders.Api.Products
+        run: dotnet publish -o ../Publish/ContosoTraders.Api.Products -c release
+        working-directory: src/ContosoTraders.Api.Products
       - name: diagnostic output
-        run: ls -la ./src/Publish/TailwindTraders.Api.Products
+        run: ls -la ./src/Publish/ContosoTraders.Api.Products
       - name: deploy to app service
         uses: Azure/webapps-deploy@v2
         with:
           app-name: ${{ env.PRODUCTS_WEBAPP_NAME }}${{ secrets.ENVIRONMENT }}
-          package: ./src/Publish/TailwindTraders.Api.Products
+          package: ./src/Publish/ContosoTraders.Api.Products
 
   deploy-ui:
     runs-on: ubuntu-latest

@@ -53,8 +53,8 @@ var cartsDbName = 'cartsdb'
 var cartsDbStocksContainerName = 'carts'
 
 // app service plan (products api)
-var productsApiAppSvcPlanName = 'tailwind-traders-products${environment}'
-var productsApiAppSvcName = 'tailwind-traders-products${environment}'
+var productsApiAppSvcPlanName = '${prefixHyphenated}-products${environment}'
+var productsApiAppSvcName = '${prefixHyphenated}-products${environment}'
 var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 
 // sql azure (products db)
