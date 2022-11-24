@@ -8,8 +8,7 @@
 4. Create the `SERVICEPRINCIPAL`, `ENVIRONMENT`, and `SQL_PASSWORD` github secrets ([instructions here](./github-secrets.md)).
 5. Modify the source files mentioned [in the 'pre-deployment' section of this document](./manual-steps.md#pre-deployment). Replace `<ENVIRONMENT>` with the [value used above](./github-secrets.md).
 6. Next, provision the infrastructure on Azure by running the `contoso-traders-infra-provisioning` github workflow. You can do this by going to the github repo's `Actions` tab, selecting the workflow, and clicking on the `Run workflow` button.
-7. Next, set the `ACR_PASSWORD` github secret ([instructions here](./github-secrets.md)).
-8. Next, deploy the apps, by running the `contoso-traders-app-deployment` workflow.
+7. Next, deploy the apps, by running the `contoso-traders-app-deployment` workflow.
 
 > To set up ContosoTrader in CloudLabs, you have create a fork of this github repository (one fork per lab). Then you have to repeat the same steps as above using the forked repo.
 

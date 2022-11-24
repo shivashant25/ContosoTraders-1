@@ -5,7 +5,6 @@ On the github repository, go to the `Settings` tab > `Secrets` > `Actions` and c
 | Secret Name        | Secret Value                                                                   |
 | ------------------ | ------------------------------------------------------------------------------ |
 | `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric only). E.g. 'test51' |
-| `ACR_PASSWORD`     | Admin password for your Azure Container Registry                               |
 | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                              |
 | `SERVICEPRINCIPAL` | See details below                                                              |
 
