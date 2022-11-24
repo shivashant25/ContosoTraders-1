@@ -214,7 +214,7 @@ VALUES
     (25,'OnePlus Nord CE 2 Lite',679,'PID25-1.jpg',5,4,NULL),
     (26,'OnePlus Nord 2T ',578,'PID26-1.jpg',5,4,NULL),
     (27,'OnePlus 10R',999,'PID27-1.jpg',5,4,NULL),
-    (28,'OnePlus 10T',999,'PID29-1.jpg',5,4,NULL),
+    (28,'OnePlus 10T',999,'PID28-1.jpg',5,4,NULL),
     (29,'Xbox Wireless Controller Forza Horizon 5 Limited Edition',299,'PID29-1.jpg',1,1,NULL),
     (30,'Xbox Wireless Controller Aqua Shift Special Edition',299,'PID30-1.jpg',1,1,NULL),
     (31,'Xbox Wireless Controller Daystrike Camo Special Edition',299,'PID31-1.jpg',1,1,NULL),
