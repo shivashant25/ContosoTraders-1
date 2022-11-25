@@ -168,7 +168,7 @@ VALUES
     (2, 'laptops' , 'Laptops'),
     (3, 'desktops' , 'Desktops'),
     (4, 'mobiles' , 'Mobiles'),
-    (5, 'monitor' , 'Monitor')  
+    (5, 'monitors' , 'Monitors')  
  
 
 DROP TABLE IF EXISTS Products
