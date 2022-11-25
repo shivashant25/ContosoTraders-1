@@ -54,8 +54,10 @@ internal class ProductService : ContosoTradersServiceBase, IProductService
         var responseDaos = _productRepository.Products
             .Where(product => EF.Functions.Like(product.Name, $"%{searchTerm}%"));
 
+        var allTypes = _productRepository.Types.ToArray();
+
         var responseDtos = responseDaos.ToArray()
-            .Select(dao => CustomMapping(dao));
+            .Select(dao => CustomMapping(dao, null, allTypes, null));
 
         return responseDtos;
     }
@@ -100,26 +102,9 @@ internal class ProductService : ContosoTradersServiceBase, IProductService
             Name = productDao.Name,
             Price = productDao.Price,
             ImageUrl = $"{imagesEndpoint}/{imagesType}/{productDao.ImageName}",
-            Brand = brands.FirstOrDefault(brand => brand.Id == productDao.BrandId),
-            Type = types.FirstOrDefault(type => type.Id == productDao.TypeId),
-            Features = features.Where(feature => feature.ProductItemId == productDao.Id).ToList()
-        };
-
-        return productDto;
-    }
-
-    private ProductDto CustomMapping(Product productDao, bool thumbnailImages = true)
-    {
-        var imagesEndpoint = Configuration[KeyVaultConstants.SecretNameImagesEndpoint];
-
-        var imagesType = thumbnailImages ? "product-list" : "product-details";
-
-        var productDto = new ProductDto
-        {
-            Id = productDao.Id,
-            Name = productDao.Name,
-            Price = productDao.Price,
-            ImageUrl = $"{imagesEndpoint}/{imagesType}/{productDao.ImageName}"
+            Brand = brands?.FirstOrDefault(brand => brand.Id == productDao.BrandId),
+            Type = types?.FirstOrDefault(type => type.Id == productDao.TypeId),
+            Features = features?.Where(feature => feature.ProductItemId == productDao.Id).ToList()
         };
 
         return productDto;
