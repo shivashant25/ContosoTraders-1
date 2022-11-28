@@ -69,6 +69,9 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: install helm
+        uses: Azure/setup-helm@v3
+        id: install-helm
       - name: extract acr password
         uses: azure/CLI@v1
         id: extract-acr-password
@@ -104,24 +107,87 @@ jobs:
           secret-type: "generic"
           secret-name: ${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}
           string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }}.vault.azure.net/" }'
-      - name: substitute tokens in manifest
+      - name: substitute tokens in deployment manifest
         uses: cschleiden/replace-tokens@v1.2
         with:
           tokenPrefix: "{"
           tokenSuffix: "}"
-          files: ./src/ContosoTraders.Api.Products/ContosoTraders.Api.Products.yaml
+          files: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
         env:
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-      - name: lint manifest
+      - name: lint deployment manifest
         uses: azure/k8s-lint@v1
         with:
-          manifests: ./src/ContosoTraders.Api.Products/ContosoTraders.Api.Products.yaml
-      - name: deploy to aks
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+      - name: apply deployment manifest
         uses: Azure/k8s-deploy@v4
         with:
-          manifests: ./src/ContosoTraders.Api.Products/ContosoTraders.Api.Products.yaml
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
           images: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
           imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+          force: true
+      - name: apply service manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
+          force: true
+      # create the ingress controller
+      - name: create ingress controller
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.ENVIRONMENT }}
+          ${{ steps.install-helm.outputs.helm-path }} repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          ${{ steps.install-helm.outputs.helm-path }} repo update
+          ${{ steps.install-helm.outputs.helm-path }} upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
+            --set controller.replicaCount=2 \
+            --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set controller.service.externalTrafficPolicy=Local
+      # install cert-manager
+      - name: apply namespace manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Namespace.yaml
+          force: true
+      - name: install cert-manager
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.ENVIRONMENT }}
+          kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
+      - name: apply clusterIssuer manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterIssuer.yaml
+          force: true
+      - name: substitute tokens in certificate manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
+        env:
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+      - name: apply certificate manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
+          force: true
+      - name: substitute tokens in ingress manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
+        env:
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+      - name: apply ingress manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
+          force: true
+      - name: apply clusterRole manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterRole.yaml
           force: true
       # hack: extract the endpoint url of the aks app from public IP address (AFAIK this can't be fetched from AZ AKS CLI or kubectl)
       - name: get productsApiEndpoint

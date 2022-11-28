@@ -81,8 +81,6 @@ jobs:
         loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
         loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.ENVIRONMENT }}
         resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
-        # note: the endpoint is currently http (and not https). Modify below code when github issue #46 is resolved.
-        # https://github.com/CloudLabs-AI/ContosoTraders/issues/46
         env: |
           [
             {
@@ -91,7 +89,7 @@ jobs:
             },
             {
               "name": "protocol",
-              "value": "http"
+              "value": "https"
             },
             {
               "name": "path",
