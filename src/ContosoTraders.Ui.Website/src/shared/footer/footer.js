@@ -24,7 +24,7 @@ const Footer = () => {
                 <li className='list-element'><Link to='/list/all-products'>All Products</Link></li>
                 <li className='list-element'><Link to='/list/controllers'>Controllers</Link></li>
                 <li className='list-element'><Link to='/list/laptops'>Laptops</Link></li>
-                <li className='list-element'><Link to='/list/monitors'>Monitors</Link></li>
+                <li className='list-element'><Link to='/list/monitor'>Monitors</Link></li>
             </ul>
         </Grid>
         <Grid item xs={2} className='section-3'>

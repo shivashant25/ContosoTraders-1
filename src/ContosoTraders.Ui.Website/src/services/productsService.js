@@ -20,6 +20,8 @@ const ProductService = {
 
     async getFilteredProducts(filters = {}) {
         await ConfigService.loadSettings();
+        
+        filters.type = filters.type.type === undefined ? filters.type : filters.type.type;
 
         const params = {
             'params': filters,

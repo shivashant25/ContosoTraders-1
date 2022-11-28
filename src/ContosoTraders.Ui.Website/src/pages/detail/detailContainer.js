@@ -47,8 +47,7 @@ class DetailContainer extends Component {
 
         const profile = await UserService.getProfileData(this.props.userInfo.token);
         const { profile: { email } } = profile;
-        this.state.detailProduct.email = email
-
+        this.state.detailProduct.email = email;
         const productToCart = await CartService.postProductToCart(this.props.userInfo.token, this.state.detailProduct)
 
         if (productToCart.errMessage) {

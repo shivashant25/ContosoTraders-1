@@ -17,7 +17,8 @@ import {
   RefundPolicy,
   TermsOfService,
   AboutUs,
-  ErrorPage
+  ErrorPage,
+  Cart,
 } from "./pages";
 
 import "./i18n";
@@ -88,7 +89,7 @@ class App extends Component {
       <div className="App">
         <Fragment>
           <div className="mainHeader">
-            <Appbar />
+            <Appbar quantity={quantity} />
             {this.props.history.location.pathname === '/' || this.props.history.location.pathname === '/new-arrivals' ?
               <Header quantity={quantity} />
               :
@@ -114,7 +115,8 @@ class App extends Component {
             <Route path="/terms-of-service" component={TermsOfService} />
             <Route path="/about-us" component={AboutUs} />
             <PrivateRoute path="/coupons" component={MyCoupons} />
-            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/profile/:page" component={Profile} />
+            <PrivateRoute path="/cart" component={Cart}/>
             <PrivateRoute
               path="/shopping-cart"
               component={ShoppingCart}

@@ -1,5 +1,7 @@
 import React from 'react';
 import { withRouter, Link, useHistory } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import {AppBar, InputAdornment, TextField} from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,10 +15,21 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Logo from '../../assets/images/logo-horizontal.svg';
 import SearchIconNew from '../../assets/images/original/Contoso_Assets/Icons/image_search_icon.svg'
-// import WishlistIcon from '../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
-// import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
-// import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon.svg'
+import WishlistIcon from '../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
+import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
+import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon.svg'
 import UploadFile from '../uploadFile/uploadFile';
+import { clickAction, submitAction } from '../../actions/actions';
+import AuthB2CService from '../../services/authB2CService';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
+import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
+// import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
+import personal_information_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/personal_information_icon.svg";
+import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_wishlist_icon.svg";
+import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
+import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -85,13 +98,46 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
 
-function TopAppBar() {
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: '#fff',
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: '#000',
+      },
+    },
+    '&:hover' : {
+      backgroundColor: '#f8f8f8'
+    }
+  },
+}))(MenuItem);
+function TopAppBar(props) {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [searchUpload, setSearchUpload] = React.useState(false)
+  const authService = new AuthB2CService();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -110,6 +156,10 @@ function TopAppBar() {
     setSearchUpload(false)
   }, [history.location.pathname]);
 
+  const redirectUrl = (url) => {
+    history.push(url);
+  }
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -127,20 +177,77 @@ function TopAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const { loggedIn } = props.userInfo;
+
+  // const onClickLogIn = async() => {
+  //   let user = await authService.login();
+  //   if(user)
+  //   {
+  //       user['loggedIn'] = true;
+  //       user['isB2c'] = true;
+  //       user['token'] = sessionStorage.getItem('msal.idtoken');
+  //       localStorage.setItem('state',JSON.stringify(user))
+  //       props.submitAction(user);
+  //   }
+  // }
+  const onClickLogout = () => {
+    localStorage.clear();
+
+    if (props.userInfo.isB2c) {
+      authService.logout();
+    }
+    props.clickAction();
+    props.history.push('/');
+}
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <Menu
+    <StyledMenu
+      id="profile-dropdown"
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
+      <StyledMenuItem onClick={() => redirectUrl('/profile/personal')}>
+        <ListItemIcon>
+          <img src={personal_information_icon} alt=""/>
+        </ListItemIcon>
+        <ListItemText primary="Personal Information" />
+        <ListItemIcon className='justify-content-end'></ListItemIcon>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={() => redirectUrl('/profile/orders')}>
+        <ListItemIcon>
+          <img src={my_orders_icon} alt=""/>
+        </ListItemIcon>
+        <ListItemText primary="My Orders" />
+        <ListItemIcon className='justify-content-end'>
+        </ListItemIcon>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={() => redirectUrl('/profile/wishlist')}>
+        <ListItemIcon>
+          <img src={my_wishlist_icon} alt=""/>
+        </ListItemIcon>
+        <ListItemText primary="My Wishlist" />
+        <ListItemIcon className='justify-content-end'>
+        </ListItemIcon>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={() => redirectUrl('/profile/address')}>
+        <ListItemIcon>
+          <img src={my_address_book_icons} alt=""/>
+        </ListItemIcon>
+        <ListItemText primary="My Address Book" />
+        <ListItemIcon className='justify-content-end'>
+        </ListItemIcon>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={onClickLogout}>
+        <ListItemIcon>
+          <img src={logout_icon} alt=""/>
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+        <ListItemIcon className='justify-content-end'>
+        </ListItemIcon>
+      </StyledMenuItem>
+    </StyledMenu>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -156,7 +263,7 @@ function TopAppBar() {
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={4} color="secondary" overlap="rectangular">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -164,7 +271,7 @@ function TopAppBar() {
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
+          <Badge badgeContent={11} color="secondary" overlap="rectangular">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -201,7 +308,7 @@ function TopAppBar() {
                 fullWidth
                 InputProps={{
                     endAdornment: (
-                    <InputAdornment>
+                    <InputAdornment position='end'>
                         <IconButton onClick={()=>setSearchUpload(!searchUpload)} className="searchBtn">
                           <img src={SearchIconNew} alt="iconimage"/>
                         </IconButton>
@@ -220,29 +327,34 @@ function TopAppBar() {
             :null}
           </div>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            {/* <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <img src={WishlistIcon} alt="iconimage"/>
+          {loggedIn && loggedIn ? <div className={classes.sectionDesktop}>
+            <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={0} color="secondary" overlap="rectangular">
+                <img src={WishlistIcon} alt="iconimage" />
               </Badge>
             </IconButton>
             <IconButton
               className='iconButton'
-              edge="end"
+              // edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <img src={ProfileIcon} alt="iconimage"/>
+              <img src={ProfileIcon} alt="iconimage" />
             </IconButton>
-            <IconButton className='iconButton' aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <img src={BagIcon} alt="iconimage"/>
+            <IconButton className='iconButton' aria-label="show 17 new notifications" color="inherit" onClick={()=>redirectUrl('/cart')} >
+              <Badge badgeContent={1} color="secondary" overlap="rectangular">
+                <img src={BagIcon} alt="iconimage" />
               </Badge>
-            </IconButton> */}
-          </div>
+            </IconButton>
+          </div> :
+          null
+            // <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
+            //   Login
+            // </Button>
+          }
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -261,4 +373,6 @@ function TopAppBar() {
     </div>
   );
 }
-export default withRouter(TopAppBar);
+const mapStateToProps = state => state.login;
+
+export default withRouter(connect(mapStateToProps, { clickAction, submitAction })(TopAppBar));

@@ -9,9 +9,9 @@ const settingsUrl = "/api/settings";
 const APIUrl = 'https://contoso-traders-productstest.azurewebsites.net/v1';
 const APIUrlShoppingCart = 'https://contoso-traders-cartstest.orangeflower-95b09b9d.eastus.azurecontainerapps.io/v1';
 const UseB2C = process.env.REACT_APP_USEB2C;
-const B2cAuthority = process.env.REACT_APP_B2CAUTHORITY;
-const B2cClientId = process.env.REACT_APP_B2CCLIENTID;
-const B2cScopes = process.env.REACT_APP_B2CSCOPES;
+const B2cAuthority = "https://login.microsoftonline.com/common";//process.env.REACT_APP_B2CAUTHORITY;
+const B2cClientId =  "9db8d08a-d9b6-4e4c-8b46-a3898f985735";//process.env.REACT_APP_B2CCLIENTID;
+const B2cScopes = ["User.Read"];//process.env.REACT_APP_B2CSCOPES;
 
 const _HeadersConfig = (token, devspaces = undefined) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
