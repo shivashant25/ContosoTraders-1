@@ -18,11 +18,11 @@ const ProductService = {
         return response;
     },
 
-    async getFilteredProducts(type = {}) {
+    async getFilteredProducts(filters = {}) {
         await ConfigService.loadSettings();
 
         const params = {
-            'params': type,
+            'params': filters,
             'paramsSerializer': function (params) {
                 return qs.stringify(params, { arrayFormat: 'repeat' })
             }
