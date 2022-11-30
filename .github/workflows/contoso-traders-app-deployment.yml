@@ -16,6 +16,7 @@ on:
 env:
   ACR_NAME: contosotradersacr
   AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_DNS_LABEL: contoso-traders-products
   AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
   AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
@@ -156,6 +157,17 @@ jobs:
             --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
             --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
             --set controller.service.externalTrafficPolicy=Local
+      - name: set dns label on public ip
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az network public-ip update --dns-name ${{ env.AKS_DNS_LABEL }}${{ secrets.ENVIRONMENT }} -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} -n $(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].name" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }})
+      # hack: extract the full fqdn / dns label of the aks app's public IP address
+      - name: get aks-fqdn
+        uses: azure/CLI@v1
+        id: get-aks-fqdn
+        with:
+          # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
+          inlineScript: echo "aksFqdn"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }})" >> $GITHUB_OUTPUT
       # install cert-manager
       - name: apply namespace manifest
         uses: Azure/k8s-deploy@v4
@@ -178,7 +190,7 @@ jobs:
           tokenSuffix: "}"
           files: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
         env:
-          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+          AKS_FQDN: ${{ steps.get-aks-fqdn.outputs.aksFqdn }}
       - name: apply certificate manifest
         uses: Azure/k8s-deploy@v4
         with:
@@ -191,7 +203,7 @@ jobs:
           tokenSuffix: "}"
           files: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
         env:
-          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+          AKS_FQDN: ${{ steps.get-aks-fqdn.outputs.aksFqdn }}
       - name: apply ingress manifest
         uses: Azure/k8s-deploy@v4
         with:
@@ -202,17 +214,10 @@ jobs:
         with:
           manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterRole.yaml
           force: true
-      # hack: extract the endpoint url of the aks app from public IP address (AFAIK this can't be fetched from AZ AKS CLI or kubectl)
-      - name: get productsApiEndpoint
-        uses: azure/CLI@v1
-        id: get-productsApiEndpoint
-        with:
-          # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
-          inlineScript: echo "productsApiEndpoint"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }})" >> $GITHUB_OUTPUT
       - name: set productsApiEndpoint in kv
         uses: azure/CLI@v1
         with:
-          inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }} --description "endpoint url (fqdn) of the products api"
+          inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-aks-fqdn.outputs.aksFqdn }} --description "endpoint url (fqdn) of the products api"
 
   deploy-ui:
     runs-on: ubuntu-latest

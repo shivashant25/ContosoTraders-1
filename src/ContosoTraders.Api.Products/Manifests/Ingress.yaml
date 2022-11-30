@@ -11,10 +11,12 @@ metadata:
 spec:
   tls:
     - hosts:
-        - footestlabel.eastus.cloudapp.azure.com
+        #Note: The '{AKS_FQDN}' token will be substituted with the actual DNS label of the ingress controller's public IP by github workflow.
+        - {AKS_FQDN}
       secretName: tls-secret
   rules:
-    - host: footestlabel.eastus.cloudapp.azure.com
+    #Note: The '{AKS_FQDN}' token will be substituted with the actual DNS label of the ingress controller's public IP by github workflow.
+    - host: {AKS_FQDN}
       http:
         paths:
           - path: /(.*)
