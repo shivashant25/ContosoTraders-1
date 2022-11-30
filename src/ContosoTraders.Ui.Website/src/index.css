@@ -87,7 +87,7 @@ body {
   box-shadow: none !important;
 }
 .justify-content-end{
-  justify-content: end;
+  justify-content: flex-end;
 }
 .text-transform-capitalize{
   text-transform: capitalize !important;

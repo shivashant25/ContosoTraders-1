@@ -7,14 +7,18 @@ const settingsUrl = "/api/settings";
 // const APIUrlShoppingCart = process.env.REACT_APP_API_URL_SHOPPINGCART;
 // @TODO: Replace 'test' in the next two lines with whatever your ENVIRONMENT github secret value is
 const APIUrl = 'https://contoso-traders-productstest.azurewebsites.net/v1';
-const APIUrlShoppingCart = 'https://contoso-traders-cartstest.orangeflower-95b09b9d.eastus.azurecontainerapps.io/v1';
-const UseB2C = process.env.REACT_APP_USEB2C;
+const APIUrlShoppingCart = 'https://contoso-traders-cartstest.orangeflower-95b09b9d.eastus.azurecontainerapps.io/v1';//'https://contoso-traders-cartsprod.delightfuldune-ced90d47.eastus.azurecontainerapps.io/v1';
+const UseB2C = '';//process.env.REACT_APP_USEB2C;
 const B2cAuthority = "https://login.microsoftonline.com/common";//process.env.REACT_APP_B2CAUTHORITY;
 const B2cClientId =  "9db8d08a-d9b6-4e4c-8b46-a3898f985735";//process.env.REACT_APP_B2CCLIENTID;
 const B2cScopes = ["User.Read"];//process.env.REACT_APP_B2CSCOPES;
+const userEmail = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null;
 
 const _HeadersConfig = (token, devspaces = undefined) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  if(userEmail){
+    headers['x-tt-email'] = userEmail
+  }
   if (devspaces) {
     headers["azds-route-as"] = devspaces;
   }

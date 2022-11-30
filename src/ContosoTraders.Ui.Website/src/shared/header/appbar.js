@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useRef } from 'react';
 import { withRouter, Link, useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -23,6 +23,7 @@ import { clickAction, submitAction } from '../../actions/actions';
 import AuthB2CService from '../../services/authB2CService';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Alert from "react-s-alert";
 
 import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
 // import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
@@ -30,6 +31,7 @@ import personal_information_icon from "../../assets/images/original/Contoso_Asse
 import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_wishlist_icon.svg";
 import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
 import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
+import { ProductService } from '../../services';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -134,6 +136,7 @@ const StyledMenuItem = withStyles((theme) => ({
 function TopAppBar(props) {
   const classes = useStyles();
   const history = useHistory();
+  const searchRef = useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [searchUpload, setSearchUpload] = React.useState(false)
@@ -198,7 +201,46 @@ function TopAppBar(props) {
     }
     props.clickAction();
     props.history.push('/');
-}
+  }
+  const setTextSearch = () => {
+    if(searchRef.current.value.length > 0){
+      let formData = {};
+      formData.text = searchRef.current.value;
+      ProductService.getRelatedProducts(formData, props.userInfo.token)
+      .then((relatedProducts) => {
+          if (relatedProducts.length > 1) {
+              props.history.push({
+                  pathname: "/suggested-products-list",
+                  state: { relatedProducts },
+              });
+          } else {
+              props.history.push({
+                  pathname: `/product/detail/${relatedProducts[0].id}`,
+              });
+          }
+      })
+      .catch(() => {
+          Alert.error("There was an error, please try again", {
+              position: "top",
+              effect: "scale",
+              beep: true,
+              timeout: 6000,
+          });
+      });//search function
+    }
+  }
+  React.useEffect(() => {
+    const listener = event => {
+      if (searchRef.current.value.length > 0 && (event.code === "Enter" || event.code === "NumpadEnter")) {
+        event.preventDefault();
+        setTextSearch();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  });
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <StyledMenu
@@ -306,6 +348,8 @@ function TopAppBar(props) {
                 placeholder='Search by product name or search by image'
                 variant="outlined"
                 fullWidth
+                onBlur={()=>setTextSearch()}
+                inputRef={searchRef}
                 InputProps={{
                     endAdornment: (
                     <InputAdornment position='end'>
@@ -328,7 +372,7 @@ function TopAppBar(props) {
           </div>
           <div className={classes.grow} />
           {loggedIn && loggedIn ? <div className={classes.sectionDesktop}>
-            <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit">
+            <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={()=>redirectUrl('/profile/wishlist')}>
               <Badge badgeContent={0} color="secondary" overlap="rectangular">
                 <img src={WishlistIcon} alt="iconimage" />
               </Badge>

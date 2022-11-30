@@ -116,9 +116,9 @@ export default function SidebarAccordion(props) {
         <AccordionDetails>
           <Grid container spacing={2}>
             {props.data && props.data.map((item,key) => (
-              <Grid item xs={12} className="descpAttributes">
+              <Grid key={key} item xs={12} className="descpAttributes">
                 <input type='checkbox' 
-                className="MuiCheckbox-root"
+                  className="MuiCheckbox-root"
                   ref={checkRef.current[key]} 
                   checked={checkedItems.get(`brand${item.id}`)} 
                   name={`brand${item.id}`} 

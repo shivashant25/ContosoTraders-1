@@ -10,7 +10,10 @@ const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }
 
     return (
         <div className="list">
-            <Breadcrump parentPath='Product Collection' parentUrl="/list/all-products" currentPath={currentCategory} />
+            {currentCategory === 'all products'?
+            <Breadcrump currentPath='Product Collection' />
+            :
+            <Breadcrump parentPath='Product Collection' parentUrl="/list/all-products" currentPath={currentCategory} />}
             <OfferBanner />
             <div className="list__content">
                 <h6 className="mainHeading">{currentCategory}</h6>
