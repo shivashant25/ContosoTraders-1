@@ -20,6 +20,7 @@ env:
   PRODUCTS_CDN_ENDPOINT_NAME: contoso-traders-images
   RESOURCE_GROUP_NAME: contoso-traders-rg
   STORAGE_ACCOUNT_NAME: contosotradersimg
+  USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
 
 jobs:
   infrastructure-provisioning:
@@ -62,11 +63,14 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
-      # @TODO: This next step really needs to go into the bicep provisioning script
-      - name: add aks agentpool to kv access policy
+      # The AKS agent pool needs to be assigned the user-assigned managed identity created (which has kv access)
+      - name: assign user-assigned managed-identity to aks agentpool
         uses: azure/CLI@v1
         with:
-          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --secret-permissions get list --object-id $(az identity show --name ${{ env.AKS_CLUSTER_NAME }}${{ secrets.ENVIRONMENT }}-agentpool -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "principalId" -o tsv)
+          inlineScript: |
+            az vmss identity assign \
+              --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ secrets.ENVIRONMENT }} --query "id" -o tsv) \
+              --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "[0].id" -o tsv) \
       # Seed the DBs and storage accounts
       - name: seed products db
         uses: azure/sql-action@v2

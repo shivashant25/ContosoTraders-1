@@ -42,6 +42,9 @@ var kvSecretNameCognitiveServicesEndpoint = 'cognitiveServicesEndpoint'
 var kvSecretNameCognitiveServicesAccountKey = 'cognitiveServicesAccountKey'
 var kvSecretNameAppInsightsConnStr = 'appInsightsConnectionString'
 
+// user-assigned managed identity (for key vault access)
+var userAssignedMIForKVAccessName = '${prefixHyphenated}-mi-kv-access${environment}'
+
 // cosmos db (stocks db)
 var stocksDbAcctName = '${prefixHyphenated}-stocks${environment}'
 var stocksDbName = 'stocksdb'
@@ -56,6 +59,7 @@ var cartsDbStocksContainerName = 'carts'
 var productsApiAppSvcPlanName = '${prefixHyphenated}-products${environment}'
 var productsApiAppSvcName = '${prefixHyphenated}-products${environment}'
 var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
+var productsApiSettingNameManagedIdentityClientId = 'ManagedIdentityClientId'
 
 // sql azure (products db)
 var productsDbServerName = '${prefixHyphenated}-products${environment}'
@@ -74,6 +78,9 @@ var cartsApiAcaName = '${prefixHyphenated}-carts${environment}'
 var cartsApiAcaEnvName = '${prefix}acaenv${environment}'
 var cartsApiAcaSecretAcrPassword = 'acr-password'
 var cartsApiAcaContainerDetailsName = '${prefixHyphenated}-carts${environment}'
+var cartsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
+var cartsApiSettingNameManagedIdentityClientId = 'ManagedIdentityClientId'
+
 
 // storage account (product images)
 var productImagesStgAccName = '${prefix}img${environment}'
@@ -274,21 +281,14 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
       accessPolicies: [
         {
           tenantId: tenantId
-          objectId: productsapiappsvc.identity.principalId
+          objectId: userassignedmiforkvaccess.properties.principalId
           permissions: {
             secrets: [ 'get', 'list' ]
           }
         }
         {
           tenantId: tenantId
-          objectId: cartsapiaca.identity.principalId
-          permissions: {
-            secrets: [ 'get', 'list' ]
-          }
-        }
-        {
-          tenantId: tenantId
-          objectId: loadtestsvc.identity.principalId
+          objectId: aks.properties.identityProfile.kubeletidentity.objectId
           permissions: {
             secrets: [ 'get', 'list' ]
           }
@@ -296,6 +296,12 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
       ]
     }
   }
+}
+
+resource userassignedmiforkvaccess 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: userAssignedMIForKVAccessName
+  location: resourceLocation
+  tags: resourceTags
 }
 
 //
@@ -430,7 +436,11 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
   location: resourceLocation
   tags: resourceTags
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userassignedmiforkvaccess.id}': {
+      }
+    }
   }
   properties: {
     clientAffinityEnabled: false
@@ -443,6 +453,10 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: productsApiSettingNameKeyVaultEndpoint
           value: kv.properties.vaultUri
+        }
+        {
+          name: productsApiSettingNameManagedIdentityClientId
+          value: userassignedmiforkvaccess.properties.clientId
         }
       ]
     }
@@ -555,7 +569,11 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
   location: resourceLocation
   tags: resourceTags
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userassignedmiforkvaccess.id}': {
+      }
+    }
   }
   properties: {
     configuration: {
@@ -605,8 +623,12 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
         {
           env: [
             {
-              name: 'KeyVaultEndpoint'
+              name: cartsApiSettingNameKeyVaultEndpoint
               value: kv.properties.vaultUri
+            }
+            {
+              name: cartsApiSettingNameManagedIdentityClientId
+              value: userassignedmiforkvaccess.properties.clientId
             }
           ]
           // using a public image initially because no images have been pushed to our private ACR yet
@@ -1151,7 +1173,11 @@ resource loadtestsvc 'Microsoft.LoadTestService/loadTests@2022-12-01' = {
   location: resourceLocation
   tags: resourceTags
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userassignedmiforkvaccess.id}': {
+      }
+    }
   }
 }
 
@@ -1246,15 +1272,14 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
         ]
       }
     }
-    // Note: Commented out due to github issue #84: https://github.com/CloudLabs-AI/ContosoTraders/issues/84
-    // addonProfiles: {
-    //   omsagent: {
-    //     enabled: true
-    //     config: {
-    //       logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
-    //     }
-    //   }
-    // }
+    addonProfiles: {
+      omsagent: {
+        enabled: true
+        config: {
+          logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
+        }
+      }
+    }
   }
 }
 

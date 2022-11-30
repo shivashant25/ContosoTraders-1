@@ -19,6 +19,7 @@ env:
   AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
   AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
+  AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
   CARTS_ACA_NAME: contoso-traders-carts
   CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
   CDN_PROFILE_NAME: contoso-traders-cdn
@@ -27,6 +28,7 @@ env:
   RESOURCE_GROUP_NAME: contoso-traders-rg
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
+  USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
 
 jobs:
   deploy-carts-api:
@@ -101,12 +103,23 @@ jobs:
           container-registry-url: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io
           container-registry-username: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}
           container-registry-password: ${{ steps.extract-acr-password.outputs.acrPassword }}
+      - name: get managedIdentityClientId
+        uses: azure/CLI@v1
+        id: get-managedIdentityClientId
+        with:
+          inlineScript: echo "managedIdentityClientId"="$(az identity show -g ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ secrets.ENVIRONMENT }} --query "clientId" -o tsv)" >> $GITHUB_OUTPUT
       - name: create kubernetes secret (kv endpoint)
         uses: Azure/k8s-create-secret@v3.0
         with:
           secret-type: "generic"
           secret-name: ${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}
           string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }}.vault.azure.net/" }'
+      - name: create kubernetes secret (managed identity client id)
+        uses: Azure/k8s-create-secret@v3.0
+        with:
+          secret-type: "generic"
+          secret-name: ${{ env.AKS_SECRET_NAME_MI_CLIENTID }}
+          string-data: '{ "${{ env.AKS_SECRET_NAME_MI_CLIENTID }}" : "${{ steps.get-managedIdentityClientId.outputs.managedIdentityClientId }}" }'
       - name: substitute tokens in deployment manifest
         uses: cschleiden/replace-tokens@v1.2
         with:
@@ -138,7 +151,7 @@ jobs:
           ${{ steps.install-helm.outputs.helm-path }} repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           ${{ steps.install-helm.outputs.helm-path }} repo update
           ${{ steps.install-helm.outputs.helm-path }} upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
-            --set controller.replicaCount=2 \
+            --set controller.replicaCount=1 \
             --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
             --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
             --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
