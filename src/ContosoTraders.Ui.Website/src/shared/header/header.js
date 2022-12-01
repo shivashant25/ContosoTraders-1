@@ -133,7 +133,7 @@ class Header extends Component {
                             <Link className={window.location.pathname === '/list/mobiles' ? "main-nav__item_active" : "main-nav__item"} to="/list/mobiles">
                                 Mobiles
                             </Link>
-                            <Link className={window.location.pathname === '/list/monitor' ? "main-nav__item_active" : "main-nav__item"} to="/list/monitor">
+                            <Link className={window.location.pathname === '/list/monitors' ? "main-nav__item_active" : "main-nav__item"} to="/list/monitors">
                                 Monitors
                             </Link>
                             <div className="main-nav__actions">

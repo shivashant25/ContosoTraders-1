@@ -120,7 +120,7 @@ export default function CustomizedMenus() {
             {/* <ArrowForwardIosIcon fontSize="small"/> */}
           </ListItemIcon>
         </StyledMenuItem>
-        <StyledMenuItem onClick={() => redirectUrl('/list/monitor')}>
+        <StyledMenuItem onClick={() => redirectUrl('/list/monitors')}>
           <ListItemIcon>
             <img src={monitorImg} alt=""/>
           </ListItemIcon>

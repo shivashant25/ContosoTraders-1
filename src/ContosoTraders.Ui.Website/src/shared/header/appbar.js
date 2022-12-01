@@ -204,22 +204,28 @@ function TopAppBar(props) {
   }
   const setTextSearch = () => {
     if(searchRef.current.value.length > 0){
-      let formData = {};
-      formData.text = searchRef.current.value;
-      ProductService.getRelatedProducts(formData, props.userInfo.token)
+      let searchData = searchRef.current.value;
+      ProductService.getSearchResults(searchData)
       .then((relatedProducts) => {
-          if (relatedProducts.length > 1) {
-              props.history.push({
-                  pathname: "/suggested-products-list",
-                  state: { relatedProducts },
-              });
-          } else {
-              props.history.push({
-                  pathname: `/product/detail/${relatedProducts[0].id}`,
-              });
-          }
+        searchRef.current.value = '';
+        if (relatedProducts.length > 1) {
+          props.history.push({
+            pathname: "/suggested-products-list",
+            state: { relatedProducts },
+          });
+        } else if(relatedProducts.length === 1){
+          props.history.push({
+            pathname: `/product/detail/${relatedProducts[0].id}`,
+          });
+        }else{
+          props.history.push({
+            pathname: "/suggested-products-list",
+            state: { relatedProducts },
+          });
+        }
       })
       .catch(() => {
+          searchRef.current.value = '';
           Alert.error("There was an error, please try again", {
               position: "top",
               effect: "scale",
@@ -349,11 +355,13 @@ function TopAppBar(props) {
                 variant="outlined"
                 fullWidth
                 onBlur={()=>setTextSearch()}
+                onChange={()=>setSearchUpload(false)}
+                onFocus={()=>setSearchUpload(true)}
                 inputRef={searchRef}
                 InputProps={{
                     endAdornment: (
                     <InputAdornment position='end'>
-                        <IconButton onClick={()=>setSearchUpload(!searchUpload)} className="searchBtn">
+                        <IconButton onClick={()=>searchRef.current.value.length === 0 ? setSearchUpload(!searchUpload) : null} className="searchBtn">
                           <img src={SearchIconNew} alt="iconimage"/>
                         </IconButton>
                     </InputAdornment>

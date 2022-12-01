@@ -44,7 +44,13 @@ const ProductService = {
         await ConfigService.loadSettings();
         const response = await axios.post(`${ConfigService._apiUrl}/products/imageclassifier`, formData, ConfigService.HeadersConfig(token));
         return response.data;
-    }
+    },
+
+    async getSearchResults(term) {
+        await ConfigService.loadSettings();
+        const response = await axios.get(`${ConfigService._apiUrl}/Products/search/${term}`, ConfigService.HeadersConfig(), { errorHandle: false });
+        return response.data;
+    },
 }
 
 export default ProductService;
