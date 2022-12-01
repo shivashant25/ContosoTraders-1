@@ -18,6 +18,7 @@
 
 * [Setup Instructions](./docs/setup-instructions.md)
 * [Known Issues](https://github.com/CloudLabs-AI/ContosoTraders/issues)
+* [Contributing](./docs/contributing.md)
 
 ## Architecture
 
