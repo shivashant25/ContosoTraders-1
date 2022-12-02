@@ -115,8 +115,8 @@ class Header extends Component {
                     <header className="header">
                         <Categories />
                         <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
-                            <Link className={window.location.pathname === '/' ? "main-nav__item_active" : "main-nav__item"} to="/list/homeappliances">
-                                {t('shared.header.home')}
+                            <Link className={window.location.pathname === '/list/all-products' ? "main-nav__item_active" : "main-nav__item"} to="/list/all-products">
+                                All Products
                             </Link>
                             {/* <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals" >
                                 {t('shared.header.newArrivals')}
