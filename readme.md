@@ -20,6 +20,6 @@
 * [Known Issues](https://github.com/CloudLabs-AI/ContosoTraders/issues)
 * [Contributing](./docs/contributing.md)
 
-## Architecture
+## Architecture (Proposed)
 
 ![Architecture](./docs/architecture/contoso-traders-enhancements.drawio.png)
