@@ -9,7 +9,7 @@ env:
   AKS_CLUSTER_NAME: contoso-traders-aks
   AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
   CDN_PROFILE_NAME: contoso-traders-cdn
-  SUB_DEPLOYMENT_REGION: eastus2
+  SUB_DEPLOYMENT_REGION: eastus
   KV_NAME: contosotraderskv
   PRODUCTS_DB_NAME: productsdb
   PRODUCTS_DB_SERVER_NAME: contoso-traders-products
